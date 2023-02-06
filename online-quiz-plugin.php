@@ -1,0 +1,81 @@
+<?php
+/**
+ * Plugin Name: Online Quiz
+ * Description: Online Quiz for Kentokukan
+ * Plugin URI: 
+ * Version: 1.0.0
+ * Author: Team RoundHouse
+ * Author URI: 
+ * License: GPLv2 or later
+ */
+ if(!defined('ABSPATH')){
+    die;
+ }
+
+ if(!class_exists('OnlineQuizPlugin')){
+   class OnlineQuizPlugin
+   {
+
+      //constructor
+     function __construct(){
+      
+         $this->define_constants();
+         $this->load_required_files();
+         
+         if(!isset($quiz_object)){
+            $quiz_object = new Quiz_CPT();
+         }
+         if(!isset($matching_question_object)){
+            $matching_question_object = new Matching_Question();
+         }
+         $this->enqueue_assets();
+     }
+
+
+     //constants for the plugin
+     function define_constants(){
+      if(!defined('ONLINE_QUIZ_BASE_FILE')){
+         define('ONLINE_QUIZ_BASE_FILE', __FILE__);
+      }
+      if(!defined('ONLINE_QUIZ_BASE_DIR')){
+         define('ONLINE_QUIZ_BASE_DIR', dirname(ONLINE_QUIZ_BASE_FILE));
+      }
+      if(!defined('ONLINE_QUIZ_PLUGIN_URL')){
+         define('ONLINE_QUIZ_PLUGIN_URL', plugin_dir_url(__FILE__));
+      }
+      if(!defined('ONLINE_QUIZ_PLUGIN_DIR')){
+         define('ONLINE_QUIZ_PLUGIN_DIR', plugin_dir_path(__FILE__));
+      }
+     }
+     //required files for plugin
+     function load_required_files(){
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/generic_functions.php';
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/matching_question_cpt.php';
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/quiz_cpt.php';
+     }
+     
+     function enqueue_assets(){
+         add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
+     }
+
+     function admin_scripts(){
+         wp_enqueue_script('online_quiz_admin_script', ONLINE_QUIZ_PLUGIN_URL.'js/admin.js', array('jquery'));
+     }
+   
+     function activate(){
+         flush_rewrite_rules();
+     }
+  
+     function deactivate(){
+         flush_rewrite_rules();
+     }
+   
+   } 
+ }
+ $onlineQuizPlugin = new OnlineQuizPlugin();
+
+ //activate
+ register_activation_hook( __FILE__, array($onlineQuizPlugin, 'activate') );
+
+ //deactivate
+ register_deactivation_hook(__FILE__, array($onlineQuizPlugin, 'deactivate'));
