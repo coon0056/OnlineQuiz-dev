@@ -14,10 +14,10 @@
             $question = get_post($questionID);
             $questionType = $question->post_type; 
             $userAnswers= $_POST['user_choice_answers'.$questionID];
-
+            echo 'Question '.($i+1).':';
                 switch($questionType){
                     case 'matching_question':
-                        matching_question_results($questionID, $question, $userAnswers);
+                        Matching_Question::matching_question_results($questionID, $question, $userAnswers);
                         break;
                     default:
                         break;
