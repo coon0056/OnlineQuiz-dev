@@ -22,6 +22,9 @@
                     case 'ordering_question':
                         Ordering_Question::ordering_question_results($questionID, $question, $userAnswers);
                         break;
+                    case 'mc_single_question':
+                        Mc_Single_Question::mc_single_question_results($questionID, $question, $userAnswers);
+                        break;
                     default:
                         break;
 

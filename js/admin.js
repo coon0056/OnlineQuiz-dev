@@ -49,5 +49,20 @@ jQuery(document).ready(function(){
         jQuery('#order-labels li:last').append(html_to_add);
     });
 
-
+    //adding new order labels for mc-single answer question
+    jQuery('#add_new_incorrect_choice').click(function(e){
+        e.preventDefault();
+        num_answers = jQuery('#multiple-choice-labels li:last input:first').data('num');
+        num_answers = num_answers+1;
+        html_to_add=
+        `   
+            <br/>
+            <li>
+            <div class="label"><label for="answer_wrong[`+ num_answers +`]"> </label></div>
+            <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type="text"
+                    name="answer_wrong[`+ num_answers +`]" value=""></div>
+            </li>
+        `;
+        jQuery('#multiple-choice-labels li:last').append(html_to_add);
+    });
 });
