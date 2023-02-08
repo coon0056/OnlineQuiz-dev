@@ -20,6 +20,7 @@ class Quiz_CPT{
 
     function quiz_plugin_menu(){
         add_submenu_page('edit.php?post_type=quiz', 'macthing question', 'Matching Question', "manage_options", 'edit.php?post_type=matching_question');
+        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "manage_options", 'edit.php?post_type=ordering_question');
     }
 
     //registers custom post type
@@ -199,7 +200,7 @@ class Quiz_CPT{
             echo "</br>";
         }
 
-        echo '<div class="row" ><input type="submit" name="user_question_submit" value="Submit Answers" /></div>
+        echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" value="Submit Answers" /></div>
             </form>';
         return ob_get_clean();
     }
