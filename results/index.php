@@ -19,6 +19,9 @@
                     case 'matching_question':
                         Matching_Question::matching_question_results($questionID, $question, $userAnswers);
                         break;
+                    case 'ordering_question':
+                        Ordering_Question::ordering_question_results($questionID, $question, $userAnswers);
+                        break;
                     default:
                         break;
 

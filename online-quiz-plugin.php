@@ -28,10 +28,13 @@
          if(!isset($matching_question_object)){
             $matching_question_object = new Matching_Question();
          }
+         if(!isset($ordering_question_object)){
+            $ordering_question_object = new Ordering_Question();
+         }
          $this->enqueue_assets();
      }
 
-
+ 
      //constants for the plugin
      function define_constants(){
       if(!defined('ONLINE_QUIZ_BASE_FILE')){
@@ -51,16 +54,22 @@
      function load_required_files(){
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/generic_functions.php';
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/matching_question_cpt.php';
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/ordering_question_cpt.php';
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/quiz_cpt.php';
      }
      
      function enqueue_assets(){
          add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
+         //add_action('wp_enqueue_scripts', array($this, 'frontend_style'));
      }
 
      function admin_scripts(){
          wp_enqueue_script('online_quiz_admin_script', ONLINE_QUIZ_PLUGIN_URL.'js/admin.js', array('jquery'));
      }
+
+   //   function frontend_style(){
+   //    wp_enqueue_style('style', QUIZ_PLUGIN_URL . '/css/stylesheet.css');
+   //   }
    
      function activate(){
          flush_rewrite_rules();
