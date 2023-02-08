@@ -31,6 +31,9 @@
          if(!isset($ordering_question_object)){
             $ordering_question_object = new Ordering_Question();
          }
+         if(!isset($mc_single_question_object)){
+            $mc_single_question_object = new Mc_Single_Question();
+         }
          $this->enqueue_assets();
      }
 
@@ -55,6 +58,7 @@
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/generic_functions.php';
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/matching_question_cpt.php';
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/ordering_question_cpt.php';
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/mc_single_question_cpt.php';
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/quiz_cpt.php';
      }
      

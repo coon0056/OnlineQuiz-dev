@@ -21,6 +21,7 @@ class Quiz_CPT{
     function quiz_plugin_menu(){
         add_submenu_page('edit.php?post_type=quiz', 'macthing question', 'Matching Question', "manage_options", 'edit.php?post_type=matching_question');
         add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "manage_options", 'edit.php?post_type=ordering_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "manage_options", 'edit.php?post_type=mc_single_question');
     }
 
     //registers custom post type
