@@ -65,4 +65,33 @@ jQuery(document).ready(function(){
         `;
         jQuery('#multiple-choice-labels li:last').append(html_to_add);
     });
+
+    //adding new option for multiple select question
+    jQuery('#add_new_ms_answer').click(function(e){
+        e.preventDefault();
+        num_answers = jQuery('#ms_answers li:last input:first').data('num');
+        num_answers = num_answers+1;
+        console.log(num_answers);
+        html_to_add=
+        `
+            <br>
+            <br>
+            <li>
+                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="answer_wrong[`+ num_answers +`]"  value="">
+                <input type="checkbox" name="answer_right[`+ num_answers +`]">
+                <label for="answer_right[`+ num_answers +`]">Correct Answer</label>
+                <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
+            </li> 
+        `;
+        jQuery('#ms_answers li:last').append(html_to_add);
+    
+        jQuery(".delete_button").on("click", function() {
+            alert("test");
+            jQuery(this).closest('li').remove();
+        });
+    });
+    
+    jQuery(".delete_button").on("click", function() {
+        jQuery(this).closest('li').remove();
+    });
 });

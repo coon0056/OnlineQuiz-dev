@@ -25,6 +25,10 @@
                     case 'mc_single_question':
                         Mc_Single_Question::mc_single_question_results($questionID, $question, $userAnswers);
                         break;
+                    //TODO
+                    case 'mc_multiple_question':
+                        Mc_Multiple_Question::mc_multiple_question_results($questionID, $question, $userAnswers);
+                        break;
                     default:
                         break;
 
