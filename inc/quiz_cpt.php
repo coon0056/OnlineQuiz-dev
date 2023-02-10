@@ -114,7 +114,10 @@ class Quiz_CPT{
             ?>
             <li>    
             <div class="label"><label  for="questions<?php echo $i; ?>]">Question <?php echo $i + 1; ?> Short Code: </label></div>
-            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="questions[<?php echo $i; ?>]"  value="<?php echo $key_print; ?>"></div>
+            <div class="fields">
+                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="questions[<?php echo $i; ?>]"  value="<?php echo $key_print; ?>">
+                <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
+            </div>
             </li>
             <?php } 
             ?>

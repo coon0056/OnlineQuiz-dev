@@ -14,6 +14,10 @@ jQuery(document).ready(function(){
             </li> 
         `;
         jQuery('#question_short_code li:last').append(html_to_add);
+        
+        jQuery(".delete_button").on("click", function() {
+            jQuery(this).closest('li').remove();
+        });
     });
 
     //adding new key-value pair for matching question
@@ -71,22 +75,22 @@ jQuery(document).ready(function(){
         e.preventDefault();
         num_answers = jQuery('#ms_answers li:last input:first').data('num');
         num_answers = num_answers+1;
-        console.log(num_answers);
         html_to_add=
         `
+            <li id="ms_answer">
             <br>
-            <br>
-            <li>
-                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="answer_wrong[`+ num_answers +`]"  value="">
+                <input data-num="`+ num_answers +`" style='width:50%' type='text' 
+                    name="answers[`+ num_answers +`]"  value="">
                 <input type="checkbox" name="answer_right[`+ num_answers +`]">
                 <label for="answer_right[`+ num_answers +`]">Correct Answer</label>
                 <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
-            </li> 
+                <br>
+                <br>
+            </li>
         `;
         jQuery('#ms_answers li:last').append(html_to_add);
     
         jQuery(".delete_button").on("click", function() {
-            alert("test");
             jQuery(this).closest('li').remove();
         });
     });

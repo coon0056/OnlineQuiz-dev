@@ -34,9 +34,9 @@
          if(!isset($mc_single_question_object)){
             $mc_single_question_object = new Mc_Single_Question();
          }
-         //if(!isset($multiple_select_question_object)){
+         if(!isset($multiple_select_question_object)){
             $multiple_select_question_object = new Mc_Multiple_Question();
-         //}
+         }
          $this->enqueue_assets();
      }
 
