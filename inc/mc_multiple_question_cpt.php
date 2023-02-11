@@ -72,6 +72,7 @@ class Mc_Multiple_Question{
 
         if(count($answers) == 0){ //if there are cuurently no right answers - set an array of 2 with blanks
             $answers[0] = '';
+            $answers[1] = '';
             $count2 = 2;
         }else{ // yes there is an array of right answers
             $tempArr2 = isset( $answers[0] ) ? $answers[0] : []; // set it
@@ -89,15 +90,15 @@ class Mc_Multiple_Question{
             <?php
 
             for($i = 0; $i < $count2; $i++){
-                $q_wrong = isset( $answers[0] ) ? $answers[0] : [];
-                $key_wrong =  isset( $q_wrong[$i] ) ? $q_wrong[$i] : '';
+                $q_answers = isset( $answers[0] ) ? $answers[0] : [];
+                $answer_key =  isset( $q_answers[$i] ) ? $q_answers[$i] : '';
                 $checked = (is_array($question_right_answers) && array_key_exists($i, $question_right_answers)
                 && $question_right_answers[$i] == 'on') ? 'checked' : '';
             ?>
             <li id="ms_answer">
                 
-                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answers[<?php echo $i; ?>]"  value="<?php echo $key_wrong ?>">
-                <input type="checkbox" id="correctTest" name="answer_right[<?php echo $i; ?>]" <?php echo $checked ?>>
+                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answers[<?php echo $i; ?>]"  value="<?php echo $answer_key ?>">
+                <input type="checkbox" name="answer_right[<?php echo $i; ?>]" <?php echo $checked ?>>
                 <label for="answer_right[<?php echo $i; ?>]">Correct Answer</label>
                 <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"> 
                 <br>
