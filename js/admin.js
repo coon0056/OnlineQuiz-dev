@@ -81,8 +81,8 @@ jQuery(document).ready(function(){
             <br>
                 <input data-num="`+ num_answers +`" style='width:50%' type='text' 
                     name="answers[`+ num_answers +`]"  value="">
-                <input type="checkbox" name="answer_right[`+ num_answers +`]">
-                <label for="answer_right[`+ num_answers +`]">Correct Answer</label>
+                <input type="checkbox" name="answers_right[`+ num_answers +`]">
+                <label for="answers_right[`+ num_answers +`]">Correct Answer</label>
                 <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
                 <br>
                 <br>

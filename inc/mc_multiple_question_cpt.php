@@ -98,8 +98,8 @@ class Mc_Multiple_Question{
             <li id="ms_answer">
                 
                 <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answers[<?php echo $i; ?>]"  value="<?php echo $answer_key ?>">
-                <input type="checkbox" name="answer_right[<?php echo $i; ?>]" <?php echo $checked ?>>
-                <label for="answer_right[<?php echo $i; ?>]">Correct Answer</label>
+                <input type="checkbox" name="answers_right[<?php echo $i; ?>]" <?php echo $checked ?>>
+                <label for="answers_right[<?php echo $i; ?>]">Correct Answer</label>
                 <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"> 
                 <br>
                 <br>
@@ -119,8 +119,8 @@ class Mc_Multiple_Question{
         if (array_key_exists('question_weight_field', $_POST)) {
             update_post_meta( $post_id, '_question_weight_meta_key', $_POST['question_weight_field']);
         }
-        if (array_key_exists('answer_right', $_POST)) { //TODO: update how this is saved to remove
-            update_post_meta( $post_id, '_question_right_answers_meta', $_POST['answer_right']);
+        if (array_key_exists('answers_right', $_POST)) { //TODO: update how this is saved to remove
+            update_post_meta( $post_id, '_question_right_answers_meta', $_POST['answers_right']);
         }
         if (array_key_exists('answers', $_POST)) {
             update_post_meta( $post_id, '_answers_meta', $_POST['answers']);
