@@ -49,8 +49,8 @@ class Mc_Multiple_Question{
 
     //creates the metaboxes 
     function register_meta_boxes(){
-        add_meta_box('question_weight_meta','Multiple Choice - multiple Answer Question Weight',array($this, 'question_weight_html'),'mc_multiple_question');
-        add_meta_box('answer_meta', 'Multiple Choice - multiple Answer Question', array($this, 'mc_multiple_question_html'), 'mc_multiple_question');
+        add_meta_box('question_weight_meta','Multiple Choice - Multiple Answer Question Weight',array($this, 'question_weight_html'),'mc_multiple_question');
+        add_meta_box('answer_meta', 'Multiple Choice - Multiple Answer Question', array($this, 'mc_multiple_question_html'), 'mc_multiple_question');
     }
 
 
@@ -67,57 +67,48 @@ class Mc_Multiple_Question{
 
     //creates matching question metabox html
     function mc_multiple_question_html($post){
-        $question_right_answers = get_post_meta( $post->ID, '_question_right_answers_meta');
-        $question_wrong_answers = get_post_meta( $post->ID, '_question_wrong_answers_meta');
+        $question_right_answers = get_post_meta( $post->ID, '_question_right_answers_meta', true);
+        $answers = get_post_meta( $post->ID, '_answers_meta');
 
-        if(count($question_right_answers) == 0){ //if there are cuurently no right answers - set an array of 2 with blanks
-            $question_right_answers[0] = '';
-            $count1 = 1;
+        if(count($answers) == 0){ //if there are cuurently no right answers - set an array of 2 with blanks
+            $answers[0] = '';
+            $answers[1] = '';
+            $count2 = 2;
         }else{ // yes there is an array of right answers
-            $tempArr1 = isset( $question_right_answers[0] ) ? $question_right_answers[0] : []; // set it
-            $count1 = count($tempArr1); // get the count
-        }
-
-        if(count($question_wrong_answers) == 0){ //if there are cuurently no right answers - set an array of 2 with blanks
-            $question_wrong_answers[0] = '';
-            $count2 = 1;
-        }else{ // yes there is an array of right answers
-            $tempArr2 = isset( $question_wrong_answers[0] ) ? $question_wrong_answers[0] : []; // set it
+            $tempArr2 = isset( $answers[0] ) ? $answers[0] : []; // set it
             $count2 = count($tempArr2); // get the count
         }
 
         ?>
-
+        <span> Add New Option</span>
+        <a id = "add_new_ms_answer" href="#" title="Add new Option">
+            <span class="dashicons dashicons-insert"></span></br>
+        </a>
         </br>
         <div class="row">
             <ul id="ms_answers">
             <?php
 
             for($i = 0; $i < $count2; $i++){
-                $q_wrong = isset( $question_wrong_answers[0] ) ? $question_wrong_answers[0] : [];
-                $key_wrong =  isset( $q_wrong[$i] ) ? $q_wrong[$i] : '';
-
+                $q_answers = isset( $answers[0] ) ? $answers[0] : [];
+                $answer_key =  isset( $q_answers[$i] ) ? $q_answers[$i] : '';
+                $checked = (is_array($question_right_answers) && array_key_exists($i, $question_right_answers)
+                && $question_right_answers[$i] == 'on') ? 'checked' : '';
             ?>
-            
-            <li>    
-            <!-- <label for="answer_wrong[<?php echo $i; ?>]">Incorrect Choice <?php echo $i + 1; ?>: </label> -->
-            <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answer_wrong[<?php echo $i; ?>]"  value="<?php echo $key_wrong ?>">
-            <input type="checkbox" name="answer_right[<?php echo $i; ?>]" value="<?php echo $key_wrong ?>">
-            <label for="answer_right[<?php echo $i; ?>]">Correct Answer</label>
-            <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"> 
+            <li id="ms_answer">
+                
+                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answers[<?php echo $i; ?>]"  value="<?php echo $answer_key ?>">
+                <input type="checkbox" name="answers_right[<?php echo $i; ?>]" <?php echo $checked ?>>
+                <label for="answers_right[<?php echo $i; ?>]">Correct Answer</label>
+                <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"> 
+                <br>
+                <br>
             </li>
-            <br>
-            <br>
             <?php } //end of for loop
             ?>
             </ul>
         </div>
-        </br> 
-        <span> Add New Option</span>
-        <a id = "add_new_ms_answer" href="#" title="Add new Option">
-            <span class="dashicons dashicons-insert"></span></br>
-        </a> 
-        
+        </br>
         <?php
     }
 
@@ -128,11 +119,11 @@ class Mc_Multiple_Question{
         if (array_key_exists('question_weight_field', $_POST)) {
             update_post_meta( $post_id, '_question_weight_meta_key', $_POST['question_weight_field']);
         }
-        if (array_key_exists('answer_right', $_POST)) { //TODO: replace with answers & answers_correct
-            update_post_meta( $post_id, '_question_right_answers_meta', $_POST['answer_right']);
+        if (array_key_exists('answers_right', $_POST)) { //TODO: update how this is saved to remove
+            update_post_meta( $post_id, '_question_right_answers_meta', $_POST['answers_right']);
         }
-        if (array_key_exists('answer_wrong', $_POST)) {
-            update_post_meta( $post_id, '_question_wrong_answers_meta', $_POST['answer_wrong']);
+        if (array_key_exists('answers', $_POST)) {
+            update_post_meta( $post_id, '_answers_meta', $_POST['answers']);
         }
 
 	}
@@ -175,43 +166,76 @@ class Mc_Multiple_Question{
 
     //generates match question short code
     function mc_multiple_question_shortcode($atts){
-        $ $atts = shortcode_atts(array(
+        $atts = shortcode_atts(array(
             'id' => '',
         ), $atts);
 
         $question = get_post($atts['id']);
-        $question_right_answers = get_post_meta( $atts['id'], '_question_right_answers_meta' );
-        $question_wrong_answers = get_post_meta( $atts['id'], '_question_wrong_answers_meta' );
+        $question_right_answers = get_post_meta( $atts['id'], '_question_right_answers_meta', true );
+        $answers = get_post_meta( $atts['id'], '_answers_meta' );
 
-        $q_right = isset($question_right_answers[0] ) ? $question_right_answers[0] : [];
-        $q_wrong = isset($question_wrong_answers[0] ) ? $question_wrong_answers[0] : [];
+        $q_answers = isset($answers[0] ) ? $answers[0] : [];
 
-        $all = array_merge($q_right, $q_wrong);
+        shuffle($q_answers);
 
-        $count = count($all);
+        $count = count($q_answers);
 
         ob_start();
         echo '<div class="row" >'. $question->post_content.'</div>';
-        echo '<form method="post" action="'.MS_PLUGIN_URL.'results/">';
         echo '<input type="hidden" id="questionID" name"questionID" value"'.$atts['id'].'">';
 
         for ($i = 0; $i < $count; $i++) {
-            $key_print = $all[$i];
+            $key_print = $q_answers[$i];
+            $checked = (is_array($question_right_answers) && array_key_exists($i, $question_right_answers)
+                && $question_right_answers[$i] == 'on') ? 'checked' : '';
             ?>
-                <input type="checkbox" id="user_choice_answers" name="UserChoice" value="<?php echo $key_print ?>"/>
-                <label for="user_choice_answers[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
+                <input type="checkbox" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>" />
+                <label for="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
             <?php
         }
             ?>
-            <div class="row" ><input type="submit" name="user_question_submit" value="Submit Answers" /></div>
-            </form>
 
             <?php
             return ob_get_clean();
     }
 
     //check results of matching question
-    public static function mc_multiple_question_results($questionID, $question, $userAnswers){
-        //todo
+    public static function mc_multiple_question_results($questionID, $question, $userAnswers) {
+
+        $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
+        $question_answers = get_post_meta( $questionID, '_answers_meta' );
+        $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
+
+        $correct = 0;
+
+        ?>
+        <div class="row">
+            <?php echo $question->post_content; ?>
+        </div>
+        <?php
+        for ($i = 0; $i < count($q_answers); $i++) {
+            $key_print = $q_answers[$i];
+            $checked = (array_key_exists($i, $userAnswers)) ? 'checked' : '';
+        ?>
+            </br>
+            <div class="row">
+                <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" 
+                    value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
+                <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
+                    <?php
+                    if ((array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) || 
+                        (!array_key_exists($i, $question_right_answers) && !array_key_exists($i, $userAnswers))
+                    ) {
+                        ?> <div class="row">Correct!</div> <?php
+                    } else if ( array_key_exists($i, $userAnswers) && !array_key_exists($i, $question_right_answers) ) {
+                        ?> <div class="row">Incorrect.</div> <?php
+                    } else if (!array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) {
+                        ?> <div class="row">This is a correct answer!</div> <?php
+                    }
+                    ?>
+            </div>
+            </br>
+        <?php
+        }
     }
 }
