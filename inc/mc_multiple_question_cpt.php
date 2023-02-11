@@ -49,8 +49,8 @@ class Mc_Multiple_Question{
 
     //creates the metaboxes 
     function register_meta_boxes(){
-        add_meta_box('question_weight_meta','Multiple Choice - multiple Answer Question Weight',array($this, 'question_weight_html'),'mc_multiple_question');
-        add_meta_box('answer_meta', 'Multiple Choice - multiple Answer Question', array($this, 'mc_multiple_question_html'), 'mc_multiple_question');
+        add_meta_box('question_weight_meta','Multiple Choice - Multiple Answer Question Weight',array($this, 'question_weight_html'),'mc_multiple_question');
+        add_meta_box('answer_meta', 'Multiple Choice - Multiple Answer Question', array($this, 'mc_multiple_question_html'), 'mc_multiple_question');
     }
 
 
@@ -79,7 +79,10 @@ class Mc_Multiple_Question{
         }
 
         ?>
-
+        <span> Add New Option</span>
+        <a id = "add_new_ms_answer" href="#" title="Add new Option">
+            <span class="dashicons dashicons-insert"></span></br>
+        </a>
         </br>
         <div class="row">
             <ul id="ms_answers">
@@ -104,11 +107,7 @@ class Mc_Multiple_Question{
             ?>
             </ul>
         </div>
-        </br> 
-        <span> Add New Option</span>
-        <a id = "add_new_ms_answer" href="#" title="Add new Option">
-            <span class="dashicons dashicons-insert"></span></br>
-        </a>
+        </br>
         <?php
     }
 
@@ -218,12 +217,13 @@ class Mc_Multiple_Question{
                 <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>"/>
                 <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
                     <?php
-                        if($userAnswers[$i] == $q_answers[$i] ){
-                            $correct++;
-                            ?> <div class="row">Correct!</div> <?php
-                        }else{
-                            ?> <div class="row">Incorrect. Correct Order: <?php echo $q_answers[$i]; ?> </div> <?php
-                        }
+                    if($userAnswers == $question_answer && $question_answer == $key_print ){
+                        ?> <div class="row">Correct!</div> <?php
+                    }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
+                        ?> <div class="row">Incorrect.</div> <?php
+                    }else if((!$userAnswers == $key_print) || ($question_answer == $key_print)){
+                        ?> <div class="row">This is the correct answer!</div> <?php
+                    }
                     ?>
             </div>
             </br>
