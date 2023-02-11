@@ -175,6 +175,8 @@ class Mc_Multiple_Question{
 
         $q_answers = isset($answers[0] ) ? $answers[0] : [];
 
+        shuffle($q_answers);
+
         $count = count($q_answers);
 
         ob_start();
@@ -186,8 +188,8 @@ class Mc_Multiple_Question{
             $checked = (is_array($question_right_answers) && array_key_exists($i, $question_right_answers)
                 && $question_right_answers[$i] == 'on') ? 'checked' : '';
             ?>
-                <input type="checkbox" id="user_choice_answers<?php echo $atts['id'] ?>" name="user_choice_answers<?php echo $atts['id'] ?>" value="<?php echo $key_print ?> <?php echo $checked ?>"/>
-                <label for="user_choice_answers<?php echo $atts['id'] ?>"><?php echo $key_print ?></label><br>
+                <input type="checkbox" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>" />
+                <label for="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
             <?php
         }
             ?>
@@ -198,6 +200,7 @@ class Mc_Multiple_Question{
 
     //check results of matching question
     public static function mc_multiple_question_results($questionID, $question, $userAnswers) {
+
         $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
         $question_answers = get_post_meta( $questionID, '_answers_meta' );
         $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
@@ -211,18 +214,22 @@ class Mc_Multiple_Question{
         <?php
         for ($i = 0; $i < count($q_answers); $i++) {
             $key_print = $q_answers[$i];
+            $checked = (array_key_exists($i, $userAnswers)) ? 'checked' : '';
         ?>
             </br>
             <div class="row">
-                <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>"/>
+                <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" 
+                    value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
                 <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
                     <?php
-                    if($userAnswers == $question_answer && $question_answer == $key_print ){
+                    if ((array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) || 
+                        (!array_key_exists($i, $question_right_answers) && !array_key_exists($i, $userAnswers))
+                    ) {
                         ?> <div class="row">Correct!</div> <?php
-                    }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
+                    } else if ( array_key_exists($i, $userAnswers) && !array_key_exists($i, $question_right_answers) ) {
                         ?> <div class="row">Incorrect.</div> <?php
-                    }else if((!$userAnswers == $key_print) || ($question_answer == $key_print)){
-                        ?> <div class="row">This is the correct answer!</div> <?php
+                    } else if (!array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) {
+                        ?> <div class="row">This is a correct answer!</div> <?php
                     }
                     ?>
             </div>
