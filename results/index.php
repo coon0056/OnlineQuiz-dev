@@ -28,6 +28,9 @@
                     case 'mc_multiple_question':
                         Mc_Multiple_Question::mc_multiple_question_results($questionID, $question, $userAnswers);
                         break;
+                    case 'short_answer_question':
+                            Short_Answer_Question::short_answer_question_results($questionID, $question, $userAnswers);
+                            break;
                     default:
                         break;
 
