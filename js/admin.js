@@ -94,6 +94,36 @@ jQuery(document).ready(function(){
             jQuery(this).closest('li').remove();
         });
     });
+
+
+
+//adding new option for short answer question 
+
+
+
+jQuery('#add_new_correct').click(function(e){
+    e.preventDefault();
+    num_answers = jQuery('#correct_answers li:last input:first').data('num');
+    num_answers = num_answers+1;
+    console.log(num_answers);
+    html_to_add=
+    `    
+        <br>
+        <br>
+        <li>
+        <div class="label"><label  for="answer_right[`+ num_answers +`]">Correct Choice  `+ (num_answers+1) +`: </label></div>
+            <input data-num="`+ num_answers +`" style='width:50%' type='text' name="answer_right[`+ num_answers +`]"  value="">
+            
+           
+        </li> 
+    `;
+    jQuery('#correct_answers li:last').append(html_to_add);
+
+    
+});
+
+
+    
     
     jQuery(".delete_button").on("click", function() {
         jQuery(this).closest('li').remove();

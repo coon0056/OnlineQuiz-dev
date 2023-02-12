@@ -37,8 +37,8 @@
          if(!isset($multiple_select_question_object)){
             $multiple_select_question_object = new Mc_Multiple_Question();
          }
-         if(!isset($short_answer_question_object)){
-            $short_answer_question_object = new Short_Answer_Question();
+         if(!isset($sa_question_object)){
+            $sa_question_object = new sa_Question();
          }
          $this->enqueue_assets();
      }
@@ -66,7 +66,7 @@
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/ordering_question_cpt.php';
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/mc_single_question_cpt.php';
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/mc_multiple_question_cpt.php'; 
-         require_once ONLINE_QUIZ_BASE_DIR.'/inc/short_answer_question_cpt.php'; 
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/sa_question_cpt.php'; 
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/quiz_cpt.php';
      }
      
