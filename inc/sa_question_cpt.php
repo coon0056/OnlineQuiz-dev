@@ -64,7 +64,7 @@ class sa_Question{
     }
 
     
-    //creates matching question metabox html
+    //creates short answer question metabox html
     function sa_question_html($post){
         $question_right_answers= get_post_meta( $post->ID, '_question_right_answers_meta');
        
@@ -121,7 +121,6 @@ class sa_Question{
 
     function sa_question_shortcode($atts){
 
-        //[punk_question id=238]
         $atts = shortcode_atts(array(
             'id' => '',
         ), $atts);
@@ -141,7 +140,7 @@ class sa_Question{
         for($i = 0; $i < $count; $i++){
             $key_print =$all[$i];
         ?>
-            <input type="textarea" id="userChoice[<?php echo $i ?>]" name="userChoice[<?php echo $i ?>]" value="<?php echo $key_print ?>">
+            <input type="text" id="userChoice[<?php echo $i ?>]" name="userChoice[<?php echo $i ?>]" value="<?php echo $key_print ?>">
             <label for="userChoice[<?php echo $i ?>]"> <?php echo $key_print ?></label><br>
     
         <?php 
