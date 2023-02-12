@@ -111,7 +111,7 @@ jQuery('#add_new_correct').click(function(e){
         <br>
         <br>
         <li>
-        <div class="label"><label  for="answer_right[`+ num_answers +`]">Correct Choice  `+ (num_answers+1) +`: </label></div>
+        <div class="label"><label  for="answer_right[`+ num_answers +`]">Answer  `+ (num_answers+1) +`: </label></div>
             <input data-num="`+ num_answers +`" style='width:50%' type='text' name="answer_right[`+ num_answers +`]"  value="">
             
            

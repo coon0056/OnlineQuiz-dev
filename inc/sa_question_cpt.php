@@ -94,7 +94,7 @@ class sa_Question{
                 $key_right =  isset( $q_right[$i] ) ? $q_right[$i] : '';
             ?>
             <li>    
-            <div class="label"><label  for="answer_right[<?php echo $i; ?>]">Correct Choice <?php echo $i + 1; ?>: </label></div>
+            <div class="label"><label  for="answer_right[<?php echo $i; ?>]">Answer <?php echo $i + 1; ?>: </label></div>
             <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answer_right[<?php echo $i; ?>]"  value="<?php echo $key_right; ?>"></div>
             </li>
             <?php } 

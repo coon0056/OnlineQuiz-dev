@@ -28,9 +28,9 @@
                     case 'mc_multiple_question':
                         Mc_Multiple_Question::mc_multiple_question_results($questionID, $question, $userAnswers);
                         break;
-                    case 'short_answer_question':
-                            sa_Question::sa_question_results($questionID, $question, $userAnswers);
-                            break;
+                    case 'sa_question':
+                        sa_Question::sa_question_results($questionID, $question, $userAnswers);
+                        break;
                     default:
                         break;
 
