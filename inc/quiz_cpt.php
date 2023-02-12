@@ -23,7 +23,7 @@ class Quiz_CPT{
         add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "manage_options", 'edit.php?post_type=ordering_question');
         add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "manage_options", 'edit.php?post_type=mc_single_question');
         add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "manage_options", 'edit.php?post_type=mc_multiple_question');
-        add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "manage_options", 'edit.php?post_type=short_answer_question');
+        add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "manage_options", 'edit.php?post_type=sa_question');
     }
 
     //registers custom post type
