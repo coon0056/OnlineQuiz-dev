@@ -134,7 +134,7 @@ class Mc_Multiple_Question{
         unset($old_column_header['author']);
 
         $new_column_header['author'] = 'Author';
-        $new_column_header['question'] = 'Multiple Choice - multiple Answer Question';
+        $new_column_header['question'] = 'Multiple Choice - Multiple Answer Question';
         $new_column_header['points'] = 'Points';
         $new_column_header['shortcode'] = 'Short Code';
 
