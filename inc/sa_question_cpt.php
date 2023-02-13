@@ -133,9 +133,9 @@ class sa_Question{
         $count = count($all);
 
         ob_start();
-        echo '<div class="row" >'. $question->post_content.'</div>';
-        echo '<form method="post" action="'.SA_PLUGIN_URL.'results/">';
-        echo '<input type="hidden" id="questionID" name="questionID" value="'.$atts['id'].'">';
+         echo '<div class="row" >'. $question->post_content.'</div>';
+         //echo '<form method="post" action="'.SA_PLUGIN_URL.'results/">';
+         echo '<input type="hidden" id="questionID" name="questionID" value="'.$atts['id'].'">';
         
         for($i = 0; $i < $count; $i++){
             $key_print =$all[$i];
@@ -147,7 +147,7 @@ class sa_Question{
         }
 
         ?> 
-            <div class="row" ><input type="submit" name="user_question_submit" value="Submit Answers" /></div>
+           
             </form>   
         <?php
         return ob_get_clean();
@@ -182,7 +182,7 @@ class sa_Question{
                     echo $weight;
                     break;
                 case 'shortcode':
-                    echo '[ShortAnswer id= '.$post_id.']';
+                    echo '[sa_question id= '.$post_id.']';
                     break;
                 default:
                     break;
