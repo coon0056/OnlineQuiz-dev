@@ -140,7 +140,8 @@ class sa_Question{
         for($i = 0; $i < $count; $i++){
             $key_print =$all[$i];
         ?>
-            <input type="text" id="userChoice[<?php echo $i ?>]" name="userChoice[<?php echo $i ?>]" value="<?php echo $key_print ?>">
+            
+            <input type="textAreaField" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>" value="<?php echo $key_print; ?>">
             <label for="userChoice[<?php echo $i ?>]"> <?php echo $key_print ?></label><br>
     
         <?php 
