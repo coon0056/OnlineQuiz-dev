@@ -101,10 +101,14 @@ class Matching_Question{
             ?>
 
             <li>    
-            <div class="label"><label  for="question_keys[<?php echo $i; ?>]">Key <?php echo $i + 1; ?>: </label></div>
-            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_keys[<?php echo $i; ?>]"  value="<?php echo $key_print; ?>"></div>
-            <div class="label"><label for="question_answers[<?php echo $i; ?>]">Value <?php echo  $i + 1; ?>:</label></div>
-            <div class="fields"><input style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo  $value_print; ?>"></div>
+                <div class="label"><label  for="question_keys[<?php echo $i; ?>]">Key <?php echo $i + 1; ?>: </label></div>
+                <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_keys[<?php echo $i; ?>]"  value="<?php echo $key_print; ?>"></div>
+                <div class="label"><label for="question_answers[<?php echo $i; ?>]">Value <?php echo  $i + 1; ?>:</label></div>
+                <div class="fields">
+                    <input style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo  $value_print; ?>">
+                    <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
+                </div>
+                
             </li>
             <?php } 
             ?>
