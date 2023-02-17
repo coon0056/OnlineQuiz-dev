@@ -98,8 +98,11 @@ class Mc_Single_Question{
                     ?>
                     <li>
                         <div class="label"><label for="answer_wrong[<?php echo $i; ?>]"> Incorrect Answer(s): </label></div>
-                        <div class="fields"><input data-num="<?php echo $i; ?>" style='width:50%' type="text"
-                                name="answer_wrong[<?php echo $i; ?>]" value="<?php echo $key_wrong; ?>"></div>
+                        <div class="fields">
+                            <input data-num="<?php echo $i; ?>" style='width:50%' type="text"
+                                name="answer_wrong[<?php echo $i; ?>]" value="<?php echo $key_wrong; ?>">
+                            <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
+                        </div>
                     </li>
                     <?php
                 }
