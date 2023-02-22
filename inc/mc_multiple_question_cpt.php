@@ -65,7 +65,7 @@ class Mc_Multiple_Question{
 	    <?php
     }
 
-    //creates matching question metabox html
+    //creates mc-multiple question metabox html
     function mc_multiple_question_html($post){
         $question_right_answers = get_post_meta( $post->ID, '_question_right_answers_meta', true);
         $answers = get_post_meta( $post->ID, '_answers_meta');
@@ -164,7 +164,7 @@ class Mc_Multiple_Question{
 
     }
 
-    //generates match question short code
+    //generates mc-multiple question short code
     function mc_multiple_question_shortcode($atts){
         $atts = shortcode_atts(array(
             'id' => '',
@@ -198,13 +198,15 @@ class Mc_Multiple_Question{
             return ob_get_clean();
     }
 
-    //check results of matching question
-    public static function mc_multiple_question_results($questionID, $question, $userAnswers) {
+    //check results of mc-multiple question
+    public static function mc_multiple_question_results($questionID, $question, $userAnswers, &$userScore) {
 
         $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
         $question_answers = get_post_meta( $questionID, '_answers_meta' );
         $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
 
+        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+        $countCorrect = count($q_answers);
         $correct = 0;
 
         ?>
@@ -227,6 +229,7 @@ class Mc_Multiple_Question{
                     if (($user_answer && $answer_exists) || 
                         (!$answer_exists && !$user_answer)
                     ) {
+                        $correct++;
                         ?> <div class="row">Correct!</div> <?php
                     } else if ( $user_answer && !$answer_exists ) {
                         ?> <div class="row">Incorrect.</div> <?php
@@ -238,5 +241,6 @@ class Mc_Multiple_Question{
             </br>
         <?php
         }
+        calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
     }
 }

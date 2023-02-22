@@ -65,7 +65,7 @@ class Ordering_Question{
 	    <?php
     }
 
-    //creates Ordering question metabox html
+    //creates ordering question metabox html
     function ordering_question_html($post){
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
@@ -161,7 +161,7 @@ class Ordering_Question{
 
     }
 
-    //generates match question short code
+    //generates ordering question short code
     function order_question_shortcode($atts){
         $atts = shortcode_atts(array(
             'id' => '',
@@ -197,12 +197,14 @@ class Ordering_Question{
         return ob_get_clean();
     }
 
-    //check results of Ordering question
-    public static function ordering_question_results($questionID, $question, $userAnswers){
+    //check results of ordering question
+    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore){
         $question_answers = get_post_meta( $questionID, '_question_answers_meta');
         $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
            
-        $correct = 0;
+        $countCorrect = count($q_answers);
+        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+        $correct = 0.0;   
     
         ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
         
@@ -226,9 +228,7 @@ class Ordering_Question{
             </div>
         <?php 
         }
-        ?> 
-        <?php
-    
+        calculatePoints($userScore, $pointWeight, $countCorrect, $correct);  
     }
 
 }

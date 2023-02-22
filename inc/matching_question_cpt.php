@@ -213,13 +213,15 @@ class Matching_Question{
     }
 
     //check results of matching question
-    public static function matching_question_results($questionID, $question, $userAnswers){
+    public static function matching_question_results($questionID, $question, $userAnswers, &$userScore){
     $question_answers = get_post_meta( $questionID, '_question_answers_meta');
     $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
 
     $question_keys = get_post_meta( $questionID, '_question_keys_meta');
     $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
    
+    $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+    $countCorrect = count($q_answers);
     $correct = 0;
 
     ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
@@ -247,9 +249,7 @@ class Matching_Question{
         </br>
     <?php 
     }
-    ?> 
-    <?php
-
+    calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
 }
 
 }
