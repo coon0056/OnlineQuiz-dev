@@ -10,7 +10,10 @@ jQuery(document).ready(function(){
             <li>
 
             <div class="label"><label  for="questions[`+ num_answers +`]">Question `+ (num_answers+1) +` Short Code: </label></div>
-            <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="questions[`+ num_answers +`]"  value=""></div>
+            <div class="fields">
+                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="questions[`+ num_answers +`]"  value="">
+                <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
+            </div>
             </li> 
         `;
         jQuery('#question_short_code li:last').append(html_to_add);
@@ -32,10 +35,17 @@ jQuery(document).ready(function(){
             <div class="label"><label  for="question_keys[`+ num_answers +`]">Key `+ (num_answers+1) +`: </label></div>
             <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="question_keys[`+ num_answers +`]"  value=""></div>
             <div class="label"><label for="question_answers[`+ num_answers +`]">Value `+ (num_answers+1) +`:</label></div>
-            <div class="fields"><input style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value=""></div>
+            <div class="fields">
+                <input style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value="">
+                <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button">
+                </div>
             </li> 
         `;
         jQuery('#key-value-pairs li:last').append(html_to_add);
+
+        jQuery(".delete_button").on("click", function() {
+            jQuery(this).closest('li').remove();
+        });
     });
     
     //adding new order labels for ordering question
@@ -47,10 +57,17 @@ jQuery(document).ready(function(){
         `
             <li>
             <div class="label"><label for="question_answers[`+ num_answers +`]">Order `+ (num_answers+1) +`:</label></div>
-            <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value=""></div>
+            <div class="fields">
+                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value="">
+                <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button">
+            </div>
             </li> 
         `;
         jQuery('#order-labels li:last').append(html_to_add);
+
+        jQuery(".delete_button").on("click", function() {
+            jQuery(this).closest('li').remove();
+        });
     });
 
     //adding new order labels for mc-single answer question
@@ -63,11 +80,18 @@ jQuery(document).ready(function(){
             <br/>
             <li>
             <div class="label"><label for="answer_wrong[`+ num_answers +`]"> </label></div>
-            <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type="text"
-                    name="answer_wrong[`+ num_answers +`]" value=""></div>
+            <div class="fields">
+                <input data-num="`+ num_answers +`" style='width:50%' type="text"
+                    name="answer_wrong[`+ num_answers +`]" value="">
+                <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button">
+            </div>
             </li>
         `;
         jQuery('#multiple-choice-labels li:last').append(html_to_add);
+
+        jQuery(".delete_button").on("click", function() {
+            jQuery(this).closest('li').remove();
+        });
     });
 
     //adding new option for multiple select question

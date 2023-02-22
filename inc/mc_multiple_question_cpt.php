@@ -134,7 +134,7 @@ class Mc_Multiple_Question{
         unset($old_column_header['author']);
 
         $new_column_header['author'] = 'Author';
-        $new_column_header['question'] = 'Multiple Choice - multiple Answer Question';
+        $new_column_header['question'] = 'Multiple Choice - Multiple Answer Question';
         $new_column_header['points'] = 'Points';
         $new_column_header['shortcode'] = 'Short Code';
 
@@ -186,11 +186,10 @@ class Mc_Multiple_Question{
 
         for ($i = 0; $i < $count; $i++) {
             $key_print = $q_answers[$i];
-            $checked = (is_array($question_right_answers) && array_key_exists($i, $question_right_answers)
-                && $question_right_answers[$i] == 'on') ? 'checked' : '';
+                $key_index = array_search($key_print, $answers[0]);
             ?>
-                <input type="checkbox" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>" />
-                <label for="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
+                <input type="checkbox" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]" value="<?php echo $key_print ?>" />
+                <label for="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]"><?php echo $key_print ?></label><br>
             <?php
         }
             ?>
@@ -215,7 +214,9 @@ class Mc_Multiple_Question{
         <?php
         for ($i = 0; $i < count($q_answers); $i++) {
             $key_print = $q_answers[$i];
-            $checked = (array_key_exists($i, $userAnswers)) ? 'checked' : '';
+            $user_answer = array_key_exists($i, $userAnswers);
+            $answer_exists = array_key_exists($i, $question_right_answers);
+            $checked = ($user_answer) ? 'checked' : '';
         ?>
             </br>
             <div class="row">
@@ -223,13 +224,13 @@ class Mc_Multiple_Question{
                     value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
                 <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
                     <?php
-                    if ((array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) || 
-                        (!array_key_exists($i, $question_right_answers) && !array_key_exists($i, $userAnswers))
+                    if (($user_answer && $answer_exists) || 
+                        (!$answer_exists && !$user_answer)
                     ) {
                         ?> <div class="row">Correct!</div> <?php
-                    } else if ( array_key_exists($i, $userAnswers) && !array_key_exists($i, $question_right_answers) ) {
+                    } else if ( $user_answer && !$answer_exists ) {
                         ?> <div class="row">Incorrect.</div> <?php
-                    } else if (!array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) {
+                    } else if (!$user_answer && $answer_exists) {
                         ?> <div class="row">This is a correct answer!</div> <?php
                     }
                     ?>
