@@ -71,7 +71,7 @@ class Mc_Single_Question{
         $question_incorrect_answers = get_post_meta($post->ID, '_question_wrong_answers_meta');
 
         if (count($question_incorrect_answers) == 0) {
-            $question_incorrect_answers[0] = '';
+            $question_incorrect_answers[0][0] = '';
             $count = 1;
         } else {
             $tempArr = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
@@ -92,9 +92,11 @@ class Mc_Single_Question{
                             value="<?php echo $question_correct_answer; ?>"></div>
                 </li>
                 <?php
-                for ($i = 0; $i < $count; $i++) {
-                    $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
-                    $key_wrong = isset($q_wrong[$i]) ? $q_wrong[$i] : '';
+                $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
+                //for ($i = 0; $i < $count; $i++) {
+                foreach($question_incorrect_answers[0] as $key_wrong) {
+                    $i = array_search($key_wrong, $q_wrong);
+                    //$key_wrong = isset($q_wrong[$i]) ? $q_wrong[$i] : '';
                     ?>
                     <li>
                         <div class="label"><label for="answer_wrong[<?php echo $i; ?>]"> Incorrect Answer(s): </label></div>

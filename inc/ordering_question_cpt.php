@@ -70,8 +70,8 @@ class Ordering_Question{
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
         if(count($question_answers) == 0){
-            $question_answers[0] = '';
-            $question_answers[1] = '';
+            $question_answers[0][0] = ' ';
+            $question_answers[0][1] = '  ';
             $count = 2;
         }else{
             $tempArr = isset( $question_answers[0] ) ? $question_answers[0] : [];
@@ -90,10 +90,13 @@ class Ordering_Question{
             <ul id="order-labels">
             <?php
 
-            for($i = 0; $i < $count; $i++){
-
-                $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
-                $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
+            $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+            //for($i = 0; $i < $count; $i++){
+            foreach($q_value as $value_print) {
+                $i = array_search($value_print, $q_value);
+                $value_print = ltrim($value_print);
+                //$q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+                //$value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 
             <li>    

@@ -71,10 +71,10 @@ class Matching_Question{
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
         if(count($question_keys) == 0 && count($question_answers) == 0){
-            $question_keys[0] = '';
-            $question_keys[1] = '';
-            $question_answers[0] = '';
-            $question_answers[1] = '';
+            $question_keys[0][0] = ' ';
+            $question_keys[0][1] = '  ';
+            $question_answers[0][0] = ' ';
+            $question_answers[0][1] = '  ';
             $count = 2;
         }else{
             $tempArr = isset( $question_keys[0] ) ? $question_keys[0] : [];
@@ -92,12 +92,20 @@ class Matching_Question{
         <div class="row">
             <ul id="key-value-pairs">
             <?php
+            $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
+            $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
 
-            for($i = 0; $i < $count; $i++){
-                $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
-                $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
-                $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
-                $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
+            //for($i = 0; $i < $count; $i++){
+            foreach($q_key as $key_print) {
+                //$q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
+                //$key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
+                //$q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+                $i = array_search($key_print, $q_key);
+
+                //$value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
+                $value_print = $q_value[$i];
+                $value_print = ltrim($value_print);
+                $key_print = ltrim($key_print);
             ?>
 
             <li>    
