@@ -60,7 +60,7 @@ class Mc_Single_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="0" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
