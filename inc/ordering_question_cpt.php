@@ -110,6 +110,7 @@ class Ordering_Question{
         <?php   
     }
 
+    //save post meta values
     function save_question_post( $post_id ) {
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
