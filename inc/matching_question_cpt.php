@@ -93,10 +93,18 @@ class Matching_Question{
             <ul id="key-value-pairs">
             <?php
 
+            //checks if array is set
+            $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
+            $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_key) && is_array($q_value) ){
+                $q_key = array_values($q_key);
+                $q_value = array_values($q_value);
+            }
+
             for($i = 0; $i < $count; $i++){
-                $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
                 $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
-                $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
                 $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 

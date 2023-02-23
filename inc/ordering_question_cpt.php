@@ -90,9 +90,15 @@ class Ordering_Question{
             <ul id="order-labels">
             <?php
 
-            for($i = 0; $i < $count; $i++){
+            //checks if array is set
+            $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+           
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_value) ){
+                $q_value = array_values($q_value);
+            }
 
-                $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+            for($i = 0; $i < $count; $i++){
                 $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 

@@ -92,8 +92,11 @@ class Mc_Single_Question{
                             value="<?php echo $question_correct_answer; ?>"></div>
                 </li>
                 <?php
+
+                //checks if array is set
+                $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
+                
                 for ($i = 0; $i < $count; $i++) {
-                    $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
                     $key_wrong = isset($q_wrong[$i]) ? $q_wrong[$i] : '';
                     ?>
                     <li>
