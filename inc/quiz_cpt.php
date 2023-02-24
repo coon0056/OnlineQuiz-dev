@@ -190,7 +190,7 @@ class Quiz_CPT{
         $q_shortcodes = isset( $questions[0] ) ? $questions[0] : [];
 
         $count = count($q_shortcodes);
-
+        echo $this->timer_html($quiz);
         ob_start();
         echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
         echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
@@ -208,5 +208,14 @@ class Quiz_CPT{
         echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" value="Submit Answers" /></div>
             </form>';
         return ob_get_clean();
+    }
+
+    //function to generate the time limit for the quiz
+    function timer_html($quiz){
+        $time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );
+        ?>  
+            
+            <div class="countdown" data-num="<?php echo $time ?>"></div>
+        <?php
     }
 }
