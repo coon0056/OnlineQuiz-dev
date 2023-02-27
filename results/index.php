@@ -5,7 +5,7 @@
     require_once($path."wp-load.php");
 
     get_header();
-
+    ?> <div style="width:800px; margin:0 auto;"> <?php
     if(isset($_POST['user_question_submit'])){
         $questionCount = $_POST['questionTotal'];
 
@@ -24,7 +24,7 @@
             $question = get_post($questionID);
             $questionType = $question->post_type; 
             $userAnswers= $_POST['user_choice_answers'.$questionID];
-            echo '<br>Question '.($i+1).':';
+            ?> <div class="row-question"><?php echo 'Question '.($i+1).':'; ?> </div> <?php
                 switch($questionType){
                     case 'matching_question':
                         Matching_Question::matching_question_results($questionID, $question, $userAnswers, $userScore);
@@ -43,9 +43,10 @@
 
                 }
             }
-            echo "<br> Attempt Score : $userScore / $totalScore"; 
-    
+            ?> <div class="row-title" > <?php echo "<br> Attempt Score : $userScore / $totalScore"; ?> </div>
+            <?php
         }
-    get_footer();
+    ?> </div> <?php
+    //get_footer();
 
 ?>

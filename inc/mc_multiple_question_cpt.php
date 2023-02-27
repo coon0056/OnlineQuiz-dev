@@ -189,13 +189,17 @@ class Mc_Multiple_Question{
             $key_print = $q_answers[$i];
                 $key_index = array_search($key_print, $answers[0]);
             ?>
+            </br>
+            <div class="row">
                 <input type="checkbox" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]" value="<?php echo $key_print ?>" />
                 <label for="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]"><?php echo $key_print ?></label><br>
+            </div>    
             <?php
         }
             ?>
 
             <?php
+            ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
             return ob_get_clean();
     }
 
@@ -211,7 +215,7 @@ class Mc_Multiple_Question{
         $correct = 0;
 
         ?>
-        <div class="row">
+        <div class="row-title">
             <?php echo $question->post_content; ?>
         </div>
         <?php
@@ -220,28 +224,29 @@ class Mc_Multiple_Question{
             $user_answer = array_key_exists($i, $userAnswers);
             $answer_exists = array_key_exists($i, $question_right_answers);
             $checked = ($user_answer) ? 'checked' : '';
-        ?>
+            ?>
             </br>
             <div class="row">
-                <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" 
-                    value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
-                <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
+                <div class ="column col-mc-single">
+                    <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
+                    <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
+                </div>
                     <?php
                     if (($user_answer && $answer_exists) || 
                         (!$answer_exists && !$user_answer)
                     ) {
                         $correct++;
-                        ?> <div class="row">Correct!</div> <?php
+                        ?> <div class="row"><span class="correct-ans">Correct!</span></div> <?php
                     } else if ( $user_answer && !$answer_exists ) {
-                        ?> <div class="row">Incorrect.</div> <?php
+                        ?> <div class="row"><span class="incorrect-ans">Incorrect.</span></div> <?php
                     } else if (!$user_answer && $answer_exists) {
-                        ?> <div class="row">This is a correct answer!</div> <?php
+                        ?> <div class="row"><span class="actual-correct-ans">This is the correct answer!</span></div> <?php
                     }
                     ?>
             </div>
-            </br>
-        <?php
+            <?php
         }
-        calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
+    ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+    <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php  
     }
 }

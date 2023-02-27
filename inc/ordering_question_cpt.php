@@ -170,6 +170,7 @@ class Ordering_Question{
 
     //generates ordering question short code
     function order_question_shortcode($atts){
+        ?> <?php
         $atts = shortcode_atts(array(
             'id' => '',
         ), $atts);
@@ -183,6 +184,7 @@ class Ordering_Question{
         $count = count($q_values);
 
         ob_start();
+        ?> <div class="LOOKHERE"> <?php
         echo '<div class="row" >'. $question->post_content.'</div>';
         
         for($i = 0; $i < $count; $i++){
@@ -201,6 +203,9 @@ class Ordering_Question{
             </div> 
         <?php 
         }
+        
+        ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
+        ?> <?php
         return ob_get_clean();
     }
 
@@ -213,7 +218,7 @@ class Ordering_Question{
         $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
         $correct = 0.0;   
     
-        ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
+        ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
         
         for($i = 0; $i < count($q_answers); $i++){
             $key_print =$q_answers[$i];
@@ -221,21 +226,24 @@ class Ordering_Question{
         ?>
             <div class="row" >   
                 <label for="user_choice_answers"></label>
-                    <select style='width:25%' name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">
-                        <option value=''><?php echo $userAnswers[$i]?></option>               
-                    </select>
+                    <div class ="column col-dropdown">
+                        <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox" disabled>
+                            <option value=''><?php echo $userAnswers[$i]?></option>               
+                        </select>
+                    </div>
                     <?php
                         if($userAnswers[$i] == $q_answers[$i] ){
                             $correct++;
-                            ?> <div class="row">Correct!</div> <?php
+                            ?> <div class="column"><span class="correct-ans">Correct!</span> </div>  <?php
                         }else{
-                            ?> <div class="row">Incorrect. Correct Order: <?php echo $q_answers[$i]; ?> </div> <?php
+                            ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Order: <?php echo $q_answers[$i]; ?> </span> </div> <?php
                         }
                     ?>
             </div>
         <?php 
         }
-        calculatePoints($userScore, $pointWeight, $countCorrect, $correct);  
+    ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+    <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php  
     }
 
 }
