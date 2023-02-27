@@ -60,12 +60,12 @@ class Mc_Single_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="0" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
 
-    //creates matching question metabox html
+    //creates mc-single question metabox html
     function mc_single_question_html($post){
         $question_correct_answer = get_post_meta($post->ID, '_question_right_answer_meta', true);
         $question_incorrect_answers = get_post_meta($post->ID, '_question_wrong_answers_meta');
@@ -92,19 +92,26 @@ class Mc_Single_Question{
                             value="<?php echo $question_correct_answer; ?>"></div>
                 </li>
                 <?php
+
+                //checks if array is set
+                $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
+                
                 for ($i = 0; $i < $count; $i++) {
-                    $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
                     $key_wrong = isset($q_wrong[$i]) ? $q_wrong[$i] : '';
                     ?>
                     <li>
                         <div class="label"><label for="answer_wrong[<?php echo $i; ?>]"> Incorrect Answer(s): </label></div>
-                        <div class="fields"><input data-num="<?php echo $i; ?>" style='width:50%' type="text"
-                                name="answer_wrong[<?php echo $i; ?>]" value="<?php echo $key_wrong; ?>"></div>
+                        <div class="fields">
+                            <input data-num="<?php echo $i; ?>" style='width:50%' type="text"
+                                name="answer_wrong[<?php echo $i; ?>]" value="<?php echo $key_wrong; ?>">
+                            <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
+                        </div>
                     </li>
                     <?php
                 }
     }
 
+    //save post meta values
     function save_question_post( $post_id ) {
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
@@ -160,7 +167,7 @@ class Mc_Single_Question{
 
     }
 
-    //generates match question short code
+    //generates mc-single question short code
     function mc_single_question_shortcode($atts){
         $atts = shortcode_atts(
             array(
@@ -200,15 +207,16 @@ class Mc_Single_Question{
             return ob_get_clean();
     }
 
-    //check results of matching question
-    public static function mc_single_question_results($questionID, $question, $userAnswers){
+    //check results of mc-single question
+    public static function mc_single_question_results($questionID, $question, $userAnswers, &$userScore){
         $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',true);
         $question_incorrect_answers = get_post_meta($questionID, '_question_wrong_answers_meta');
 
         $q_choices= isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
         $q_choices[]=($question_answer);
 
-        $correct = 0;
+        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+        $correct = 0.0;
     
         ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
 
@@ -223,6 +231,7 @@ class Mc_Single_Question{
                         
                 <?php
                 if($userAnswers == $question_answer && $question_answer == $key_print ){
+                    $correct++;
                     ?> <div class="row">Correct!</div> <?php
                 }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
                     ?> <div class="row">Incorrect.</div> <?php
@@ -230,9 +239,7 @@ class Mc_Single_Question{
                     ?> <div class="row">This is the correct answer!</div> <?php
                 }
     
-               }   ?>
-            </div>
-            </br>
-        <?php         
+               }   
+               calculatePoints($userScore, $pointWeight, 1, $correct);      
     }
 }

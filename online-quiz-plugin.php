@@ -72,12 +72,17 @@
      
      function enqueue_assets(){
          add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
+         add_action( 'wp_enqueue_scripts', array($this, 'timer_scripts') );
          //add_action('wp_enqueue_scripts', array($this, 'frontend_style'));
      }
 
      function admin_scripts(){
          wp_enqueue_script('online_quiz_admin_script', ONLINE_QUIZ_PLUGIN_URL.'js/admin.js', array('jquery'));
      }
+
+     function timer_scripts(){
+      wp_enqueue_script('online_quiz_timer_script', ONLINE_QUIZ_PLUGIN_URL.'js/timer.js', array('jquery'));
+   }
 
    //   function frontend_style(){
    //    wp_enqueue_style('style', QUIZ_PLUGIN_URL . '/css/stylesheet.css');

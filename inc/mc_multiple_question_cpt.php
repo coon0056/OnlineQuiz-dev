@@ -60,12 +60,12 @@ class Mc_Multiple_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="0" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
 
-    //creates matching question metabox html
+    //creates mc-multiple question metabox html
     function mc_multiple_question_html($post){
         $question_right_answers = get_post_meta( $post->ID, '_question_right_answers_meta', true);
         $answers = get_post_meta( $post->ID, '_answers_meta');
@@ -112,6 +112,7 @@ class Mc_Multiple_Question{
         <?php
     }
 
+    //save post meta values
     function save_question_post( $post_id ) {
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return $post_id;
@@ -134,7 +135,7 @@ class Mc_Multiple_Question{
         unset($old_column_header['author']);
 
         $new_column_header['author'] = 'Author';
-        $new_column_header['question'] = 'Multiple Choice - multiple Answer Question';
+        $new_column_header['question'] = 'Multiple Choice - Multiple Answer Question';
         $new_column_header['points'] = 'Points';
         $new_column_header['shortcode'] = 'Short Code';
 
@@ -164,7 +165,7 @@ class Mc_Multiple_Question{
 
     }
 
-    //generates match question short code
+    //generates mc-multiple question short code
     function mc_multiple_question_shortcode($atts){
         $atts = shortcode_atts(array(
             'id' => '',
@@ -186,11 +187,10 @@ class Mc_Multiple_Question{
 
         for ($i = 0; $i < $count; $i++) {
             $key_print = $q_answers[$i];
-            $checked = (is_array($question_right_answers) && array_key_exists($i, $question_right_answers)
-                && $question_right_answers[$i] == 'on') ? 'checked' : '';
+                $key_index = array_search($key_print, $answers[0]);
             ?>
-                <input type="checkbox" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>" />
-                <label for="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
+                <input type="checkbox" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]" value="<?php echo $key_print ?>" />
+                <label for="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $key_index ?>]"><?php echo $key_print ?></label><br>
             <?php
         }
             ?>
@@ -199,13 +199,15 @@ class Mc_Multiple_Question{
             return ob_get_clean();
     }
 
-    //check results of matching question
-    public static function mc_multiple_question_results($questionID, $question, $userAnswers) {
+    //check results of mc-multiple question
+    public static function mc_multiple_question_results($questionID, $question, $userAnswers, &$userScore) {
 
         $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
         $question_answers = get_post_meta( $questionID, '_answers_meta' );
         $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
 
+        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+        $countCorrect = count($q_answers);
         $correct = 0;
 
         ?>
@@ -215,7 +217,9 @@ class Mc_Multiple_Question{
         <?php
         for ($i = 0; $i < count($q_answers); $i++) {
             $key_print = $q_answers[$i];
-            $checked = (array_key_exists($i, $userAnswers)) ? 'checked' : '';
+            $user_answer = array_key_exists($i, $userAnswers);
+            $answer_exists = array_key_exists($i, $question_right_answers);
+            $checked = ($user_answer) ? 'checked' : '';
         ?>
             </br>
             <div class="row">
@@ -223,13 +227,14 @@ class Mc_Multiple_Question{
                     value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
                 <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
                     <?php
-                    if ((array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) || 
-                        (!array_key_exists($i, $question_right_answers) && !array_key_exists($i, $userAnswers))
+                    if (($user_answer && $answer_exists) || 
+                        (!$answer_exists && !$user_answer)
                     ) {
+                        $correct++;
                         ?> <div class="row">Correct!</div> <?php
-                    } else if ( array_key_exists($i, $userAnswers) && !array_key_exists($i, $question_right_answers) ) {
+                    } else if ( $user_answer && !$answer_exists ) {
                         ?> <div class="row">Incorrect.</div> <?php
-                    } else if (!array_key_exists($i, $userAnswers) && array_key_exists($i, $question_right_answers)) {
+                    } else if (!$user_answer && $answer_exists) {
                         ?> <div class="row">This is a correct answer!</div> <?php
                     }
                     ?>
@@ -237,5 +242,6 @@ class Mc_Multiple_Question{
             </br>
         <?php
         }
+        calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
     }
 }

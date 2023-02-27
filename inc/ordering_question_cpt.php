@@ -60,12 +60,12 @@ class Ordering_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="0" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
 
-    //creates Ordering question metabox html
+    //creates ordering question metabox html
     function ordering_question_html($post){
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
@@ -90,15 +90,24 @@ class Ordering_Question{
             <ul id="order-labels">
             <?php
 
-            for($i = 0; $i < $count; $i++){
+            //checks if array is set
+            $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+           
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_value) ){
+                $q_value = array_values($q_value);
+            }
 
-                $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
+            for($i = 0; $i < $count; $i++){
                 $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 
             <li>    
             <div class="label"><label for="question_answers[<?php echo $i; ?>]">Order <?php echo  $i + 1; ?>:</label></div>
-            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo  $value_print; ?>"></div>
+            <div class="fields">
+                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo  $value_print; ?>">
+                <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
+            </div>
             </li>
             <?php } 
             ?>
@@ -107,6 +116,7 @@ class Ordering_Question{
         <?php   
     }
 
+    //save post meta values
     function save_question_post( $post_id ) {
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
@@ -158,7 +168,7 @@ class Ordering_Question{
 
     }
 
-    //generates match question short code
+    //generates ordering question short code
     function order_question_shortcode($atts){
         $atts = shortcode_atts(array(
             'id' => '',
@@ -194,12 +204,14 @@ class Ordering_Question{
         return ob_get_clean();
     }
 
-    //check results of Ordering question
-    public static function ordering_question_results($questionID, $question, $userAnswers){
+    //check results of ordering question
+    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore){
         $question_answers = get_post_meta( $questionID, '_question_answers_meta');
         $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
            
-        $correct = 0;
+        $countCorrect = count($q_answers);
+        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+        $correct = 0.0;   
     
         ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
         
@@ -223,9 +235,7 @@ class Ordering_Question{
             </div>
         <?php 
         }
-        ?> 
-        <?php
-    
+        calculatePoints($userScore, $pointWeight, $countCorrect, $correct);  
     }
 
 }
