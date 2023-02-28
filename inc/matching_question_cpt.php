@@ -240,26 +240,25 @@ class Matching_Question{
             $key_print =$q_key[$i];
             
         ?>
-            </br>
-            <div class="row" >   
-                <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
-                    <div class ="column col-dropdown">
-                        <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">
-                            
+            <div class="row" > 
+                <div class ="column col-dropdown">  
+                    <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
+                    <div class ="column col-match">
+                        <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">  
                         <option value=''><?php echo $userAnswers[$i]?></option>               
                         </select>
-                    </div>
+                    </div> 
+                </div>
                     <?php
                     if($userAnswers[$i] == $q_answers[$i] ){
                         $correct++;
-                        ?> <div class="row"><span class="correct-ans">Correct!</span></div> <?php
+                        ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
                     }else{
-                        ?> <div class="row"><span class="incorrect-ans">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </span></div> <?php
+                        ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </span></div> <?php
                     }
 
                     ?>
             </div>
-            </br>
         <?php 
         }
     ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>

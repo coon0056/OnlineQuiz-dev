@@ -236,11 +236,11 @@ class Mc_Multiple_Question{
                         (!$answer_exists && !$user_answer)
                     ) {
                         $correct++;
-                        ?> <div class="row"><span class="correct-ans">Correct!</span></div> <?php
+                        ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
                     } else if ( $user_answer && !$answer_exists ) {
-                        ?> <div class="row"><span class="incorrect-ans">Incorrect.</span></div> <?php
+                        ?> <div class="column"><span class="incorrect-ans">Incorrect.</span></div> <?php
                     } else if (!$user_answer && $answer_exists) {
-                        ?> <div class="row"><span class="actual-correct-ans">This is the correct answer!</span></div> <?php
+                        ?> <div class="column"><span class="actual-correct-ans">This is a correct answer!</span></div> <?php
                     }
                     ?>
             </div>

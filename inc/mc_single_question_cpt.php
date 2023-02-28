@@ -234,11 +234,11 @@ class Mc_Single_Question{
                 <?php
                 if($userAnswers == $question_answer && $question_answer == $key_print ){
                     $correct++;
-                    ?> <div class="row"><span class="correct-ans">Correct!</span></div> <?php
+                    ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
                 }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
-                    ?> <div class="row"><span class="incorrect-ans">Incorrect.</span></div> <?php
+                    ?> <div class="column"><span class="incorrect-ans">Incorrect.</span></div> <?php
                 }else if((!$userAnswers == $key_print) || ($question_answer == $key_print)){
-                    ?> <div class="row"><span class="actual-correct-ans">This is the correct answer!</span></div> <?php
+                    ?> <div class="column"><span class="actual-correct-ans">This is the correct answer!</span></div> <?php
                 }
     
                }  ?>

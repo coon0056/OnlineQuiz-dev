@@ -34,10 +34,14 @@
 }
 .col-dropdown{
     width: 25% !important;
-    text-align: center !important;
+    /* text-align: center !important; */
 }
 .col-mc-single{
     width: 20% !important;
+}
+.col-match{
+    width: 100% !important;
+    /* text-align: center !important; */
 }
 .wp-block-separator{
     background-color:#590404 !important;
