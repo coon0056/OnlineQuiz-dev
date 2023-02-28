@@ -205,48 +205,49 @@ class Mc_Multiple_Question{
 
     //check results of mc-multiple question
     public static function mc_multiple_question_results($questionID, $question, $userAnswers, &$userScore) {
+        ?><div class="row-mc-multiple-qtype" ><?php
+            $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
+            $question_answers = get_post_meta( $questionID, '_answers_meta' );
+            $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
 
-        $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
-        $question_answers = get_post_meta( $questionID, '_answers_meta' );
-        $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            $countCorrect = count($q_answers);
+            $correct = 0;
 
-        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
-        $countCorrect = count($q_answers);
-        $correct = 0;
-
-        ?>
-        <div class="row-title">
-            <?php echo $question->post_content; ?>
-        </div>
-        <?php
-        for ($i = 0; $i < count($q_answers); $i++) {
-            $key_print = $q_answers[$i];
-            $user_answer = array_key_exists($i, $userAnswers);
-            $answer_exists = array_key_exists($i, $question_right_answers);
-            $checked = ($user_answer) ? 'checked' : '';
             ?>
-            </br>
-            <div class="row">
-                <div class ="column col-mc-single">
-                    <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
-                    <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
-                </div>
-                    <?php
-                    if (($user_answer && $answer_exists) || 
-                        (!$answer_exists && !$user_answer)
-                    ) {
-                        $correct++;
-                        ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
-                    } else if ( $user_answer && !$answer_exists ) {
-                        ?> <div class="column"><span class="incorrect-ans">Incorrect.</span></div> <?php
-                    } else if (!$user_answer && $answer_exists) {
-                        ?> <div class="column"><span class="actual-correct-ans">This is a correct answer!</span></div> <?php
-                    }
-                    ?>
+            <div class="row-title">
+                <?php echo $question->post_content; ?>
             </div>
             <?php
-        }
-    ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
-    <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php  
+            for ($i = 0; $i < count($q_answers); $i++) {
+                $key_print = $q_answers[$i];
+                $user_answer = array_key_exists($i, $userAnswers);
+                $answer_exists = array_key_exists($i, $question_right_answers);
+                $checked = ($user_answer) ? 'checked' : '';
+                ?>
+                </br>
+                <div class="row">
+                    <div class ="column col-mc-single">
+                        <input type="checkbox" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print ?>" disabled <?php echo $checked;?>/>
+                        <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"><?php echo $key_print ?></label><br>
+                    </div>
+                        <?php
+                        if (($user_answer && $answer_exists) || 
+                            (!$answer_exists && !$user_answer)
+                        ) {
+                            $correct++;
+                            ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
+                        } else if ( $user_answer && !$answer_exists ) {
+                            ?> <div class="column"><span class="incorrect-ans">Incorrect.</span></div> <?php
+                        } else if (!$user_answer && $answer_exists) {
+                            ?> <div class="column"><span class="actual-correct-ans">This is a correct answer!</span></div> <?php
+                        }
+                        ?>
+                </div>
+                <?php
+            }
+            ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+            <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
+        </div><?php  
     }
 }

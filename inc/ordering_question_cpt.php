@@ -211,39 +211,41 @@ class Ordering_Question{
 
     //check results of ordering question
     public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore){
-        $question_answers = get_post_meta( $questionID, '_question_answers_meta');
-        $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
-           
-        $countCorrect = count($q_answers);
-        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
-        $correct = 0.0;   
-    
-        ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
-        
-        for($i = 0; $i < count($q_answers); $i++){
-            $key_print =$q_answers[$i];
+        ?><div class="row-order-qtype" ><?php
+            $question_answers = get_post_meta( $questionID, '_question_answers_meta');
+            $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
             
-        ?>
-            <div class="row" >   
-                <label for="user_choice_answers"></label>
-                    <div class ="column col-dropdown">
-                        <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox" disabled>
-                            <option value=''><?php echo $userAnswers[$i]?></option>               
-                        </select>
-                    </div>
-                    <?php
-                        if($userAnswers[$i] == $q_answers[$i] ){
-                            $correct++;
-                            ?> <div class="column"><span class="correct-ans">Correct!</span> </div>  <?php
-                        }else{
-                            ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Order: <?php echo $q_answers[$i]; ?> </span> </div> <?php
-                        }
-                    ?>
-            </div>
-        <?php 
-        }
-    ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
-    <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php  
+            $countCorrect = count($q_answers);
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            $correct = 0.0;   
+        
+            ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
+            
+            for($i = 0; $i < count($q_answers); $i++){
+                $key_print =$q_answers[$i];
+                
+            ?>
+                <div class="row" >   
+                    <label for="user_choice_answers"></label>
+                        <div class ="column col-dropdown">
+                            <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox" disabled>
+                                <option value=''><?php echo $userAnswers[$i]?></option>               
+                            </select>
+                        </div>
+                        <?php
+                            if($userAnswers[$i] == $q_answers[$i] ){
+                                $correct++;
+                                ?> <div class="column"><span class="correct-ans">Correct!</span> </div>  <?php
+                            }else{
+                                ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Order: <?php echo $q_answers[$i]; ?> </span> </div> <?php
+                            }
+                        ?>
+                </div>
+            <?php 
+            }
+        ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+        <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
+    </div><?php  
     }
 
 }
