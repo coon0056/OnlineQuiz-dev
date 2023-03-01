@@ -204,21 +204,23 @@ class Mc_Single_Question{
             }
             ?>
             <?php
+            ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
             return ob_get_clean();
     }
 
     //check results of mc-single question
     public static function mc_single_question_results($questionID, $question, $userAnswers, &$userScore){
-        $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',true);
-        $question_incorrect_answers = get_post_meta($questionID, '_question_wrong_answers_meta');
+        ?><div class="row-mc-single-qtype" ><?php
+            $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',true);
+            $question_incorrect_answers = get_post_meta($questionID, '_question_wrong_answers_meta');
 
-        $q_choices= isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
-        $q_choices[]=($question_answer);
+            $q_choices= isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
+            $q_choices[]=($question_answer);
 
-        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
-        $correct = 0.0;
-    
-        ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            $correct = 0.0;
+        
+            ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
 
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
@@ -226,20 +228,24 @@ class Mc_Single_Question{
                 ?>
                 </br>
                 <div class="row">
-                    <input type="radio" <?php if($userAnswers == $key_print) echo "checked"; ?>  name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print; ?>" disabled>
-                    <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?></label>
-                        
-                <?php
-                if($userAnswers == $question_answer && $question_answer == $key_print ){
-                    $correct++;
-                    ?> <div class="row">Correct!</div> <?php
-                }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
-                    ?> <div class="row">Incorrect.</div> <?php
-                }else if((!$userAnswers == $key_print) || ($question_answer == $key_print)){
-                    ?> <div class="row">This is the correct answer!</div> <?php
-                }
-    
-               }   
-               calculatePoints($userScore, $pointWeight, 1, $correct);      
+                    <div class ="column col-mc-single">
+                        <input type="radio" <?php if($userAnswers == $key_print) echo "checked"; ?>  name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print; ?>" disabled>
+                        <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?></label>
+                    </div>    
+                    <?php
+                    if($userAnswers == $question_answer && $question_answer == $key_print ){
+                        $correct++;
+                        ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
+                    }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
+                        ?> <div class="column"><span class="incorrect-ans">Incorrect.</span></div> <?php
+                    }else if((!$userAnswers == $key_print) || ($question_answer == $key_print)){
+                        ?> <div class="column"><span class="actual-correct-ans">This is the correct answer!</span></div> <?php
+                    }
+                ?></div><?php        
+                }  ?>
+            <?php 
+            ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
+            <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
+        </div><?php    
     }
 }

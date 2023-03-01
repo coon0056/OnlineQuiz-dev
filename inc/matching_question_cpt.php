@@ -218,47 +218,57 @@ class Matching_Question{
     
         <?php 
         }
+        ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
         return ob_get_clean();
     }
 
     //check results of matching question
     public static function matching_question_results($questionID, $question, $userAnswers, &$userScore){
-    $question_answers = get_post_meta( $questionID, '_question_answers_meta');
-    $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
+        ?><div class="row-match-qtype" ><?php
+            $question_answers = get_post_meta( $questionID, '_question_answers_meta');
+            $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
 
-    $question_keys = get_post_meta( $questionID, '_question_keys_meta');
-    $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
-   
-    $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
-    $countCorrect = count($q_answers);
-    $correct = 0;
-
-    ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
-    
-    for($i = 0; $i < count($q_answers); $i++){
-        $key_print =$q_key[$i];
+            $question_keys = get_post_meta( $questionID, '_question_keys_meta');
+            $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
         
-    ?>
-        </br>
-        <div class="row" >   
-            <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
-                <select style='width:25%' name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">
-                    <option value=''><?php echo $userAnswers[$i]?></option>               
-                </select>
-                <?php
-                if($userAnswers[$i] == $q_answers[$i] ){
-                    $correct++;
-                    ?> <div class="row">Correct!</div> <?php
-                }else{
-                    ?> <div class="row">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </div> <?php
-                }
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            $countCorrect = count($q_answers);
+            $correct = 0;
 
-                ?>
-        </div>
-        </br>
-    <?php 
+            ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
+            
+            for($i = 0; $i < count($q_answers); $i++){
+                $key_print =$q_key[$i];
+                
+            ?>
+                <div class="row" > 
+                    <div class ="column col-dropdown">  
+                        <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
+                        <div class="row" > 
+                            <div class ="column col-match">
+                                <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">  
+                                <option value=''><?php echo $userAnswers[$i]?></option>               
+                                </select>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row" > 
+                        <?php
+                        if($userAnswers[$i] == $q_answers[$i] ){
+                            $correct++;
+                            ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
+                        }else{
+                            ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </span></div> <?php
+                        }
+
+                        ?>
+                </div>
+            <?php 
+            }
+        ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+        <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
+    </div><?php
     }
-    calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
-}
 
 }
