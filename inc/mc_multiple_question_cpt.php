@@ -88,16 +88,15 @@ class Mc_Multiple_Question{
         <div class="row">
             <ul id="ms_answers">
             <?php
-            $q_answers = isset( $answers[0] ) ? $answers[0] : [];
 
             for($i = 0; $i < $count2; $i++){
+                $q_answers = isset( $answers[0] ) ? $answers[0] : [];
                 $answer_key =  isset( $q_answers[$i] ) ? $q_answers[$i] : '';
-
                 $checked = (is_array($question_right_answers) && array_key_exists($i, $question_right_answers)
                 && $question_right_answers[$i] == 'on') ? 'checked' : '';
             ?>
             <li id="ms_answer">
-                <div class="label"><label for="answers[<?php echo $i; ?>]"> Answer(s): </label></div>
+                
                 <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answers[<?php echo $i; ?>]"  value="<?php echo $answer_key ?>">
                 <input type="checkbox" name="answers_right[<?php echo $i; ?>]" <?php echo $checked ?>>
                 <label for="answers_right[<?php echo $i; ?>]">Correct Answer</label>
