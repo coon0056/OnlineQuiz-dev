@@ -60,7 +60,7 @@ class Matching_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="0" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
@@ -92,20 +92,19 @@ class Matching_Question{
         <div class="row">
             <ul id="key-value-pairs">
             <?php
+            //checks if array is set
             $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
             $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
 
-            //for($i = 0; $i < $count; $i++){
-            foreach($q_key as $key_print) {
-                //$q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
-                //$key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
-                //$q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
-                $i = array_search($key_print, $q_key);
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_key) && is_array($q_value) ){
+                $q_key = array_values($q_key);
+                $q_value = array_values($q_value);
+            }
 
-                //$value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
-                $value_print = $q_value[$i];
-                $value_print = ltrim($value_print);
-                $key_print = ltrim($key_print);
+            for($i = 0; $i < $count; $i++){
+                $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
+                $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 
             <li>    
@@ -125,6 +124,7 @@ class Matching_Question{
         <?php   
     }
 
+    //save post meta values
     function save_question_post( $post_id ) {
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
@@ -217,47 +217,57 @@ class Matching_Question{
     
         <?php 
         }
+        ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
         return ob_get_clean();
     }
 
     //check results of matching question
-    public static function matching_question_results($questionID, $question, $userAnswers){
-    $question_answers = get_post_meta( $questionID, '_question_answers_meta');
-    $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
+    public static function matching_question_results($questionID, $question, $userAnswers, &$userScore){
+        ?><div class="row-match-qtype" ><?php
+            $question_answers = get_post_meta( $questionID, '_question_answers_meta');
+            $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
 
-    $question_keys = get_post_meta( $questionID, '_question_keys_meta');
-    $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
-   
-    $correct = 0;
-
-    ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
-    
-    for($i = 0; $i < count($q_answers); $i++){
-        $key_print =$q_key[$i];
+            $question_keys = get_post_meta( $questionID, '_question_keys_meta');
+            $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
         
-    ?>
-        </br>
-        <div class="row" >   
-            <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
-                <select style='width:25%' name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">
-                    <option value=''><?php echo $userAnswers[$i]?></option>               
-                </select>
-                <?php
-                if($userAnswers[$i] == $q_answers[$i] ){
-                    $correct++;
-                    ?> <div class="row">Correct!</div> <?php
-                }else{
-                    ?> <div class="row">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </div> <?php
-                }
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            $countCorrect = count($q_answers);
+            $correct = 0;
 
-                ?>
-        </div>
-        </br>
-    <?php 
+            ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
+            
+            for($i = 0; $i < count($q_answers); $i++){
+                $key_print =$q_key[$i];
+                
+            ?>
+                <div class="row" > 
+                    <div class ="column col-dropdown">  
+                        <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
+                        <div class="row" > 
+                            <div class ="column col-match">
+                                <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">  
+                                <option value=''><?php echo $userAnswers[$i]?></option>               
+                                </select>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="row" > 
+                        <?php
+                        if($userAnswers[$i] == $q_answers[$i] ){
+                            $correct++;
+                            ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
+                        }else{
+                            ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </span></div> <?php
+                        }
+
+                        ?>
+                </div>
+            <?php 
+            }
+        ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+        <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
+    </div><?php
     }
-    ?> 
-    <?php
-
-}
 
 }

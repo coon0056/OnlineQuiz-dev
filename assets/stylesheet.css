@@ -1,0 +1,76 @@
+.submit-button {
+    color: white !important;
+    background-color: #590404 !important;
+}
+.submit-button:hover {
+    color: white !important;
+    background-color: #045858 !important;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19) !important;
+}
+.row{
+    color: #190101 !important;
+    font-family: 'Rufina', serif !important;
+}
+.row:after {
+    content: "" !important;
+    display: table !important;
+    clear: both !important;
+}
+.row-title{
+    color: #190101 !important;
+    font-family: 'Rufina', serif !important;
+    font-size: 1.5rem;
+}
+.row-question{
+    color: #190101 !important;
+    font-family: 'PT Serif', serif !important;
+    font-size: 1.5rem !important;
+    text-decoration: underline !important;
+}
+.column {
+    color: #190101 !important;
+    font-family: 'Rufina', serif !important;
+    float: left !important;
+}
+.col-dropdown{
+    width: 25% !important;
+    /* text-align: center !important; */
+}
+.col-mc-single{
+    width: 20% !important;
+}
+.col-match{
+    width: 100% !important;
+    /* text-align: center !important; */
+}
+.wp-block-separator{
+    background-color:#590404 !important;
+    color:#590404 !important;
+}
+.correct-ans:before{
+    content: '\f15e' !important;
+    font-family: 'Dashicons' !important;
+    color: #24a150 !important;
+    padding-right: 6px;
+}
+.correct-ans{
+    list-style-type: none !important;;
+}
+.incorrect-ans:before{
+    content: '\f158' !important;
+    font-family: 'Dashicons' !important;
+    color: #db1515 !important;
+    padding-right: 6px;
+}
+.incorrect-ans{
+    list-style-type: none !important;;
+}
+.actual-correct-ans:before{
+    content: '\f340' !important;
+    font-family: 'Dashicons' !important;
+    color: #24a150 !important;
+    padding-right: 6px;
+}
+.actual-correct-ans{
+    list-style-type: none !important;
+}

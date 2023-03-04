@@ -60,12 +60,12 @@ class Ordering_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="0" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
 
-    //creates Ordering question metabox html
+    //creates ordering question metabox html
     function ordering_question_html($post){
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
@@ -90,13 +90,16 @@ class Ordering_Question{
             <ul id="order-labels">
             <?php
 
+            //checks if array is set
             $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
-            //for($i = 0; $i < $count; $i++){
-            foreach($q_value as $value_print) {
-                $i = array_search($value_print, $q_value);
-                $value_print = ltrim($value_print);
-                //$q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
-                //$value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
+           
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_value) ){
+                $q_value = array_values($q_value);
+            }
+
+            for($i = 0; $i < $count; $i++){
+                $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 
             <li>    
@@ -113,6 +116,7 @@ class Ordering_Question{
         <?php   
     }
 
+    //save post meta values
     function save_question_post( $post_id ) {
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
@@ -164,8 +168,9 @@ class Ordering_Question{
 
     }
 
-    //generates match question short code
+    //generates ordering question short code
     function order_question_shortcode($atts){
+        ?> <?php
         $atts = shortcode_atts(array(
             'id' => '',
         ), $atts);
@@ -179,6 +184,7 @@ class Ordering_Question{
         $count = count($q_values);
 
         ob_start();
+        ?> <div class="LOOKHERE"> <?php
         echo '<div class="row" >'. $question->post_content.'</div>';
         
         for($i = 0; $i < $count; $i++){
@@ -197,41 +203,49 @@ class Ordering_Question{
             </div> 
         <?php 
         }
+        
+        ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
+        ?> <?php
         return ob_get_clean();
     }
 
-    //check results of Ordering question
-    public static function ordering_question_results($questionID, $question, $userAnswers){
-        $question_answers = get_post_meta( $questionID, '_question_answers_meta');
-        $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
-           
-        $correct = 0;
-    
-        ?> <div class="row"> <?php echo $question->post_content; ?> </div><?php
-        
-        for($i = 0; $i < count($q_answers); $i++){
-            $key_print =$q_answers[$i];
+    //check results of ordering question
+    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore){
+        ?><div class="row-order-qtype" ><?php
+            $question_answers = get_post_meta( $questionID, '_question_answers_meta');
+            $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
             
-        ?>
-            <div class="row" >   
-                <label for="user_choice_answers"></label>
-                    <select style='width:25%' name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">
-                        <option value=''><?php echo $userAnswers[$i]?></option>               
-                    </select>
-                    <?php
-                        if($userAnswers[$i] == $q_answers[$i] ){
-                            $correct++;
-                            ?> <div class="row">Correct!</div> <?php
-                        }else{
-                            ?> <div class="row">Incorrect. Correct Order: <?php echo $q_answers[$i]; ?> </div> <?php
-                        }
-                    ?>
-            </div>
-        <?php 
-        }
-        ?> 
-        <?php
-    
+            $countCorrect = count($q_answers);
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            $correct = 0.0;   
+        
+            ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
+            
+            for($i = 0; $i < count($q_answers); $i++){
+                $key_print =$q_answers[$i];
+                
+            ?>
+                <div class="row" >   
+                    <label for="user_choice_answers"></label>
+                        <div class ="column col-dropdown">
+                            <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox" disabled>
+                                <option value=''><?php echo $userAnswers[$i]?></option>               
+                            </select>
+                        </div>
+                        <?php
+                            if($userAnswers[$i] == $q_answers[$i] ){
+                                $correct++;
+                                ?> <div class="column"><span class="correct-ans">Correct!</span> </div>  <?php
+                            }else{
+                                ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Order: <?php echo $q_answers[$i]; ?> </span> </div> <?php
+                            }
+                        ?>
+                </div>
+            <?php 
+            }
+        ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+        <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
+    </div><?php  
     }
 
 }
