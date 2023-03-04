@@ -71,10 +71,10 @@ class Matching_Question{
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
         if(count($question_keys) == 0 && count($question_answers) == 0){
-            $question_keys[0][0] = ' ';
-            $question_keys[0][1] = '  ';
-            $question_answers[0][0] = ' ';
-            $question_answers[0][1] = '  ';
+            $question_keys[0] = '';
+            $question_keys[1] = '';
+            $question_answers[0] = '';
+            $question_answers[1] = '';
             $count = 2;
         }else{
             $tempArr = isset( $question_keys[0] ) ? $question_keys[0] : [];
