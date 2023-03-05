@@ -92,7 +92,6 @@ class Matching_Question{
         <div class="row">
             <ul id="key-value-pairs">
             <?php
-
             //checks if array is set
             $q_key = isset( $question_keys[0] ) ? $question_keys[0] : [];
             $q_value = isset( $question_answers[0] ) ? $question_answers[0] : [];
