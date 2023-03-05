@@ -95,6 +95,10 @@ class Mc_Single_Question{
 
                 //checks if array is set
                 $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
+
+                if (is_array($q_wrong)) {
+                    $q_wrong = array_values($q_wrong);
+                }
                 
                 for ($i = 0; $i < $count; $i++) {
                     $key_wrong = isset($q_wrong[$i]) ? $q_wrong[$i] : '';

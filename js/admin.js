@@ -16,7 +16,7 @@ jQuery(document).ready(function(){
             </div>
             </li> 
         `;
-        jQuery('#question_short_code li:last').append(html_to_add);
+        jQuery('#question_short_code li:last').after(html_to_add);
         
         jQuery(".delete_button").on("click", function() {
             jQuery(this).closest('li').remove();
@@ -41,7 +41,7 @@ jQuery(document).ready(function(){
                 </div>
             </li> 
         `;
-        jQuery('#key-value-pairs li:last').append(html_to_add);
+        jQuery('#key-value-pairs li:last').after(html_to_add);
 
         jQuery(".delete_button").on("click", function() {
             jQuery(this).closest('li').remove();
@@ -63,7 +63,7 @@ jQuery(document).ready(function(){
             </div>
             </li> 
         `;
-        jQuery('#order-labels li:last').append(html_to_add);
+        jQuery('#order-labels li:last').after(html_to_add);
 
         jQuery(".delete_button").on("click", function() {
             jQuery(this).closest('li').remove();
@@ -87,7 +87,7 @@ jQuery(document).ready(function(){
             </div>
             </li>
         `;
-        jQuery('#multiple-choice-labels li:last').append(html_to_add);
+        jQuery('#multiple-choice-labels li:last').after(html_to_add);
 
         jQuery(".delete_button").on("click", function() {
             jQuery(this).closest('li').remove();
@@ -102,7 +102,8 @@ jQuery(document).ready(function(){
         html_to_add=
         `
             <li id="ms_answer">
-            <br>
+                <br>
+                <div class="label"><label for="answers[`+ num_answers +`]"> Answer(s): </label></div>
                 <input data-num="`+ num_answers +`" style='width:50%' type='text' 
                     name="answers[`+ num_answers +`]"  value="">
                 <input type="checkbox" name="answers_right[`+ num_answers +`]">
@@ -112,7 +113,7 @@ jQuery(document).ready(function(){
                 <br>
             </li>
         `;
-        jQuery('#ms_answers li:last').append(html_to_add);
+        jQuery('#ms_answers li:last').after(html_to_add);
     
         jQuery(".delete_button").on("click", function() {
             jQuery(this).closest('li').remove();
