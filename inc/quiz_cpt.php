@@ -65,6 +65,9 @@ class Quiz_CPT{
     // quiz time limit meta box
     function quiz_time_limit_html($post){
         $time = get_post_meta( $post->ID, '_quiz_time_limit_meta_key', true );
+        if($time == ''){
+            $time = 60;
+        }
         ?>
         <div class="row">
         <label for="quiz_time_limit_field"></label>
@@ -190,8 +193,10 @@ class Quiz_CPT{
         $q_shortcodes = isset( $questions[0] ) ? $questions[0] : [];
 
         $count = count($q_shortcodes);
-        echo $this->timer_html($quiz);
+        $time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );
+        
         ob_start();
+        echo '<div class="countdown" data-num="'.$time.'"></div>';
         echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
         echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
         
@@ -210,12 +215,4 @@ class Quiz_CPT{
         return ob_get_clean();
     }
 
-    //function to generate the time limit for the quiz
-    function timer_html($quiz){
-        $time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );
-        ?>  
-            
-            <div class="countdown" data-num="<?php echo $time ?>"></div>
-        <?php
-    }
 }

@@ -57,6 +57,9 @@ class Mc_Multiple_Question{
     //creates question weight metabox html
     function question_weight_html($post){
 		$value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
+        if($value == ''){
+            $value = 1;
+        }
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
