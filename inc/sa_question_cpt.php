@@ -202,15 +202,13 @@ class sa_Question{
         
             ?> <div class="row-title"> 
                 <?php echo $question->post_content; ?> 
-                </div><?php
-
-                ?>
-                <br>
+                </div>
+                
                 <div class="row">
                     <div class ="column col-mc-single">
                     <input type="textarea" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled>
                     <br>                    
-                    </div>  
+                </div>  
                 
                 <div class="row">
             <?php        
@@ -219,24 +217,31 @@ class sa_Question{
 
                 if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
                     $correct++;
-                    ?> <div class="column"><span class="correct-ans">Correct!</span></div><br> <?php
+                    ?> 
+                    <div class="column"><span class="correct-ans">Correct!</span></div><br> 
+                    <?php
                 }
-                ?></div><?php        
-            }  ?>
-                <div class="row">
+                ?>
+            </div>
             <?php        
-            for ($i = 0; $i < count($q_choices); $i++) {
-                $key_print = $q_choices[$i];
-                if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                         
-                        ?> <div class="column"><span class="incorrect-ans">In Correct!</span></div><br> 
-                        <br>                       
+            }  
+            ?>
+
+            <div class="row">
+
+            <?php
+            if ($correct == 0){   
+                ?>    
+             <div class="column"><span class="incorrect-ans">In Correct!</span></div><br>
+                                            
                         
-                        <?php                        
-                    } 
-                    ?></div><?php        
-                }  ?>
+                       
+            </div>
+
                 <div class="row">
-                <?php        
+                        
+                 <div>Correct Answers(s): </div>
+                 <?php
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
 
@@ -244,12 +249,15 @@ class sa_Question{
                         ?>  
                                                 
                         <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?>
-                        <div><span class="actual-correct-ans">This is the correct answer!</span></div></label>
+                       </label>
+                       <br>
                         <?php                        
                     } 
                 ?></div><?php        
             }  ?>
-
+<?php        
+                }  
+            ?>
             <?php 
             ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
             <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
