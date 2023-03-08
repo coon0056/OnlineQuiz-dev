@@ -217,7 +217,7 @@ class sa_Question{
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
 
-                if(strcasecmp(trim($userAnswers), $key_print) == 0){ 
+                if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
                     $correct++;
                     ?> <div class="column"><span class="correct-ans">Correct!</span></div><br> <?php
                 }
@@ -227,7 +227,7 @@ class sa_Question{
             <?php        
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
-                if(strcasecmp(trim($userAnswers), $key_print) !== 0){                         
+                if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                         
                         ?> <div class="column"><span class="incorrect-ans">In Correct!</span></div><br> 
                         <br>                       
                         
@@ -240,7 +240,7 @@ class sa_Question{
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
 
-                if(strcasecmp(trim($userAnswers), $key_print) !== 0){                         
+                if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                         
                         ?>  
                                                 
                         <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?>
