@@ -136,6 +136,9 @@ jQuery('#add_new_correct').click(function(e){
     `;
     jQuery('#correct_answers li:last').append(html_to_add);
 
+    jQuery(".delete_button").on("click", function() {
+        jQuery(this).closest('li').remove();
+    });
     
 });
 

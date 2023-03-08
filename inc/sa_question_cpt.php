@@ -97,7 +97,8 @@ class sa_Question{
             ?>
             <li>    
             <div class="label"><label  for="answer_right[<?php echo $i; ?>]">Answer <?php echo $i + 1; ?>: </label></div>
-            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answer_right[<?php echo $i; ?>]"  value="<?php echo $key_right; ?>"></div>
+            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answer_right[<?php echo $i; ?>]"  value="<?php echo $key_right; ?>">
+            <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"></div>
             </li>
             <?php } 
             ?>
@@ -120,7 +121,6 @@ class sa_Question{
 		}
     }
 
-
     function sa_question_shortcode($atts){
 
         $atts = shortcode_atts(array(
@@ -135,19 +135,14 @@ class sa_Question{
         $count = count($all);
 
         ob_start();
-         echo '<div class="row" >'. $question->post_content.'</div>';
-        
-         echo '<input type="hidden" id="questionID" name="questionID" value="'.$atts['id'].'">';
-        
-       // for($i = 0; $i < $count; $i++){
-           // $key_print =$all[0];
-        ?>
-            
+         echo '<div class="row" >'. $question->post_content.'</div>';        
+         echo '<input type="hidden" id="questionID" name="questionID" value="'.$atts['id'].'">';       
+       
+        ?>            
             <input type="textAreaField" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>">
-            <br>
-    
+            <br>    
         <?php 
-      //  }
+      
         ?>            
              
         <?php
@@ -197,56 +192,60 @@ class sa_Question{
             $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',false);
             
            //assigning the answers in question answer array to q choices
-
             $q_choices= isset($question_answer[0]) ? $question_answer[0] : [];
         
-
             //FOR MOHIT TO FIX AFTER
-
             //$pointWeight = get_post_meta( $questionID, '_sa_weight_field',true);
-                $pointWeight = 10; 
+            $pointWeight = 10; 
             $correct = 0.0;
-
-            
-        
+                  
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
-
-            for ($i = 0; $i < count($q_choices); $i++) {
-                $key_print = $q_choices[$i];
 
                 ?>
                 </br>
                 <div class="row">
                     <div class ="column col-mc-single">
-                    <input type="textAreaField" <?php if($userAnswers == $key_print) echo "checked"; ?>  name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled>
-                    <br>
-                    <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?></label>
-                    
-                    
-                    </div>    
-                    <?php
+                    <input type="textAreaField" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled>
+                    <br>                    
+                    </div>  
 
-            }
-
+            <?php        
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
-                    
-                    if(strcasecmp(trim($userAnswers), $key_print) !== 0){ //} && $question_answer == $key_print ){
-                        $correct++;
-                        ?> <div class="column"><span class="correct-ans"> In Correct!</span></div><br> <?php
 
-                        
-                    }
-                    else if(strcasecmp(trim($userAnswers), $key_print) == 0){ //} && $question_answer == $key_print ){
-                        $correct++;
-                        ?> <div class="column"><span class="correct-ans">Correct!</span></div><br> <?php
-                    }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
-                        ?> <div class="column"><span class="incorrect-ans">Incorrect.</span></div> <?php
-                    }else if((!$userAnswers == $key_print) || ($question_answer == $key_print)){
-                        ?> <div class="column"><span class="actual-correct-ans">This is the correct answer!</span></div> <?php
-                    }
+                if(strcasecmp(trim($userAnswers), $key_print) == 0){ 
+                    $correct++;
+                    ?> <div class="column"><span class="correct-ans">Correct!</span></div><br> <?php
+                }
                 ?></div><?php        
+            }  ?>
+
+            <?php        
+            for ($i = 0; $i < count($q_choices); $i++) {
+                $key_print = $q_choices[$i];
+                if(strcasecmp(trim($userAnswers), $key_print) !== 0){                         
+                        ?> <div class="column"><span class="incorrect-ans">In Correct!</span></div><br> 
+                        <br>                       
+                        
+                        <?php                        
+                    } 
+                    ?></div><?php        
                 }  ?>
+
+                <?php        
+            for ($i = 0; $i < count($q_choices); $i++) {
+                $key_print = $q_choices[$i];
+
+                if(strcasecmp(trim($userAnswers), $key_print) !== 0){                         
+                        ?>  
+                                                
+                        <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?>
+                        <div><span class="actual-correct-ans">This is a correct answer!</span></div></label>
+                        <?php                        
+                    } 
+                ?></div><?php        
+            }  ?>
+
             <?php 
             ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
             <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
