@@ -232,7 +232,8 @@ class sa_Question{
             <?php
             if ($correct == 0){   
                 ?>    
-             <div class="column"><span class="incorrect-ans">In Correct!</span></div><br>
+             
+             <div class="column"><span class="incorrect-ans">Incorrect.</span></div><br>
                                             
                         
                        
@@ -240,22 +241,22 @@ class sa_Question{
 
                 <div class="row">
                         
-                 <div>Correct Answers(s): </div>
+                 Correct Answers(s): <br>
                  <?php
-            for ($i = 0; $i < count($q_choices); $i++) {
+                for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
 
                 if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                         
-                        ?>  
+                ?>  
                                                 
                         <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?>
                        </label>
                        <br>
                         <?php                        
                     } 
-                ?></div><?php        
-            }  ?>
-<?php        
+                ?><?php        
+            }  ?></div>
+            <?php        
                 }  
             ?>
             <?php 
