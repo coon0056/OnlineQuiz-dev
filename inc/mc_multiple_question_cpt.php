@@ -114,8 +114,6 @@ class Mc_Multiple_Question{
                 <input type="checkbox" name="answers_right[<?php echo $i; ?>]" <?php echo $checked ?>>
                 <label for="answers_right[<?php echo $i; ?>]">Correct Answer</label>
                 <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"> 
-                <br>
-                <br>
             </li>
             <?php } //end of for loop
             ?>
