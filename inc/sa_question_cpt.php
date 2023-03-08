@@ -240,7 +240,7 @@ class sa_Question{
                         ?>  
                                                 
                         <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?>
-                        <div><span class="actual-correct-ans">This is a correct answer!</span></div></label>
+                        <div><span class="actual-correct-ans">This is the correct answer!</span></div></label>
                         <?php                        
                     } 
                 ?></div><?php        
