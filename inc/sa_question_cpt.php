@@ -241,7 +241,7 @@ class sa_Question{
 
                 <div class="row">
                         
-                 Correct Answers(s): <br>
+                 Correct Answer(s): <br>
                  <?php
                 for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
