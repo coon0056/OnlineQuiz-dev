@@ -105,7 +105,7 @@ class sa_Question{
             </ul>
         </div>
         </br>          
-        </br> 
+        
         <?php
     }
 
@@ -139,8 +139,8 @@ class sa_Question{
          echo '<input type="hidden" id="questionID" name="questionID" value="'.$atts['id'].'">';       
        
         ?>            
-            <input type="textAreaField" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>">
-            <br>    
+            <input type="textarea" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>">
+    </br>    
         <?php 
       
         ?>            
@@ -188,7 +188,7 @@ class sa_Question{
 
         //TODO Mohit
         public static function sa_question_results($questionID, $question, $userAnswers, &$userScore){
-            ?><div class="row-mc-single-qtype" ><?php
+            ?><div class="row-match-qtype" ><?php
             $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',false);
             
            //assigning the answers in question answer array to q choices
@@ -198,17 +198,20 @@ class sa_Question{
             $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
             //$pointWeight = 10; 
             $correct = 0.0;
-                  
-            ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
+        
+            ?> <div class="row-title"> 
+                <?php echo $question->post_content; ?> 
+                </div><?php
 
                 ?>
-                </br>
+                <br>
                 <div class="row">
                     <div class ="column col-mc-single">
-                    <input type="textAreaField" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled>
+                    <input type="textarea" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled>
                     <br>                    
                     </div>  
-
+                
+                <div class="row">
             <?php        
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
@@ -219,7 +222,7 @@ class sa_Question{
                 }
                 ?></div><?php        
             }  ?>
-
+                <div class="row">
             <?php        
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
@@ -231,7 +234,7 @@ class sa_Question{
                     } 
                     ?></div><?php        
                 }  ?>
-
+                <div class="row">
                 <?php        
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
