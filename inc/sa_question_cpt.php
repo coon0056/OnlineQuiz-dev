@@ -48,17 +48,17 @@ class sa_Question{
 
     //creates the metaboxes 
     function register_meta_boxes(){
-        add_meta_box('sa_weight_meta','Short Answer Weight',array($this, 'question_weight_html'),'sa_question');
+        add_meta_box('question_weight_meta','Short Answer Weight',array($this, 'question_weight_html'),'sa_question');
         add_meta_box('sa_meta', 'Short Question', array($this, 'sa_question_html'), 'sa_question');
     }
 
     //creates question weight metabox html
     function question_weight_html($post){
-        $value = get_post_meta( $post->ID, '_sa_weight_meta_key', true );
+        $value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
 		?>
         <div class='row'>
-		<label for='sa_weight_field'></label>
-        <input style='width:25%' type='number' name='sa_weight_field' min='1' value="<?php echo $value; ?>">
+		<label for='question_weight_field'></label>
+        <input style='width:25%' type='number' name='question_weight_field' min='1' value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
@@ -113,8 +113,8 @@ class sa_Question{
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
         }
-        if ( array_key_exists( 'sa_weight_field', $_POST ) ) {
-			update_post_meta($post_id,'_sa_weight_meta_key',$_POST['sa_weight_field']);
+        if ( array_key_exists( 'question_weight_field', $_POST ) ) {
+			update_post_meta($post_id,'_question_weight_meta_key',$_POST['question_weight_field']);
 		}
         if ( array_key_exists( 'answer_right', $_POST ) ) {
 			update_post_meta($post_id,'_question_right_answers_meta',$_POST['answer_right']);
@@ -195,8 +195,8 @@ class sa_Question{
             $q_choices= isset($question_answer[0]) ? $question_answer[0] : [];
         
             //FOR MOHIT TO FIX AFTER
-            //$pointWeight = get_post_meta( $questionID, '_sa_weight_field',true);
-            $pointWeight = 10; 
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            //$pointWeight = 10; 
             $correct = 0.0;
                   
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
