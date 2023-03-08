@@ -58,10 +58,12 @@ class sa_Question{
 		?>
         <div class='row'>
 		<label for='sa_weight_field'></label>
-        <input style='width:25%' type='number' name='sa_weight_field' min='0' value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='sa_weight_field' min='1' value="<?php echo $value; ?>">
         </div>
 	    <?php
     }
+
+    
 
     
     //creates short answer question metabox html
@@ -134,20 +136,20 @@ class sa_Question{
 
         ob_start();
          echo '<div class="row" >'. $question->post_content.'</div>';
-         //echo '<form method="post" action="'.SA_PLUGIN_URL.'results/">';
+        
          echo '<input type="hidden" id="questionID" name="questionID" value="'.$atts['id'].'">';
         
-        for($i = 0; $i < $count; $i++){
-            $key_print =$all[$i];
+       // for($i = 0; $i < $count; $i++){
+           // $key_print =$all[0];
         ?>
             
-            <input type="textAreaField" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>" value="<?php echo $key_print; ?>">
-            <label for="userChoice[<?php echo $i ?>]"> <?php echo $key_print ?></label><br>
+            <input type="textAreaField" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>">
+            <br>
     
         <?php 
-        }
+      //  }
         ?>            
-            </form>   
+             
         <?php
         return ob_get_clean();
 
@@ -193,12 +195,19 @@ class sa_Question{
         public static function sa_question_results($questionID, $question, $userAnswers, &$userScore){
             ?><div class="row-mc-single-qtype" ><?php
             $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',true);
+            
+            //$answers = get_post_meta( $atts['id'], '_question_right_answer_meta' );
 
             $q_choices= isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
             $q_choices[]=($question_answer);
 
-            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+            //FOR MOHIT TO FIX AFTER
+
+            //$pointWeight = get_post_meta( $questionID, '_sa_weight_field',true);
+                $pointWeight = 10; 
             $correct = 0.0;
+
+            
         
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
 
@@ -209,10 +218,13 @@ class sa_Question{
                 </br>
                 <div class="row">
                     <div class ="column col-mc-single">
-                        <input type="textAreaField" <?php if($userAnswers == $key_print) echo "checked"; ?>  name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $key_print; ?>" disabled>
-                        <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?></label>
+                    <input type="textAreaField" <?php if($userAnswers == $key_print) echo "checked"; ?>  name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled>
+                    
                     </div>    
                     <?php
+
+        
+
                     if($userAnswers == $question_answer && $question_answer == $key_print ){
                         $correct++;
                         ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
