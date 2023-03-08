@@ -57,6 +57,9 @@ class Mc_Multiple_Question{
     //creates question weight metabox html
     function question_weight_html($post){
 		$value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
+        if($value == ''){
+            $value = 1;
+        }
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
@@ -111,8 +114,6 @@ class Mc_Multiple_Question{
                 <input type="checkbox" name="answers_right[<?php echo $i; ?>]" <?php echo $checked ?>>
                 <label for="answers_right[<?php echo $i; ?>]">Correct Answer</label>
                 <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"> 
-                <br>
-                <br>
             </li>
             <?php } //end of for loop
             ?>
