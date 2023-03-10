@@ -72,7 +72,7 @@ class sa_Question{
        
 
         if(count($question_right_answers) == 0){ //if there are cuurently no right answers - set an array of 1 with blanks
-            $question_right_answers[0] = 'Test';
+            $question_right_answers[0] = '';
             $count1 = 1;
         }else{ // yes there is an array of right answers
             $tempArr1 = isset( $question_right_answers[0] ) ? $question_right_answers[0] : []; // set it
