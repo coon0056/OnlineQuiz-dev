@@ -71,8 +71,8 @@ class sa_Question{
         $question_right_answers= get_post_meta( $post->ID, '_question_right_answers_meta');
        
 
-        if(count($question_right_answers) == 0){ //if there are cuurently no right answers - set an array of 2 with blanks
-            $question_right_answers[0] = '';
+        if(count($question_right_answers) == 0){ //if there are cuurently no right answers - set an array of 1 with blanks
+            $question_right_answers[0] = 'Test';
             $count1 = 1;
         }else{ // yes there is an array of right answers
             $tempArr1 = isset( $question_right_answers[0] ) ? $question_right_answers[0] : []; // set it
@@ -86,13 +86,20 @@ class sa_Question{
         <a id = "add_new_correct" href="#" title="Add new correct">
             <span class="dashicons dashicons-insert"></span></br>
         </a>
-
         </br>
         <div class="row">
             <ul id="correct_answers">                
             <?php
+
+           
+            $q_right = isset( $question_right_answers[0] ) ? $question_right_answers[0] : [];
+
+            if (is_array($q_right)) {
+                $q_right = array_values($q_right);
+            }
+
             for($i = 0; $i < $count1; $i++){
-                $q_right = isset( $question_right_answers[0] ) ? $question_right_answers[0] : [];
+               
                 $key_right =  isset( $q_right[$i] ) ? $q_right[$i] : '';
             ?>
             <li>    
