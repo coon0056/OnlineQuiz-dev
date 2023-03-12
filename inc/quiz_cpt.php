@@ -110,11 +110,18 @@ class Quiz_CPT{
         <div class="row">
             <ul id="question_short_code">
             <?php
+            
+            $q_key = isset( $questions[0] ) ? $questions[0] : [];
+            
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_key) ){
+                $q_key = array_values($q_key);
+            }
 
             for($i = 0; $i < $count; $i++){
-                $q_key = isset( $questions[0] ) ? $questions[0] : [];
                 $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
             ?>
+
             <li>    
             <div class="label"><label  for="questions<?php echo $i; ?>]">Question <?php echo $i + 1; ?> Short Code: </label></div>
             <div class="fields">
@@ -191,6 +198,11 @@ class Quiz_CPT{
         $quiz = get_post($atts['id']);
         $questions = get_post_meta( $atts['id'], '_quiz_questions_meta_key');
         $q_shortcodes = isset( $questions[0] ) ? $questions[0] : [];
+
+        //checks for empty spots in the array and re-arranges
+        if(is_array($q_shortcodes) ){
+            $q_shortcodes = array_values($q_shortcodes);
+        }
 
         $count = count($q_shortcodes);
         $time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );

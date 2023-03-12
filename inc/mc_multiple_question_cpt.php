@@ -93,6 +93,7 @@ class Mc_Multiple_Question{
             <?php
             $q_answers = isset( $answers[0] ) ? $answers[0] : [];
 
+            //checks for empty spots in the array and re-arranges
             if (is_array($q_answers)) {
                 $q_answers = array_values($q_answers);
             }
@@ -196,6 +197,11 @@ class Mc_Multiple_Question{
         echo '<div class="row" >'. $question->post_content.'</div>';
         echo '<input type="hidden" id="questionID" name"questionID" value"'.$atts['id'].'">';
 
+        //checks for empty spots in the array and re-arranges
+        if (is_array($q_answers)) {
+            $q_answers = array_values($q_answers);
+        }
+
         for ($i = 0; $i < $count; $i++) {
             $key_print = $q_answers[$i];
                 $key_index = array_search($key_print, $answers[0]);
@@ -221,15 +227,21 @@ class Mc_Multiple_Question{
         $question_answers = get_post_meta( $questionID, '_answers_meta' );
         $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
 
-            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
-            $countCorrect = count($q_answers);
-        $correct = 0;
+        $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
+        $countCorrect = count($q_answers);
+        $correct = 0.0;
 
         ?>
             <div class="row-title">
             <?php echo $question->post_content; ?>
         </div>
         <?php
+
+        //checks for empty spots in the array and re-arranges
+        if (is_array($q_answers)) {
+            $q_answers = array_values($q_answers);
+        }
+
         for ($i = 0; $i < count($q_answers); $i++) {
             $key_print = $q_answers[$i];
             $user_answer = array_key_exists($i, $userAnswers);
