@@ -38,6 +38,9 @@
                     case 'mc_multiple_question':
                         Mc_Multiple_Question::mc_multiple_question_results($questionID, $question, $userAnswers, $userScore);
                         break;
+                    case 'sa_question':
+                        sa_Question::sa_question_results($questionID, $question, $userAnswers, $userScore);
+                        break;
                     default:
                         break;
 

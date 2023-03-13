@@ -111,6 +111,37 @@ jQuery(document).ready(function(){
             jQuery(this).closest('li').remove();
         });
     });
+
+
+
+//adding new option for short answer question 
+
+
+
+jQuery('#add_new_correct').click(function(e){
+    e.preventDefault();
+    num_answers = (jQuery('#correct_answers li:last input:first').data('num') == undefined) ? 0 : jQuery('#correct_answers li:last input:first').data('num')+1;
+    html_to_add=
+    `    
+        <li id="correct_answers">
+        
+        <div class="label"><label  for="answer_right[`+ num_answers +`]">Answer(s): </label></div>
+            <input data-num="`+ num_answers +`" style='width:50%' type='text' 
+            name="answer_right[`+ num_answers +`]"  value="">
+            <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
+        
+        </li> 
+    `;
+    jQuery('#correct_answers').append(html_to_add);
+
+    jQuery(".delete_button").on("click", function() {
+        jQuery(this).closest('li').remove();
+    });
+    
+});
+
+
+    
     
     jQuery(".delete_button").on("click", function() {
         jQuery(this).closest('li').remove();
