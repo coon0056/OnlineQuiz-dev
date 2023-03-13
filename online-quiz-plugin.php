@@ -92,10 +92,26 @@
      function deactivate(){
          flush_rewrite_rules();
      }
+
+     function create_sensei_role() {
+      add_role('sensei', 'Sensei',
+         array(
+            'read'            => true,
+            'level_0'         => true,
+            'edit_posts'      => true,
+            'delete_posts'    => false,
+            'publish_posts'   => false,
+            'upload_files'    => true
+         )
+      );
+     }
    
    } 
  }
  $onlineQuizPlugin = new OnlineQuizPlugin();
+
+//create Sensei role
+register_activation_hook( __FILE__, array($onlineQuizPlugin, 'create_sensei_role') );
 
  //activate
  register_activation_hook( __FILE__, array($onlineQuizPlugin, 'activate') );

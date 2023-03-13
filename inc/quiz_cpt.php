@@ -10,19 +10,20 @@ class Quiz_CPT{
     //Creates the post type and it's corresponding settings
     function create_post_type(){
         add_action('init', array($this,'register_post_type'));
+        add_action('admin_init', array($this, 'add_role_capability'));
         add_action('add_meta_boxes', array($this, 'register_meta_boxes'));
         add_filter('manage_quiz_posts_columns', array($this, 'custom_column_header'));
         add_filter('manage_quiz_posts_custom_column', array($this, 'custom_column_content'), 10,2);
         add_action('save_post', array($this, 'save_quiz_post'));
         add_shortcode('quiz', array($this, 'quiz_shortcode'));
-        add_action('admin_menu', array($this,'quiz_plugin_menu'));
+        add_action('admin_menu', array($this,'quiz_plugin_menu'), 999);
     }
 
     function quiz_plugin_menu(){
-        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "manage_options", 'edit.php?post_type=matching_question');
-        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "manage_options", 'edit.php?post_type=ordering_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "manage_options", 'edit.php?post_type=mc_single_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "manage_options", 'edit.php?post_type=mc_multiple_question');
+        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "edit_Quiz", 'edit.php?post_type=matching_question');
+        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "edit_Quiz", 'edit.php?post_type=ordering_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "edit_Quiz", 'edit.php?post_type=mc_single_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "edit_Quiz", 'edit.php?post_type=mc_multiple_question');
     }
 
     //registers custom post type
@@ -49,10 +50,28 @@ class Quiz_CPT{
             'public'    => true,
             'menu_icon' => 'dashicons-welcome-learn-more',
             'labels'    => $quiz_labels,
-            'supports'  => array('editor', 'author', 'thumbnail')
+            'supports'  => array('editor', 'author', 'thumbnail'),
+            'capability_type'   => array('Quiz', 'Quizzes'),
         );
 
         register_post_type('quiz', $args);
+    }
+
+    function add_role_capability() {
+        $roles = array('sensei', 'editor', 'administrator');
+        foreach( $roles as $user_role) {
+            $role = get_role($user_role);
+
+            $role->add_cap('read');
+            $role->add_cap('read_Quiz');
+            $role->add_cap('read_Quizzes');
+            $role->add_cap('edit_Quiz');
+            $role->add_cap('edit_Quizzes');
+            $role->add_cap('edit_published_Quizzes');
+            $role->add_cap('publish_Quizzes');
+            $role->add_cap('delete_private_Quizzes');
+            $role->add_cap('delete_publshed_Quizzes');
+        }
     }
 
     //creates the metaboxes 
