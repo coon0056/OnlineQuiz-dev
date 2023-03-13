@@ -20,10 +20,11 @@ class Quiz_CPT{
     }
 
     function quiz_plugin_menu(){
-        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "edit_Quiz", 'edit.php?post_type=matching_question');
-        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "edit_Quiz", 'edit.php?post_type=ordering_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "edit_Quiz", 'edit.php?post_type=mc_single_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "edit_Quiz", 'edit.php?post_type=mc_multiple_question');
+        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "manage_options", 'edit.php?post_type=matching_question');
+        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "manage_options", 'edit.php?post_type=ordering_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "manage_options", 'edit.php?post_type=mc_single_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "manage_options", 'edit.php?post_type=mc_multiple_question');
+        add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "manage_options", 'edit.php?post_type=sa_question');
     }
 
     //registers custom post type
