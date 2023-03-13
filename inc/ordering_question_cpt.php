@@ -191,6 +191,11 @@ class Ordering_Question{
         ?> <div class="LOOKHERE"> <?php
         echo '<div class="row" >'. $question->post_content.'</div>';
         
+        //checks for empty spots in the array and re-arranges
+        if(is_array($q_values) ){
+            $q_values = array_values($q_values);
+        }
+
         for($i = 0; $i < $count; $i++){
             $key_print =$q_values[$i];
         ?>
@@ -225,6 +230,11 @@ class Ordering_Question{
         
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
             
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_answers) ){
+                $q_answers = array_values($q_answers);
+            }
+
             for($i = 0; $i < count($q_answers); $i++){
                 $key_print =$q_answers[$i];
                 

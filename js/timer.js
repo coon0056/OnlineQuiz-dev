@@ -19,7 +19,7 @@ jQuery(document).ready(function(){
 			timer2 = minutes + ':' + seconds;
 
 			if(minutes == 0 && seconds ==0){
-				alert("Quiz Limit Reached! Replace Later With Actual function");
+				alert("Quiz Limit Reached!");
 			}
 			}, 1000);
 });

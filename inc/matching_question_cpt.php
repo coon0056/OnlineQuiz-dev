@@ -203,6 +203,12 @@ class Matching_Question{
         ob_start();
         echo '<div class="row" >'. $question->post_content.'</div>';
         
+        //checks for empty spots in the array and re-arranges
+        if(is_array($q_key) && is_array($q_values)) {
+            $q_key = array_values($q_key);
+            $q_values = array_values($q_values);
+        }
+
         for($i = 0; $i < $count; $i++){
             $key_print =$q_key[$i];
         ?>
@@ -239,6 +245,12 @@ class Matching_Question{
             $correct = 0;
 
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
+
+            //checks for empty spots in the array and re-arranges
+            if(is_array($q_key) && is_array($q_answers)) {
+                $q_key = array_values($q_key);
+                $q_answers = array_values($q_answers);
+            }
             
             for($i = 0; $i < count($q_answers); $i++){
                 $key_print =$q_key[$i];

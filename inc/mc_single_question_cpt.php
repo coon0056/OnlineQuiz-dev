@@ -100,6 +100,7 @@ class Mc_Single_Question{
                 //checks if array is set
                 $q_wrong = isset($question_incorrect_answers[0]) ? $question_incorrect_answers[0] : [];
 
+                //checks for empty spots in the array and re-arranges
                 if (is_array($q_wrong)) {
                     $q_wrong = array_values($q_wrong);
                 }
@@ -197,23 +198,27 @@ class Mc_Single_Question{
         echo '<div class="row" >' . $question->post_content . '</div>';
         echo '<input type="hidden" id ="questionID" name="questionID" value"' . $atts['id'] . '">';
 
+        //checks for empty spots in the array and re-arranges
+        if (is_array($q_choices)) {
+            $q_choices = array_values($q_choices);
+        }
 
-            for ($i = 0; $i < $count; $i++) {
-                $key_print = $q_choices[$i];
+        for ($i = 0; $i < $count; $i++) {
+            $key_print = $q_choices[$i];
 
-                ?>
-                </br>
-                <div class="row">
-                    <input type="radio" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>" value="<?php echo $key_print; ?>">
-                    <label for="user_choice_answers<?php echo $atts['id'] ?>"> <?php echo $key_print; ?></label>
-                </div>
-
-                <?php
-            }
             ?>
+            </br>
+            <div class="row">
+                <input type="radio" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>" value="<?php echo $key_print; ?>">
+                <label for="user_choice_answers<?php echo $atts['id'] ?>"> <?php echo $key_print; ?></label>
+            </div>
+
             <?php
-            ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
-            return ob_get_clean();
+        }
+        ?>
+        <?php
+        ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
+        return ob_get_clean();
     }
 
     //check results of mc-single question
@@ -229,6 +234,11 @@ class Mc_Single_Question{
             $correct = 0.0;
         
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div><?php
+
+            //checks for empty spots in the array and re-arranges
+            if (is_array($q_choices)) {
+                $q_choices = array_values($q_choices);
+            }
 
             for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i];
