@@ -208,30 +208,38 @@ class sa_Question{
             $correct = 0.0;
         
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div>
-            
+            <div class="row">
+                <div class="column col-sa"> 
+                    <input type="textarea" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled></input>    
+                </div>
             <?php for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i]; 
             ?>
-                <div class="row">
-                    <div class="column col-sa"> 
-                        <input type="textarea" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled></input>    
-                    </div>
-                    <div class="column col-sa-actual-ans">       
-                        <?php if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
-                                $correct++;
-                                ?> 
-                                <div class="column"><span class="correct-ans">Correct!</span></div><br> 
-                                <?php
-                            }else{
-                                ?>
-                                <div class="column"><span class="incorrect-ans">Incorrect. Correct Answer(s): <?php echo $key_print; ?></span></div><br>
-                                <?php
-                            }?>
-                    </div>
+                <div class="column col-sa-actual-ans">       
+                    <?php if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
+                            $correct++;
+                            ?> 
+                            <div class="column"><span class="correct-ans">Correct!</span></div><br> 
+                            <?php
+                        }
+                    ?>
                 </div>
-            <?php        
-            }  
-        ?><div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
+            <?php       
+            } 
+            if ($correct == 0){
+                ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answers: </span></div> <?php
+                for ($i = 0; $i < count($q_choices); $i++) {
+					$key_print = $q_choices[$i];
+					if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                 
+                        ?> 
+                        <div class="column"><span class="incorrect-ans-sa-choices"><?php echo $q_choices[$i]; ?>, </span></div>    
+                        <?php                        
+					}         
+				}
+            }
+             
+        ?>  </div>
+        <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
     </div><?php    
     }

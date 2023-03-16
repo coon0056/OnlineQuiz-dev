@@ -37,7 +37,7 @@
     /* text-align: center !important; */
 }
 .col-mc-single{
-    width: 10% !important;
+    width: 15% !important;
 }
 .col-match{
     width: 100% !important;
@@ -69,7 +69,11 @@
     padding-right: 6px;
 }
 .incorrect-ans{
-    list-style-type: none !important;;
+    list-style-type: none !important;
+}
+.incorrect-ans-sa-choices{
+    list-style-type: none !important;
+    Padding-left: 6px;
 }
 .actual-correct-ans:before{
     content: '\f340' !important;
