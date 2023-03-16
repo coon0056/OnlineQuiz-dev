@@ -56,6 +56,7 @@ class Mc_Single_Question{
 
     //creates question weight metabox html
     function question_weight_html($post){
+        wp_nonce_field('question_weight_field', 'singleChoiceQuestion_nonce');
 		$value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
         if($value == ''){
             $value = 1;
@@ -63,13 +64,14 @@ class Mc_Single_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>" required>
         </div>
 	    <?php
     }
 
     //creates mc-single question metabox html
     function mc_single_question_html($post){
+        wp_nonce_field('answers', 'singleChoiceQuestion_nonce');
         $question_correct_answer = get_post_meta($post->ID, '_question_right_answer_meta', true);
         $question_incorrect_answers = get_post_meta($post->ID, '_question_wrong_answers_meta');
 
@@ -92,7 +94,7 @@ class Mc_Single_Question{
                 <li>
                     <div class="label"><label for="answer_right"> Correct Answer: </label></div>
                     <div class="fields"><input style='width:50%' , type="text" , name="answer_right"
-                            value="<?php echo $question_correct_answer; ?>"></div>
+                            value="<?php echo esc_attr($question_correct_answer); ?>"></div>
                 </li>
                 <?php
 
@@ -111,7 +113,7 @@ class Mc_Single_Question{
                         <div class="label"><label for="answer_wrong[<?php echo $i; ?>]"> Incorrect Answer(s): </label></div>
                         <div class="fields">
                             <input data-num="<?php echo $i; ?>" style='width:50%' type="text"
-                                name="answer_wrong[<?php echo $i; ?>]" value="<?php echo $key_wrong; ?>">
+                                name="answer_wrong[<?php echo $i; ?>]" value="<?php echo esc_attr($key_wrong); ?>">
                             <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
                         </div>
                     </li>
@@ -125,7 +127,19 @@ class Mc_Single_Question{
             return $post_id;
         }
 
+        if (!isset($_POST['singleChoiceQuestion_nonce'])){
+            return $post_id;
+        }
+
+        $nonce = $_POST['singleChoiceQuestion_nonce'];
+        if (!wp_verify_nonce($nonce, 'answers') && (!wp_verify_nonce($nonce, 'question_weight_field'))){
+            sanitize_text_field($_POST['question_weight_field']);
+
+            return $post_id;
+        }
+
 		if ( array_key_exists( 'question_weight_field', $_POST ) ) {
+            sanitize_text_field($_POST['answer_right']);
 			update_post_meta($post_id,'_question_weight_meta_key',$_POST['question_weight_field']);
 		}
 
@@ -134,6 +148,7 @@ class Mc_Single_Question{
 		}
 
         if ( array_key_exists( 'answer_wrong', $_POST ) ) {
+            sanitize_text_field($_POST['answer_wrong']);
 			update_post_meta($post_id,'_question_wrong_answers_meta',$_POST['answer_wrong']);
 		}
 
@@ -208,7 +223,7 @@ class Mc_Single_Question{
             ?>
             </br>
             <div class="row">
-                <input type="radio" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>" value="<?php echo $key_print; ?>">
+                <input type="radio" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>" value="<?php echo $key_print; ?>" required>
                 <label for="user_choice_answers<?php echo $atts['id'] ?>"> <?php echo $key_print; ?></label>
             </div>
 

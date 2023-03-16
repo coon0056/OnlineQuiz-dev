@@ -56,6 +56,7 @@ class Ordering_Question{
 
     //creates question weight metabox html
     function question_weight_html($post){
+        wp_nonce_field('question_weight_field', 'orderingQuestion_nonce');
 		$value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
         if($value == ''){
             $value = 1;
@@ -63,13 +64,14 @@ class Ordering_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo esc_attr($value); ?>" required>
         </div>
 	    <?php
     }
 
     //creates ordering question metabox html
     function ordering_question_html($post){
+        wp_nonce_field('answers', 'orderingQuestion_nonce');
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
         if(count($question_answers) == 0){
@@ -108,7 +110,7 @@ class Ordering_Question{
             <li>    
             <div class="label"><label for="question_answers[<?php echo $i; ?>]">Order <?php echo  $i + 1; ?>:</label></div>
             <div class="fields">
-                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo  $value_print; ?>">
+                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo esc_attr($value_print); ?>">
                 <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
             </div>
             </li>
@@ -124,12 +126,23 @@ class Ordering_Question{
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
         }
+        
+        if (!isset($_POST['orderingQuestion_nonce'])){
+            return $post_id;
+        }
+
+        $nonce = $_POST['orderingQuestion_nonce'];
+        if (!wp_verify_nonce($nonce, 'answers') && (!wp_verify_nonce($nonce, 'question_weight_field'))){
+            return $post_id;
+        }
 
 		if ( array_key_exists( 'question_weight_field', $_POST ) ) {
+            sanitize_text_field($_POST['question_weight_field']);
 			update_post_meta($post_id,'_question_weight_meta_key',$_POST['question_weight_field']);
 		}
 
         if ( array_key_exists( 'question_answers', $_POST ) ) {
+            sanitize_text_field($_POST['question_answers']);
 			update_post_meta($post_id,'_question_answers_meta',$_POST['question_answers']);
 		}
 
@@ -200,7 +213,7 @@ class Ordering_Question{
         ?>
             </br>
             <div class="row">
-                <select style="width:50%" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" class="postbox">
+                <select style="width:50%" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" class="postbox" required>
                     <option value=''> Put the following in order </option>
                         <?php
                         foreach($q_values as $item){

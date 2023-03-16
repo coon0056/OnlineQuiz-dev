@@ -10,7 +10,7 @@ jQuery(document).ready(function(){
 
             <div class="label"><label  for="questions[`+ num_answers +`]">Question `+ (num_answers+1) +` Short Code: </label></div>
             <div class="fields">
-                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="questions[`+ num_answers +`]"  value="">
+                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="questions[`+ num_answers +`]"  value="" required>
                 <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
             </div>
             </li> 
@@ -31,10 +31,10 @@ jQuery(document).ready(function(){
             <li>
 
             <div class="label"><label  for="question_keys[`+ num_answers +`]">Key `+ (num_answers+1) +`: </label></div>
-            <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="question_keys[`+ num_answers +`]"  value=""></div>
+            <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="question_keys[`+ num_answers +`]"  value="" required></div>
             <div class="label"><label for="question_answers[`+ num_answers +`]">Value `+ (num_answers+1) +`:</label></div>
             <div class="fields">
-                <input style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value="">
+                <input style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value="" required>
                 <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button">
                 </div>
             </li> 
@@ -55,7 +55,7 @@ jQuery(document).ready(function(){
             <li>
             <div class="label"><label for="question_answers[`+ num_answers +`]">Order `+ (num_answers+1) +`:</label></div>
             <div class="fields">
-                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value="">
+                <input data-num="`+ num_answers +`" style='width:50%' type='text' name="question_answers[`+ num_answers +`]"  value="" required>
                 <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button">
             </div>
             </li> 
@@ -78,7 +78,7 @@ jQuery(document).ready(function(){
             <div class="label"><label for="answer_wrong[`+ num_answers +`]"> </label></div>
             <div class="fields">
                 <input data-num="`+ num_answers +`" style='width:50%' type="text"
-                    name="answer_wrong[`+ num_answers +`]" value="">
+                    name="answer_wrong[`+ num_answers +`]" value="" required>
                 <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button">
             </div>
             </li>
@@ -99,7 +99,7 @@ jQuery(document).ready(function(){
             <li id="ms_answer">
                 <div class="label"><label for="answers[`+ num_answers +`]"> Answer(s): </label></div>
                 <input data-num="`+ num_answers +`" style='width:50%' type='text' 
-                    name="answers[`+ num_answers +`]"  value="">
+                    name="answers[`+ num_answers +`]"  value="" required>
                 <input type="checkbox" name="answers_right[`+ num_answers +`]">
                 <label for="answers_right[`+ num_answers +`]">Correct Answer</label>
                 <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
