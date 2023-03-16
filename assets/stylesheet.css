@@ -37,11 +37,17 @@
     /* text-align: center !important; */
 }
 .col-mc-single{
-    width: 20% !important;
+    width: 10% !important;
 }
 .col-match{
     width: 100% !important;
     /* text-align: center !important; */
+}
+.col-sa{
+    width: 27% !important;
+}
+.col-sa-actual-ans{
+    width: 50% !important;
 }
 .wp-block-separator{
     background-color:#590404 !important;
