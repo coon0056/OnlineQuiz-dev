@@ -84,6 +84,7 @@ class Quiz_CPT{
 
     // quiz time limit meta box
     function quiz_time_limit_html($post){
+        wp_nonce_field('quiz_time_limit_field', 'quiz_nonce');
         $time = get_post_meta( $post->ID, '_quiz_time_limit_meta_key', true );
         if($time == ''){
             $time = 60;
@@ -91,24 +92,26 @@ class Quiz_CPT{
         ?>
         <div class="row">
         <label for="quiz_time_limit_field"></label>
-        <input style='width:25%' type='number' name='quiz_time_limit_field' min="10" value="<?php echo $time; ?>">
+        <input style='width:25%' type='number' name='quiz_time_limit_field' min="10" value="<?php echo esc_attr($time); ?>">
         </div>
         <?php
     }
 
     // quiz password metabox
     function quiz_password_html($post){
+        wp_nonce_field('quiz_password_field', 'quiz_nonce');
         $password = get_post_meta( $post->ID, '_quiz_password_meta_key', true );
         ?>
         <div class="row">
         <label for="quiz_password_field"></label>
-        <input style='width:25%' type='password' name='quiz_password_field' value="<?php echo $password; ?>">
+        <input style='width:25%' type='password' name='quiz_password_field' value="<?php echo esc_attr($password); ?>">
         </div>
         <?php
     }
 
     //quiz  question metabox
     function questions_html($post){
+        wp_nonce_field('questions', 'quiz_nonce');
         $questions = get_post_meta( $post->ID, '_quiz_questions_meta_key');
         
         if(count($questions) == 0){
@@ -145,7 +148,7 @@ class Quiz_CPT{
             <li>    
             <div class="label"><label  for="questions<?php echo $i; ?>]">Question <?php echo $i + 1; ?> Short Code: </label></div>
             <div class="fields">
-                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="questions[<?php echo $i; ?>]"  value="<?php echo $key_print; ?>">
+                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="questions[<?php echo $i; ?>]"  value="<?php echo esc_attr($key_print); ?>" required>
                 <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
             </div>
             </li>
@@ -195,15 +198,27 @@ class Quiz_CPT{
             return $post_id;
         }
 
+        if (!isset($_POST['quiz_nonce'])){
+            return $post_id;
+        }
+
+        $nonce = $_POST['quiz_nonce'];
+        if (!wp_verify_nonce($nonce, 'questions') && (!wp_verify_nonce($nonce, 'quiz_time_limit_field')) && (!wp_verify_nonce($nonce, 'quiz_password_field'))){
+            return $post_id;
+        }
+
         if ( array_key_exists( 'quiz_time_limit_field', $_POST ) ) {
+            sanitize_text_field($_POST['quiz_time_limit_field']);
             update_post_meta($post_id,'_quiz_time_limit_meta_key',$_POST['quiz_time_limit_field']);
         }
 
         if ( array_key_exists( 'quiz_password_field', $_POST ) ) {
+            sanitize_text_field($_POST['quiz_password_field']);
             update_post_meta($post_id,'_quiz_password_meta_key',$_POST['quiz_password_field']);
         }
 
         if ( array_key_exists( 'questions', $_POST ) ) {
+            sanitize_text_field($_POST['questions']);
             update_post_meta($post_id,'_quiz_questions_meta_key',$_POST['questions']);
         }
 

@@ -57,6 +57,7 @@ class Mc_Multiple_Question{
 
     //creates question weight metabox html
     function question_weight_html($post){
+        wp_nonce_field('question_weight_field', 'multipleChoiceQuestion_nonce');
 		$value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
         if($value == ''){
             $value = 1;
@@ -64,13 +65,14 @@ class Mc_Multiple_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo esc_attr($value); ?>">
         </div>
 	    <?php
     }
 
     //creates mc-multiple question metabox html
     function mc_multiple_question_html($post){
+        wp_nonce_field('answers', 'multipleChoiceQuestion_nonce');
         $question_right_answers = get_post_meta( $post->ID, '_question_right_answers_meta', true);
         $answers = get_post_meta( $post->ID, '_answers_meta');
 
@@ -112,7 +114,7 @@ class Mc_Multiple_Question{
             ?>
             <li id="ms_answer">
                 <div class="label"><label for="answers[<?php echo $i; ?>]"> Answer(s): </label></div>
-                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answers[<?php echo $i; ?>]"  value="<?php echo $answer_key ?>">
+                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="answers[<?php echo $i; ?>]"  value="<?php echo esc_attr($answer_key) ?>" required>
                 <input type="checkbox" name="answers_right[<?php echo $i; ?>]" <?php echo $checked ?>>
                 <label for="answers_right[<?php echo $i; ?>]">Correct Answer</label>
                 <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button"> 
@@ -130,13 +132,29 @@ class Mc_Multiple_Question{
         if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
             return $post_id;
         }
+
+         
+        if (!isset($_POST['multipleChoiceQuestion_nonce'])){
+            return $post_id;
+        }
+
+        $nonce = $_POST['multipleChoiceQuestion_nonce'];
+        if (!wp_verify_nonce($nonce, 'answers') && (!wp_verify_nonce($nonce, 'question_weight_field'))){
+            return $post_id;
+        }
+
         if (array_key_exists('question_weight_field', $_POST)) {
+            sanitize_text_field($_POST['question_weight_field']);
             update_post_meta( $post_id, '_question_weight_meta_key', $_POST['question_weight_field']);
         }
+
         if (array_key_exists('answers_right', $_POST)) {
+            sanitize_text_field($_POST['answers_right']);
             update_post_meta( $post_id, '_question_right_answers_meta', $_POST['answers_right']);
         }
+
         if (array_key_exists('answers', $_POST)) {
+            sanitize_text_field($_POST['answers']);
             update_post_meta( $post_id, '_answers_meta', $_POST['answers']);
         }
 
