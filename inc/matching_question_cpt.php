@@ -56,6 +56,7 @@ class Matching_Question{
 
     //creates question weight metabox html
     function question_weight_html($post){
+        wp_nonce_field('question_weight_field', 'matchingQuestion_nonce');
 		$value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
         if($value == ''){
             $value = 1;
@@ -63,13 +64,14 @@ class Matching_Question{
 		?>
         <div class="row">
 		<label for="question_weight_field"></label>
-        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>">
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>" required>
         </div>
 	    <?php
     }
 
     //creates matching question metabox html
     function matching_question_html($post){
+        wp_nonce_field('answers', 'matchingQuestion_nonce');
         $question_keys = get_post_meta( $post->ID, '_question_keys_meta');
         $question_answers = get_post_meta( $post->ID, '_question_answers_meta');
 
@@ -112,10 +114,10 @@ class Matching_Question{
 
             <li>    
                 <div class="label"><label  for="question_keys[<?php echo $i; ?>]">Key <?php echo $i + 1; ?>: </label></div>
-                <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_keys[<?php echo $i; ?>]"  value="<?php echo $key_print; ?>"></div>
+                <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="question_keys[<?php echo $i; ?>]"  value="<?php echo esc_attr($key_print); ?>" required></div>
                 <div class="label"><label for="question_answers[<?php echo $i; ?>]">Value <?php echo  $i + 1; ?>:</label></div>
                 <div class="fields">
-                    <input style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo  $value_print; ?>">
+                    <input style='width:50%' type='text' name="question_answers[<?php echo $i; ?>]"  value="<?php echo esc_attr($value_print); ?>" required>
                     <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
                 </div>
                 
@@ -133,15 +135,27 @@ class Matching_Question{
             return $post_id;
         }
 
+        if (!isset($_POST['matchingQuestion_nonce'])){
+            return $post_id;
+        }
+
+        $nonce = $_POST['matchingQuestion_nonce'];
+        if (!wp_verify_nonce($nonce, 'answers') && (!wp_verify_nonce($nonce, 'question_weight_field'))){
+            return $post_id;
+        }
+
 		if ( array_key_exists( 'question_weight_field', $_POST ) ) {
+            sanitize_text_field($_POST['question_weight_field']);
 			update_post_meta($post_id,'_question_weight_meta_key',$_POST['question_weight_field']);
 		}
 
         if ( array_key_exists( 'question_keys', $_POST ) ) {
+            sanitize_text_field($_POST['question_keys']);
 			update_post_meta($post_id,'_question_keys_meta',$_POST['question_keys']);
 		}
 
         if ( array_key_exists( 'question_answers', $_POST ) ) {
+            sanitize_text_field($_POST['question_answers']);
 			update_post_meta($post_id,'_question_answers_meta',$_POST['question_answers']);
 		}
 
@@ -214,7 +228,7 @@ class Matching_Question{
             </br>
             <div class="row" >   
                 <label for="user_choice_answers<?php echo $atts['id'] ?>"><?php echo $key_print; ?>:</label>
-                    <select style='width:50%' name="user_choice_answers<?php echo $atts['id'] ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $atts['id'] ?>[<?php echo $i ?>]" class="postbox">
+                    <select style='width:50%' name="user_choice_answers<?php echo $atts['id'] ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $atts['id'] ?>[<?php echo $i ?>]" class="postbox" required>
                         <option value=''>Select Matching Value</option>
                                 <?php
                                 foreach($q_values as $item){
