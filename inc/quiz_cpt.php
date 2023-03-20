@@ -58,12 +58,18 @@ class Quiz_CPT{
         register_post_type('quiz', $args);
     }
 
+    /* 
+    * adds permissions to roles for editing quizzes and question types.
+    * if allowing editing other users posts 
+    * role->add_cap('edit_others_posts');
+    */
     function add_role_capability() {
         $roles = array('sensei', 'editor', 'administrator');
         foreach( $roles as $user_role) {
             $role = get_role($user_role);
 
             $role->add_cap('read');
+            $role->add_cap('edit_posts');
             $role->add_cap('read_Quiz');
             $role->add_cap('read_Quizzes');
             $role->add_cap('edit_Quiz');
@@ -71,7 +77,7 @@ class Quiz_CPT{
             $role->add_cap('edit_published_Quizzes');
             $role->add_cap('publish_Quizzes');
             $role->add_cap('delete_private_Quizzes');
-            $role->add_cap('delete_publshed_Quizzes');
+            $role->add_cap('delete_published_Quizzes');
         }
     }
 
