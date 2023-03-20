@@ -173,48 +173,48 @@ class sa_Question{
 
     }
 
-        //settings for the column headers
-        function custom_column_header($old_column_header){
-            unset($old_column_header['title']);
-            unset($old_column_header['author']);
+    //settings for the column headers
+    function custom_column_header($old_column_header){
+        unset($old_column_header['title']);
+        unset($old_column_header['author']);
+
+        $new_column_header['author'] = 'Author';
+        $new_column_header['question'] = 'Short Answer Question';
+        $new_column_header['points'] = 'Points';
+        $new_column_header['shortcode'] = 'Short Code';
+
+        return $new_column_header;
+
+    }
     
-            $new_column_header['author'] = 'Author';
-            $new_column_header['question'] = 'Short Answer Question';
-            $new_column_header['points'] = 'Points';
-            $new_column_header['shortcode'] = 'Short Code';
-    
-            return $new_column_header;
-    
-        }
-    
-        //content shown for the summary question table
-        function custom_column_content($column_name, $post_id){
-            $question = esc_html(get_the_content($post_id));
-            $weight = get_post_meta( $post_id, '_question_weight_meta_key', true );
-            
-    
-            switch($column_name) {
-                case 'question':
-                    echo '<strong>'.$question.'</strong>';
-                    break;
-                case 'points':
-                    echo $weight;
-                    break;
-                case 'shortcode':
-                    echo '[sa_question id= '.$post_id.']';
-                    break;
-                default:
-                    break;
-            }
-    
+    //content shown for the summary question table
+    function custom_column_content($column_name, $post_id){
+        $question = esc_html(get_the_content($post_id));
+        $weight = get_post_meta( $post_id, '_question_weight_meta_key', true );
+        
+
+        switch($column_name) {
+            case 'question':
+                echo '<strong>'.$question.'</strong>';
+                break;
+            case 'points':
+                echo $weight;
+                break;
+            case 'shortcode':
+                echo '[sa_question id= '.$post_id.']';
+                break;
+            default:
+                break;
         }
 
-        //TODO Mohit
-        public static function sa_question_results($questionID, $question, $userAnswers, &$userScore){
-            ?><div class="row-match-qtype" ><?php
+    }
+
+    //TODO Mohit
+    public static function sa_question_results($questionID, $question, $userAnswers, &$userScore){
+        ?><div class="row-match-qtype" ><?php
             $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',false);
             
-           //assigning the answers in question answer array to q choices
+        //assigning the answers in question answer array to q choices
             $q_choices= isset($question_answer[0]) ? $question_answer[0] : [];
         
             //FOR MOHIT TO FIX AFTER
@@ -222,70 +222,42 @@ class sa_Question{
             //$pointWeight = 10; 
             $correct = 0.0;
         
-            ?> <div class="row-title"> 
-                <?php echo $question->post_content; ?> 
-                </div>
-                
-                <div class="row">
-                    <div class ="column col-mc-single">
-                    <input type="textarea" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled>
-                    <br>                    
-                </div>  
-                
-                <div class="row">
-            <?php        
-            for ($i = 0; $i < count($q_choices); $i++) {
-                $key_print = $q_choices[$i];
-
-                if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
-                    $correct++;
-                    ?> 
-                    <div class="column"><span class="correct-ans">Correct!</span></div><br> 
-                    <?php
-                }
-                ?>
-            </div>
-            <?php        
-            }  
-            ?>
-
+            ?> <div class="row-title"> <?php echo $question->post_content; ?> </div>
             <div class="row">
-
-            <?php
-            if ($correct == 0){   
-                ?>    
-             
-             <div class="column"><span class="incorrect-ans">Incorrect.</span></div><br>
-                                            
-                        
-                       
-            </div>
-
-                <div class="row">
-                        
-                 Correct Answer(s): <br>
-                 <?php
-                for ($i = 0; $i < count($q_choices); $i++) {
-                $key_print = $q_choices[$i];
-
-                if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                         
-                ?>  
-                                                
-                        <label for="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]"> <?php echo $key_print; ?>
-                       </label>
-                       <br>
-                        <?php                        
-                    } 
-                ?><?php        
-            }  ?></div>
-            <?php        
-                }  
+                <div class="column col-sa"> 
+                    <input type="textarea" name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" value="<?php echo $userAnswers; ?>" disabled></input>    
+                </div>
+            <?php for ($i = 0; $i < count($q_choices); $i++) {
+                $key_print = $q_choices[$i]; 
             ?>
-            <?php 
-            ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
-            <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
-        </div><?php    
-        }
+                <div class="column col-sa-actual-ans">       
+                    <?php if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
+                            $correct++;
+                            ?> 
+                            <div class="column"><span class="correct-ans">Correct!</span></div><br> 
+                            <?php
+                        }
+                    ?>
+                </div>
+            <?php       
+            } 
+            if ($correct == 0){
+                ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answers: </span></div> <?php
+                for ($i = 0; $i < count($q_choices); $i++) {
+					$key_print = $q_choices[$i];
+					if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                 
+                        ?> 
+                        <div class="column"><span class="incorrect-ans-sa-choices"><?php echo $q_choices[$i]; ?>, </span></div>    
+                        <?php                        
+					}         
+				}
+            }
+             
+        ?>  </div>
+        <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
+        <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
+    </div><?php    
+    }
 
 }
 
