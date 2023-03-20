@@ -102,7 +102,7 @@
          array(
             'read'            => true,
             'level_0'         => true,
-            'edit_posts'      => true,
+            'edit_posts'      => false,
             'delete_posts'    => false,
             'publish_posts'   => false,
             'upload_files'    => true
