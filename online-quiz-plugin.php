@@ -40,6 +40,9 @@
          if(!isset($sa_question_object)){
             $sa_question_object = new sa_Question();
          }
+         if(!isset($sview_object)){
+            $sview_object = new sview();
+         }
          $this->enqueue_assets();
      }
 
@@ -68,6 +71,7 @@
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/mc_multiple_question_cpt.php'; 
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/sa_question_cpt.php'; 
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/quiz_cpt.php';
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/sview.php';
      }
      
      function enqueue_assets(){
