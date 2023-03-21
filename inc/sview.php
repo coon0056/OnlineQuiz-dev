@@ -3,18 +3,17 @@ class sview{
 
     //class constructor
     function __construct(){
-        $this->create_post_type();
-        
+        $this->create_post_type();        
     }
 
     //Creates the post type and it's corresponding settings
     function create_post_type(){
         add_action('init', array($this,'register_post_type'));
         add_action('add_meta_boxes', array($this, 'register_meta_boxes'));
-        add_filter('manage_quiz_posts_columns', array($this, 'custom_column_header'));
-        //add_filter('manage_quiz_posts_custom_column', array($this, 'custom_column_content'), 10,2);
-        add_action('save_post', array($this, 'save_quiz_post'));
-        add_shortcode('quiz', array($this, 'quiz_shortcode'));
+        add_filter('manage_sview_posts_columns', array($this, 'custom_column_header'));
+        add_filter('manage_sview_posts_custom_column', array($this, 'custom_column_content'), 10,2);
+        add_action('save_post', array($this, 'save_sview_post'));
+        add_shortcode('sview', array($this, 'view_shortcode'));
         //add_action('admin_menu', array($this,'quiz_plugin_menu'));
     }
 
@@ -24,26 +23,27 @@ class sview{
     function register_post_type(){
 
         $quiz_labels = array(
-            'name'               => 'Quizzes',
-            'singular_name'      => 'Quiz',
-            'menu_name'          => 'Quizzes',
-            'name_admin_bar'     => 'Quiz',
+            'name'               => 'Students View',
+            'singular_name'      => 'Student View',
+            'menu_name'          => 'Student View',
+            'name_admin_bar'     => 'Student View',
             'add_new'            => 'Add New',
-            'add_new_item'       => 'Add New Quiz',
-            'new_item'           => 'New Quiz',
-            'edit_item'          => 'Edit Quiz',
-            'view_item'          => 'View Quiz',
-            'all_items'          => 'All Quizzes',
-            'search_items'       => 'Search Quizzes',
-            'parent_item_colon'  => 'Parent Quizzes:',
-            'not_found'          => 'No Quizzes found.',
-            'not_found_in_trash' => 'No Quizzes found in Trash.'
+            'add_new_item'       => 'Add New Student View',
+            'new_item'           => 'New Student View',
+            'edit_item'          => 'Edit Student View',
+            'view_item'          => 'View Student View',
+            'all_items'          => 'All Student Views',
+            'search_items'       => 'Search Student Views',
+            'parent_item_colon'  => 'Parent Student Views:',
+            'not_found'          => 'No Student Views found.',
+            'not_found_in_trash' => 'No Student Views found in Trash.'
         );
 
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-welcome-learn-more',
             'labels'    => $quiz_labels,
+            'show_in_menu' => false,
             'supports'  => array('editor', 'author', 'thumbnail')
         );
 
@@ -89,7 +89,7 @@ class sview{
     //quiz  question metabox
     function quizzes_html($post){
         wp_nonce_field('quizzes', 'quiz_nonce');
-        $quizzes = get_post_meta( $post->ID, '_quiz_meta_key');
+        $quizzes = get_post_meta( $post->ID, '_quiz_meta');
         
         if(count($quizzes) == 0){
             $quizzes[0] = '';
@@ -170,7 +170,7 @@ class sview{
     }
 
     //saves post metaboxes
-    function save_quiz_post( $post_id ) {
+    function save_sview_post( $post_id ) {
         if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ){
             return $post_id;
         }
@@ -186,19 +186,19 @@ class sview{
 
         if ( array_key_exists( 'quizzes', $_POST ) ) {
             sanitize_text_field($_POST['quizzes']);
-            update_post_meta($post_id,'_quiz_meta_key',$_POST['quizzes']);
+            update_post_meta($post_id,'_quiz_meta',$_POST['quizzes']);
         }
 
     }
 
-    //generates match question short code
-    function quiz_shortcode($atts){
+    //generates student view shortcode
+    function view_shortcode($atts){
         $atts = shortcode_atts(array(
             'id' => '',
         ), $atts);
 
         $quiz = get_post($atts['id']);
-        $quizzes = get_post_meta( $atts['id'], '_quiz_meta_key');
+        $quizzes = get_post_meta( $atts['id'], '_quiz_meta');
         $q_shortcodes = isset( $quizzes[0] ) ? $quizzes[0] : [];
 
         //checks for empty spots in the array and re-arranges
@@ -207,25 +207,26 @@ class sview{
         }
 
         $count = count($q_shortcodes);
-        $time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );
+        //$time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );
         
         ob_start();
-        echo '<div class="countdown" data-num="'.$time.'"></div>';
-        echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
-        echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
+        //echo '<div class="countdown" data-num="'.$time.'"></div>';
+        //echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
+        //echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
+         
+        echo 'hello';
         
-        
-        for($i = 0; $i < $count; $i++){
-            $questionCount = ($i+1);
-            $questionID = (int)filter_var($q_shortcodes[$i], FILTER_SANITIZE_NUMBER_INT);
-            echo '<input type="hidden" id="questionID'.$questionCount.'" name="questionID'.$questionCount.'" value="'.$questionID.'">';
-            echo 'Question '.$questionCount.':';
-            echo do_shortcode($q_shortcodes[$i]);
-            echo "</br>";
-        }
+        // for($i = 0; $i < $count; $i++){
+        //     $questionCount = ($i+1);
+        //     $questionID = (int)filter_var($q_shortcodes[$i], FILTER_SANITIZE_NUMBER_INT);
+        //     echo '<input type="hidden" id="quizID'.$questionCount.'" name="quizID'.$questionCount.'" value="'.$questionID.'">';
+        //     echo 'Question '.$questionCount.':';
+        //     echo do_shortcode($q_shortcodes[$i]);
+        //     echo "</br>";
+        // }
 
-        echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" value="Submit Answers" /></div>
-            </form>';
+        // echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" value="Submit Answers" /></div>
+        //     </form>';
         return ob_get_clean();
     }
 

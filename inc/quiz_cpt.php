@@ -24,7 +24,6 @@ class Quiz_CPT{
         add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "manage_options", 'edit.php?post_type=mc_single_question');
         add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "manage_options", 'edit.php?post_type=mc_multiple_question');
         add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "manage_options", 'edit.php?post_type=sa_question');
-        add_submenu_page('edit.php?post_type=quiz', 'sview', 'Student Quiz View', "manage_options", 'edit.php?post_type=sview');
     }
 
     //registers custom post type
@@ -57,7 +56,7 @@ class Quiz_CPT{
         register_post_type('quiz', $args);
     }
 
-    //creates the metaboxes 
+    //creates the metaboxes
     function register_meta_boxes(){
         add_meta_box('quiz_time_limit','Quiz Time Limit',array($this, 'quiz_time_limit_html'),'quiz');
         add_meta_box('question_password', 'Quiz Password', array($this, 'quiz_password_html'), 'quiz');

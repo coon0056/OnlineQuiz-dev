@@ -21,10 +21,13 @@
       
          $this->define_constants();
          $this->load_required_files();
-         
+          
          if(!isset($quiz_object)){
             $quiz_object = new Quiz_CPT();
          }
+         if(!isset($sview_object)){
+            $sview_object = new sview();
+         }         
          if(!isset($matching_question_object)){
             $matching_question_object = new Matching_Question();
          }
@@ -40,9 +43,7 @@
          if(!isset($sa_question_object)){
             $sa_question_object = new sa_Question();
          }
-         if(!isset($sview_object)){
-            $sview_object = new sview();
-         }
+        
          $this->enqueue_assets();
      }
 

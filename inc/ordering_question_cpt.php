@@ -214,7 +214,7 @@ class Ordering_Question{
             </br>
             <div class="row">
                 <select style="width:50%" name="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $atts['id']; ?>[<?php echo $i ?>]" class="postbox" required>
-                    <option value=''> Put the following in order </option>
+                     <option value=''> Put the following in order </option>
                         <?php
                         foreach($q_values as $item){
                             echo "<option value='$item'>$item</option>";
