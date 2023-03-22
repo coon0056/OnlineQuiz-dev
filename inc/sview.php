@@ -269,16 +269,17 @@ class sview{
         
 
 
-<table class="GeneratedTable">
+<table class="greyGridTable">
   <thead>
     <tr>
       <th>Name</th>
       <th>Author</th>
       <th>Date Available </th>
-      <th>&nbsp;            </th>
+      <th></th>
     </tr>
   </thead>  
-</table>
+  
+
 
         <?php
          
@@ -287,8 +288,7 @@ class sview{
             $key_author =$q_author[$i];
             $key_date =$q_date[$i];
             $key_link = $q_values[$i];
-            ?>
-            <table class="GeneratedTable">
+            ?>            
             <tbody>
             <tr>
             <td><?php echo $key_name; ?></td>
@@ -297,10 +297,8 @@ class sview{
             <td><a href="<?php echo $key_link;?>"><button>Start Quiz</button></a></td>
             </tr>
             </tbody>
-            </table>
-                
-                <?php
-
+            </table>                
+            <?php
        }
         ?>            
         
