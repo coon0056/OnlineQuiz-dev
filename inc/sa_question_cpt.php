@@ -164,13 +164,8 @@ class sa_Question{
             <input type="textarea" name="user_choice_answers<?php echo $atts['id'] ?>" id="user_choice_answers<?php echo $atts['id'] ?>" required>
     </br>    
         <?php 
-      
-        ?>            
-           <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots">   
-           
-        <?php
-        return ob_get_clean();
 
+        return ob_get_clean();
     }
 
     //settings for the column headers
@@ -212,7 +207,7 @@ class sa_Question{
     //TODO Mohit
     public static function sa_question_results($questionID, $question, $userAnswers, &$userScore){
         ?><div class="row-match-qtype" ><?php
-            $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',false);
+            $question_answer = get_post_meta( $questionID, '_question_right_answers_meta',false);
             
         //assigning the answers in question answer array to q choices
             $q_choices= isset($question_answer[0]) ? $question_answer[0] : [];
