@@ -143,19 +143,19 @@ jQuery('#add_new_correct').click(function(e){
 //adding new quiz
 jQuery('#add_new_quiz').click(function(e){
     e.preventDefault();
-    num_answers = (jQuery('#quiz_short_code li:last input:first').data('num') == undefined) ? 0 : jQuery('#quiz_short_code li:last input:first').data('num')+1;
+    num_answers = (jQuery('#quiz_sview li:last input:first').data('num') == undefined) ? 0 : jQuery('#quiz_sview li:last input:first').data('num')+1;
     html_to_add=
     `
-        <li>
+        <li id ="quiz_sview">
 
-        <div class="label"><label  for="questions[`+ num_answers +`]">Quiz `+ (num_answers+1) +` Short Code: </label></div>
+        <div class="label"><label  for="quiz[`+ num_answers +`]">Quiz `+ (num_answers+1) +` Short Code: </label></div>
         <div class="fields">
-            <input data-num="`+ num_answers +`" style='width:50%' type='text' name="questions[`+ num_answers +`]"  value="" required>
+            <input data-num="`+ num_answers +`" style='width:50%' type='text' name="quiz[`+ num_answers +`]"  value="" required>
             <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
         </div>
         </li> 
     `;
-    jQuery('#quiz_short_code').append(html_to_add);
+    jQuery('#quiz_sview').append(html_to_add);
     
     jQuery(".delete_button").on("click", function() {
         jQuery(this).closest('li').remove();

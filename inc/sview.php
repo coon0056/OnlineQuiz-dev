@@ -13,7 +13,7 @@ class sview{
         add_filter('manage_sview_posts_columns', array($this, 'custom_column_header'));
         add_filter('manage_sview_posts_custom_column', array($this, 'custom_column_content'), 10,2);
         add_action('save_post', array($this, 'save_sview_post'));
-        add_shortcode('sview', array($this, 'view_shortcode'));
+        add_shortcode('sview', array($this, 'sview_shortcode'));
         //add_action('admin_menu', array($this,'quiz_plugin_menu'));
     }
 
@@ -54,7 +54,7 @@ class sview{
     function register_meta_boxes(){
         //add_meta_box('quiz_time_limit','Quiz Time Limit',array($this, 'quiz_time_limit_html'),'quiz');
         //add_meta_box('question_password', 'Quiz Password', array($this, 'quiz_password_html'), 'quiz');
-        add_meta_box('quiz_meta', 'Quizzes', array($this, 'quizzes_html'), 'sview');
+        add_meta_box('quiz_meta', 'Quizzes for student view', array($this, 'quizzes_html'), 'sview');
     }
 
     // quiz time limit meta box
@@ -108,7 +108,7 @@ class sview{
         
         </br>
         <div class="row">
-            <ul id="quiz_short_code">
+            <ul id="quiz_sview">
             <?php
             
             $q_key = isset( $quizzes[0] ) ? $quizzes[0] : [];
@@ -161,7 +161,7 @@ class sview{
                 echo '<strong>'.$quiz.'</strong>';
                 break;
             case 'shortcode':
-                echo '[quiz id= '.$post_id.']';
+                echo '[sview id= '.$post_id.']';
                 break;
             default:
                 break;
@@ -185,49 +185,55 @@ class sview{
         }
 
         if ( array_key_exists( 'quizzes', $_POST ) ) {
-            sanitize_text_field($_POST['quizzes']);
+            sanitize_text_field($_POST['quiz']);
             update_post_meta($post_id,'_quiz_meta',$_POST['quizzes']);
         }
 
     }
 
     //generates student view shortcode
-    function view_shortcode($atts){
+    function sview_shortcode($atts){
+
         $atts = shortcode_atts(array(
             'id' => '',
         ), $atts);
+        $question = get_post($atts['id']);
+        $question_right_answers = get_post_meta( $atts['id'], '_quiz_meta');      
 
-        $quiz = get_post($atts['id']);
-        $quizzes = get_post_meta( $atts['id'], '_quiz_meta');
-        $q_shortcodes = isset( $quizzes[0] ) ? $quizzes[0] : [];
+        //$test = get_post_meta( $atts['0'], '_quiz_meta'); 
 
-        //checks for empty spots in the array and re-arranges
-        if(is_array($q_shortcodes) ){
-            $q_shortcodes = array_values($q_shortcodes);
-        }
+        $q_right = isset( $question_right_answers[0] ) ? $question_right_answers[0] : [];        
+        $all = $q_right;
+              
+        $count = count($all);
 
-        $count = count($q_shortcodes);
-        //$time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );
-        
         ob_start();
-        //echo '<div class="countdown" data-num="'.$time.'"></div>';
-        //echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
-        //echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
+         echo '<div class="row" >'. $question->post_content.'</div>';        
          
-        echo 'hello';
-        
-        // for($i = 0; $i < $count; $i++){
-        //     $questionCount = ($i+1);
-        //     $questionID = (int)filter_var($q_shortcodes[$i], FILTER_SANITIZE_NUMBER_INT);
-        //     echo '<input type="hidden" id="quizID'.$questionCount.'" name="quizID'.$questionCount.'" value="'.$questionID.'">';
-        //     echo 'Question '.$questionCount.':';
-        //     echo do_shortcode($q_shortcodes[$i]);
-        //     echo "</br>";
-        // }
+         //echo $count;    
+         //echo $question_right_answers;
+         echo $q_right[0];
 
-        // echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" value="Submit Answers" /></div>
-        //     </form>';
+         ?>
+         <br>
+         <?php
+
+
+           
+                ?> 
+
+                <a href="<?php echo $q_right[0]?>">
+  <button>Click Me</button>
+</a>
+<?php
+
+       
+        ?>            
+        
+        <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots">              
+        <?php
         return ob_get_clean();
-    }
+       
+           }
 
 }

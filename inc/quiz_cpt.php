@@ -24,6 +24,7 @@ class Quiz_CPT{
         add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "manage_options", 'edit.php?post_type=mc_single_question');
         add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "manage_options", 'edit.php?post_type=mc_multiple_question');
         add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "manage_options", 'edit.php?post_type=sa_question');
+        add_submenu_page('edit.php?post_type=quiz', 'sview', 'Student Quiz View', "manage_options", 'edit.php?post_type=sview');
     }
 
     //registers custom post type
@@ -227,6 +228,7 @@ class Quiz_CPT{
         echo '<div class="countdown" data-num="'.$time.'"></div>';
         echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
         echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
+        
         
         
         for($i = 0; $i < $count; $i++){
