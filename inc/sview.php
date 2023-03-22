@@ -255,7 +255,7 @@ class sview{
         $count = count($q_values);
 
         ob_start();
-        echo '<div class="row" >'. $question->post_content.'</div>';     
+        
          
         //checks for empty spots in the array and re-arranges
         if(is_array($q_key) && is_array($q_values)) {
@@ -269,13 +269,13 @@ class sview{
         
 
 
-<table>
+<table class="GeneratedTable">
   <thead>
     <tr>
       <th>Name</th>
       <th>Author</th>
       <th>Date Available </th>
-      <th>Start Quiz</th>
+      <th>&nbsp;            </th>
     </tr>
   </thead>  
 </table>
@@ -288,7 +288,7 @@ class sview{
             $key_date =$q_date[$i];
             $key_link = $q_values[$i];
             ?>
-            <table>  
+            <table class="GeneratedTable">
             <tbody>
             <tr>
             <td><?php echo $key_name; ?></td>

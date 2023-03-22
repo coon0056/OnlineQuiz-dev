@@ -84,3 +84,24 @@
 .actual-correct-ans{
     list-style-type: none !important;
 }
+
+.table.GeneratedTable {
+    width: 20cm;
+    background-color: #ffffff;
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: #ffcc00;
+    border-style: solid;
+    color: #000000;
+  }
+  
+ .table.GeneratedTable td, table.GeneratedTable th {
+    border-width: 2px;
+    border-color: #ffcc00;
+    border-style: solid;
+    padding: 3pt;
+  }
+  
+  .table.GeneratedTable thead {
+    background-color: #ffcc00;
+  }
