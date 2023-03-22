@@ -55,6 +55,7 @@ class sview{
         //add_meta_box('quiz_time_limit','Quiz Time Limit',array($this, 'quiz_time_limit_html'),'quiz');
         //add_meta_box('question_password', 'Quiz Password', array($this, 'quiz_password_html'), 'quiz');
         add_meta_box('quiz_meta', 'Quizzes for student view', array($this, 'quizzes_html'), 'sview');
+        //add_meta_box('quizzes_link_meta', 'Link for the quiz', array($this, 'quizzes_html'), 'sview');
     }
 
     // quiz time limit meta box
@@ -90,6 +91,7 @@ class sview{
     function quizzes_html($post){
         wp_nonce_field('quizzes', 'quiz_nonce');
         $quizzes = get_post_meta( $post->ID, '_quiz_meta');
+        $quizzes_link = get_post_meta( $post->ID, '_quizzes_link_meta');
         
         if(count($quizzes) == 0){
             $quizzes[0] = '';
@@ -187,6 +189,10 @@ class sview{
         if ( array_key_exists( 'quizzes', $_POST ) ) {
             sanitize_text_field($_POST['quiz']);
             update_post_meta($post_id,'_quiz_meta',$_POST['quizzes']);
+        }
+        if ( array_key_exists( 'quizzes_link', $_POST ) ) {
+            sanitize_text_field($_POST['quizzes_link']);
+            update_post_meta($post_id,'_quizzes_link_meta',$_POST['quizzes_link']);
         }
 
     }
