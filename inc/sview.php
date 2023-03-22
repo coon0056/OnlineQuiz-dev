@@ -91,11 +91,16 @@ class sview{
     function quizzes_html($post){
         wp_nonce_field('quizzes', 'quiz_nonce');
         $quizzes = get_post_meta( $post->ID, '_quiz_meta');
+        $quiz_author = get_post_meta( $post->ID, '_quiz_author_meta');
+        $quiz_date = get_post_meta( $post->ID, '_quiz_date_meta');
         $quizzes_link = get_post_meta( $post->ID, '_quizzes_link_meta');
         
         if(count($quizzes) == 0){
             $quizzes[0] = '';
-            $count = 1;
+            $quiz_author[0] = '';
+            $quiz_date[0] = '';
+            $quizzes_link[0] = '';
+             $count = 1;
         }else{
             $tempArr = isset( $quizzes[0] ) ? $quizzes[0] : [];
             $count = count($tempArr);
@@ -114,21 +119,40 @@ class sview{
             <?php
             
             $q_key = isset( $quizzes[0] ) ? $quizzes[0] : [];
+            $q_author = isset( $quiz_author[0] ) ? $quiz_author[0] : [];
+            $q_date = isset( $quiz_date[0] ) ? $quiz_date[0] : [];
+            $q_value = isset( $quizzes_link[0] ) ? $quizzes_link[0] : [];
+
             
             //checks for empty spots in the array and re-arranges
-            if(is_array($q_key) ){
+            if(is_array($q_key) && is_array($q_value) && is_array($q_author) && is_array($q_date)){
                 $q_key = array_values($q_key);
+                $q_author = array_values($q_author);
+                $q_date = array_values($q_date);
+                $q_value = array_values($q_value);
             }
 
             for($i = 0; $i < $count; $i++){
                 $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
+                $author_print =  isset( $q_author[$i] ) ? $q_author[$i] : '';
+                $date_print =  isset( $q_date[$i] ) ? $q_date[$i] : '';
+                $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 
             <li>    
-            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Short Code: </label></div>
-            <div class="fields">
-                <input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes[<?php echo $i; ?>]"  value="<?php echo esc_attr($key_print); ?>" required>
-                <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
+            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Name: </label></div>
+            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes[<?php echo $i; ?>]"  value="<?php echo esc_attr($key_print); ?>" required></div>
+            
+            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Author: </label></div>
+            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quiz_author[<?php echo $i; ?>]"  value="<?php echo esc_attr($author_print); ?>" required></div>
+
+            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Date: </label></div>
+            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='date' name="quiz_date[<?php echo $i; ?>]"  value="<?php echo esc_attr($date_print); ?>" required></div>
+
+            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Link: </label></div>
+            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes_link[<?php echo $i; ?>]"  value="<?php echo esc_attr($value_print); ?>" required>
+            
+            <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
             </div>
             </li>
             <?php } 
@@ -195,6 +219,16 @@ class sview{
             update_post_meta($post_id,'_quizzes_link_meta',$_POST['quizzes_link']);
         }
 
+        if ( array_key_exists( 'quiz_author', $_POST ) ) {
+            sanitize_text_field($_POST['quiz_author']);
+            update_post_meta($post_id,'_quiz_author_meta',$_POST['quiz_author']);
+        }
+
+        if ( array_key_exists( 'quiz_date', $_POST ) ) {
+            sanitize_text_field($_POST['quiz_date']);
+            update_post_meta($post_id,'_quiz_date_meta',$_POST['quiz_date']);
+        }
+
     }
 
     //generates student view shortcode
@@ -204,42 +238,69 @@ class sview{
             'id' => '',
         ), $atts);
         $question = get_post($atts['id']);
-        $question_right_answers = get_post_meta( $atts['id'], '_quiz_meta');      
+        $quiz_name = get_post_meta( $atts['id'], '_quiz_meta'); 
+        $quiz_link = get_post_meta( $atts['id'], '_quizzes_link_meta');  
+        
+        $test = $quiz_link[0];
 
         //$test = get_post_meta( $atts['0'], '_quiz_meta'); 
 
-        $q_right = isset( $question_right_answers[0] ) ? $question_right_answers[0] : [];        
-        $all = $q_right;
-              
-        $count = count($all);
+        $q_key = isset( $quiz_name[0] ) ? $quiz_name[0] : [];
+        $q_values= isset( $quiz_link[0] ) ? $quiz_link[0] : [];
+                
+        $count = count($q_values);
 
         ob_start();
-         echo '<div class="row" >'. $question->post_content.'</div>';        
+        echo '<div class="row" >'. $question->post_content.'</div>';     
          
-         //echo $count;    
-         //echo $question_right_answers;
-         echo $q_right[0];
+        //checks for empty spots in the array and re-arranges
+        if(is_array($q_key) && is_array($q_values)) {
+            $q_key = array_values($q_key);
+            $q_values = array_values($q_values);
+        }
 
-         ?>
-         <br>
-         <?php
+        ?>
+        
 
 
-           
-                ?> 
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Author</th>
+      <th>Date Available </th>
+      <th>Start Quiz</th>
+    </tr>
+  </thead>  
+</table>
 
-                <a href="<?php echo $q_right[0]?>">
-  <button>Click Me</button>
-</a>
-<?php
+        <?php
+         
+        for($i = 0; $i < $count; $i++){
+            $key_name =$q_key[$i];
+            $key_link = $q_values[$i];
+            ?>
+            <table>  
+            <tbody>
+            <tr>
+            <td><?php echo $key_name; ?></td>
+            <td>Mohit Nargotra</td>
+            <td>March 21, 2023</td>
+            <td><a href="<?php echo $key_link;?>"><button>Start Quiz</button></a></td>
+            </tr>
+            </tbody>
+            </table>
+                
+                <?php
 
-       
+       }
         ?>            
         
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots">              
         <?php
         return ob_get_clean();
        
-           }
+           
 
+}
 }
