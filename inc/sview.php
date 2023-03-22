@@ -239,6 +239,8 @@ class sview{
         ), $atts);
         $question = get_post($atts['id']);
         $quiz_name = get_post_meta( $atts['id'], '_quiz_meta'); 
+        $quiz_author = get_post_meta( $atts['id'], '_quiz_author_meta'); 
+        $quiz_date = get_post_meta( $atts['id'], '_quiz_date_meta'); 
         $quiz_link = get_post_meta( $atts['id'], '_quizzes_link_meta');  
         
         $test = $quiz_link[0];
@@ -246,6 +248,8 @@ class sview{
         //$test = get_post_meta( $atts['0'], '_quiz_meta'); 
 
         $q_key = isset( $quiz_name[0] ) ? $quiz_name[0] : [];
+        $q_author = isset( $quiz_author[0] ) ? $quiz_author[0] : [];
+        $q_date = isset( $quiz_date[0] ) ? $quiz_date[0] : [];
         $q_values= isset( $quiz_link[0] ) ? $quiz_link[0] : [];
                 
         $count = count($q_values);
@@ -256,6 +260,8 @@ class sview{
         //checks for empty spots in the array and re-arranges
         if(is_array($q_key) && is_array($q_values)) {
             $q_key = array_values($q_key);
+            $q_author = array_values($q_author);
+            $q_date = array_values($q_date);
             $q_values = array_values($q_values);
         }
 
@@ -278,14 +284,16 @@ class sview{
          
         for($i = 0; $i < $count; $i++){
             $key_name =$q_key[$i];
+            $key_author =$q_author[$i];
+            $key_date =$q_date[$i];
             $key_link = $q_values[$i];
             ?>
             <table>  
             <tbody>
             <tr>
             <td><?php echo $key_name; ?></td>
-            <td>Mohit Nargotra</td>
-            <td>March 21, 2023</td>
+            <td><?php echo $key_author; ?></td>
+            <td><?php echo $key_date; ?></td>
             <td><a href="<?php echo $key_link;?>"><button>Start Quiz</button></a></td>
             </tr>
             </tbody>
