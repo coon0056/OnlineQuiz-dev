@@ -85,43 +85,60 @@
     list-style-type: none !important;
 }
 
-table.greyGridTable {
-  border: 2px solid #FFFFFF;
-  width: 100%;
-  text-align: center;
-  border-collapse: collapse;
-}
-table.greyGridTable td, table.greyGridTable th {
-  border: 1px solid #FFFFFF;
-  padding: 3px 4px;
-}
-table.greyGridTable tbody td {
-  font-size: 13px;
-}
-table.greyGridTable td:nth-child(even) {
-  background: #EBEBEB;
-}
-table.greyGridTable thead {
-  background: #FFFFFF;
-  border-bottom: 4px solid #333333;
-}
-table.greyGridTable thead th {
-  font-size: 15px;
-  font-weight: bold;
-  color: #333333;
-  text-align: center;
-  border-left: 2px solid #333333;
-}
-table.greyGridTable thead th:first-child {
-  border-left: none;
-}
+table.minimalistBlack {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+  }
+  table.minimalistBlack td, table.minimalistBlack th {
+    padding: 5px 4px;
+  }
+  table.minimalistBlack tbody td {
+    font-size: 13px;
+  }
+  table.minimalistBlack thead {
+    background: #FFFFFF;
+    background: -moz-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+    background: -webkit-linear-gradient(top, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+    background: linear-gradient(to bottom, #ffffff 0%, #ffffff 66%, #FFFFFF 100%);
+    border-bottom: 3px solid #000000;
+  }
+  table.minimalistBlack thead th {
+    font-size: 15px;
+    font-weight: bold;
+    color: #000000;
+    text-align: left;
+  }
+  table.minimalistBlack tfoot {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    border-top: 3px solid #000000;
+  }
+  table.minimalistBlack tfoot td {
+    font-size: 14px;
+  }
 
-table.greyGridTable tfoot {
-  font-size: 14px;
-  font-weight: bold;
-  color: #333333;
-  border-top: 4px solid #333333;
+  .myButton {
+	box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	background:linear-gradient(to bottom, #007dc1 5%, #0061a7 100%);
+	background-color:#007dc1;
+	border-radius:7px;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:11px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #154682;
 }
-table.greyGridTable tfoot td {
-  font-size: 14px;
+.myButton:hover {
+	background:linear-gradient(to bottom, #0061a7 5%, #007dc1 100%);
+	background-color:#0061a7;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
 }
