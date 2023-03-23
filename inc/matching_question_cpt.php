@@ -241,7 +241,6 @@ class Matching_Question{
     
         <?php 
         }
-        ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
         return ob_get_clean();
     }
 
@@ -271,27 +270,26 @@ class Matching_Question{
                 
             ?>
                 <div class="row" > 
-                    <div class ="column col-dropdown">  
-                        <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
-                        <div class="row" > 
+                        <div class ="row">  
+                            <label for="user_choice_answers"><?php echo $key_print; ?>:</label>
+                        </div>
+                        <div class="column col-dropdown"> 
                             <div class ="column col-match">
                                 <select name="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" id="user_choice_answers<?php echo $questionID; ?>[<?php echo $i ?>]" class="postbox">  
                                 <option value=''><?php echo $userAnswers[$i]?></option>               
                                 </select>
                             </div> 
                         </div>
-                    </div>
-                </div>
-                <div class="row" > 
-                        <?php
-                        if($userAnswers[$i] == $q_answers[$i] ){
-                            $correct++;
-                            ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
-                        }else{
-                            ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </span></div> <?php
-                        }
-
-                        ?>
+                        <div class="column col-sa-actual-ans" > 
+                                <?php
+                                if($userAnswers[$i] == $q_answers[$i] ){
+                                    $correct++;
+                                    ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
+                                }else{
+                                    ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answer: <?php echo $q_answers[$i]; ?> </span></div> <?php
+                                }
+                                ?>
+                        </div>
                 </div>
             <?php 
             }
