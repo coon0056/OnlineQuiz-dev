@@ -240,7 +240,7 @@ class sview{
     <tr>
       <th>Name</th>
       <th>Author</th>
-      <th>Date</th>
+      <th>Date Created</th>
       <th></th>
     </tr>
   </thead>    
