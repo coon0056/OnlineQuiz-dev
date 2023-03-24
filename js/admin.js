@@ -146,17 +146,13 @@ jQuery('#add_new_quiz').click(function(e){
     num_answers = (jQuery('#quiz_sview li:last input:first').data('num') == undefined) ? 0 : jQuery('#quiz_sview li:last input:first').data('num')+1;
     html_to_add=
     `
-        <li id ="quiz_sview">
-
-       
+        <li id ="quiz_sview">     
 
         <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` Name: </label></div>
         <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quizzes[`+ num_answers +`]"  value="" required>
-
               
         <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` Link: </label></div>
-        <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quizzes_link[`+ num_answers +`]"  value="" required>
-        
+        <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quizzes_link[`+ num_answers +`]"  value="" required>     
 
         <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
         
@@ -169,8 +165,6 @@ jQuery('#add_new_quiz').click(function(e){
         jQuery(this).closest('li').remove();
     });
 });
-
-
     
     
     jQuery(".delete_button").on("click", function() {
