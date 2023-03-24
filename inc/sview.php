@@ -96,11 +96,11 @@ class sview{
             ?>
 
             <li>    
-            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Name: </label></div>
+            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Id: </label></div>
             <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes[<?php echo $i; ?>]"  value="<?php echo esc_attr($key_print); ?>" required></div>
             
            
-            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Link: </label></div>
+            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> post link: </label></div>
             <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes_link[<?php echo $i; ?>]"  value="<?php echo esc_attr($value_print); ?>" required>
             
             <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
