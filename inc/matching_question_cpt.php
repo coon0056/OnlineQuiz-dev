@@ -244,7 +244,7 @@ class Matching_Question{
     }
 
     //check results of matching question
-    public static function matching_question_results($questionID, $question, $userAnswers, &$userScore){
+    public static function matching_question_results($questionID, $question, $userAnswers, &$userScore, &$body){
         ?><div class="row-match-qtype" ><?php
             $question_answers = get_post_meta( $questionID, '_question_answers_meta');
             $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
@@ -292,9 +292,24 @@ class Matching_Question{
                 </div>
             <?php 
             }
-        ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+            $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);;
+            ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>" ?> </div>
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
     </div><?php
+    
+      //sets email formatting
+      $body = "</br>".$body.$question->post_content."</br>";
+      $body = $body."</br>"."Correct Matches: "; 
+      for ($i = 0; $i < count($q_answers); $i++) {
+          $body = $body."</br>"."$q_key[$i] : $q_answers[$i]";
+      }
+
+      $body = $body."</br></br>"."User Answer: ";
+      for ($i = 0; $i < count($userAnswers); $i++) {
+          $body = $body."</br>"." $q_key[$i] : $userAnswers[$i] ";
+      }
+
+      $body = $body."</br></br> Points Awarded: $pointsAwarded / $pointWeight </br></br>";
     }
 
 }

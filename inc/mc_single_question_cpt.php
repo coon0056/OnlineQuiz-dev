@@ -234,7 +234,7 @@ class Mc_Single_Question{
     }
 
     //check results of mc-single question
-    public static function mc_single_question_results($questionID, $question, $userAnswers, &$userScore){
+    public static function mc_single_question_results($questionID, $question, $userAnswers, &$userScore, &$body){
         ?><div class="row-mc-single-qtype" ><?php
             $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',true);
             $question_incorrect_answers = get_post_meta($questionID, '_question_wrong_answers_meta');
@@ -273,9 +273,19 @@ class Mc_Single_Question{
                     }
                 ?></div><?php        
                 }  ?>
-            <?php 
-            ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
+            <?php
+            $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, $correct);
+            ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>"; ?> </div>
             <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
-        </div><?php    
+        </div><?php
+        
+         //sets email formatting
+         $body = "</br>".$body.$question->post_content."</br>"; 
+         for ($i = 0; $i < count($q_choices); $i++) {
+             $body = $body."</br>".$q_choices[$i];
+         }
+         $body = $body."</br></br> Correct Answer: $question_answer";
+         $body = $body."</br> User Answer: $userAnswers";
+         $body = $body."</br></br> Points Awarded: $pointsAwarded / $pointWeight </br></br>";
     }
 }

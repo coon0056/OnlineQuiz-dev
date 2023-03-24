@@ -229,7 +229,7 @@ class Ordering_Question{
     }
 
     //check results of ordering question
-    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore){
+    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore, &$body){
         ?><div class="row-order-qtype" ><?php
             $question_answers = get_post_meta( $questionID, '_question_answers_meta');
             $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
@@ -267,9 +267,25 @@ class Ordering_Question{
                 </div>
             <?php 
             }
-        ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+            $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);;
+        ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>" ?> </div>
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
-    </div><?php  
+    </div><?php 
+    
+        //sets email formatting
+        $body = "</br>".$body.$question->post_content."</br>";
+        $body = $body."</br>"."Correct Order: "; 
+        for ($i = 0; $i < count($q_answers); $i++) {
+            $body = $body."</br>".$q_answers[$i];
+        }
+        
+        $body = $body."</br></br>"."User Answer: ";
+        for ($i = 0; $i < count($userAnswers); $i++) {
+            $body = $body."</br>".$userAnswers[$i];
+        }
+        
+        $body = $body."</br></br> Points Awarded: $pointsAwarded / $pointWeight </br></br>";
+    
     }
 
 }
