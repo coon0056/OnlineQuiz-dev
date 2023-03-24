@@ -57,15 +57,11 @@ class sview{
     //quiz  question metabox
     function quizzes_html($post){
         wp_nonce_field('quizzes', 'quiz_nonce');
-        $quizzes = get_post_meta( $post->ID, '_quiz_meta');
-        //$quiz_author = get_post_meta( $post->ID, '_quiz_author_meta');
-        //$quiz_date = get_post_meta( $post->ID, '_quiz_date_meta');
+        $quizzes = get_post_meta( $post->ID, '_quiz_meta');        
         $quizzes_link = get_post_meta( $post->ID, '_quizzes_link_meta');
         
         if(count($quizzes) == 0){
-            $quizzes[0] = '';
-            //$quiz_author[0] = '';
-            //$quiz_date[0] = '';
+            $quizzes[0] = '';           
             $quizzes_link[0] = '';
              $count = 1;
         }else{
@@ -85,24 +81,17 @@ class sview{
             <ul id="quiz_sview">
             <?php
             
-            $q_key = isset( $quizzes[0] ) ? $quizzes[0] : [];
-            //$q_author = isset( $quiz_author[0] ) ? $quiz_author[0] : [];
-            //$q_date = isset( $quiz_date[0] ) ? $quiz_date[0] : [];
+            $q_key = isset( $quizzes[0] ) ? $quizzes[0] : [];            
             $q_value = isset( $quizzes_link[0] ) ? $quizzes_link[0] : [];
-
             
             //checks for empty spots in the array and re-arranges
             if(is_array($q_key) && is_array($q_value)){
-                $q_key = array_values($q_key);
-                //$q_author = array_values($q_author);
-                //$q_date = array_values($q_date);
+                $q_key = array_values($q_key);               
                 $q_value = array_values($q_value);
             }
 
             for($i = 0; $i < $count; $i++){
-                $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
-                //$author_print =  isset( $q_author[$i] ) ? $q_author[$i] : '';
-                //$date_print =  isset( $q_date[$i] ) ? $q_date[$i] : '';
+                $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';               
                 $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 
