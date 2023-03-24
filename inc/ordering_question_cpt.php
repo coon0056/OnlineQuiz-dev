@@ -229,7 +229,7 @@ class Ordering_Question{
     }
 
     //check results of ordering question
-    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore, &$body){
+    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore, &$body, $answered){
         ?><div class="row-order-qtype" ><?php
             $question_answers = get_post_meta( $questionID, '_question_answers_meta');
             $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
@@ -267,13 +267,19 @@ class Ordering_Question{
                 </div>
             <?php 
             }
-            $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);;
+            //check if question was answered
+            if($answered){
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
+            }else{
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, 0);
+                echo "</br>Time Limit Reached: Question unanswered.";
+                $body = $body."</br>Time Limit Reached - Question unanswered </br> ";
+            }
         ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>" ?> </div>
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
     </div><?php 
     
         //sets email formatting
-        $body = "</br>".$body.$question->post_content."</br>";
         $body = $body."</br>"."Correct Order: "; 
         for ($i = 0; $i < count($q_answers); $i++) {
             $body = $body."</br>".$q_answers[$i];

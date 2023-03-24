@@ -22,32 +22,70 @@
         }
         
         $body = "Quiz Results: </br> "; //begins email body formatting
-        for($i=0;$i<$questionCount;$i++){
+        for($i=0;$i<$questionCount;$i++){ //begin loop to iterate through questions
             $questionID= $_POST['questionID'.($i+1)];
             $question = get_post($questionID);
             $questionType = $question->post_type;
             $body = $body."Question ".($i+1).") "; 
-            $userAnswers= $_POST['user_choice_answers'.$questionID];
+            $body = "</br>".$body.$question->post_content."</br>"; 
+        
             ?> <div class="row-question"><?php echo 'Question '.($i+1).':'; ?> </div> <?php
                 switch($questionType){
                     case 'matching_question':
-                        Matching_Question::matching_question_results($questionID, $question, $userAnswers, $userScore, $body);
+                        //check if input is empty - timer expired
+                        $userAnswers = $_POST['user_choice_answers'.$questionID];
+                        $answered = 1;
+                        foreach($userAnswers as $val){
+                            if($val == ''){
+                                $answered = 0;
+                            }
+                        }
+                        Matching_Question::matching_question_results($questionID, $question, $userAnswers, $userScore, $body, $answered);
                         break;
                     case 'ordering_question':
-                        Ordering_Question::ordering_question_results($questionID, $question, $userAnswers, $userScore, $body);
+                        //check if input is empty - timer expired
+                        $userAnswers = $_POST['user_choice_answers'.$questionID];
+                        $answered = 1;
+                        foreach($userAnswers as $val){
+                            if($val == ''){
+                                $answered = 0;
+                            }
+                        }
+                        Ordering_Question::ordering_question_results($questionID, $question, $userAnswers, $userScore, $body, $answered);
                         break;
                     case 'mc_single_question':
-                        Mc_Single_Question::mc_single_question_results($questionID, $question, $userAnswers, $userScore, $body);
+                        //check if input is empty - timer expired
+                        if(isset($_POST['user_choice_answers'.$questionID])){
+                            $userAnswers = $_POST['user_choice_answers'.$questionID];
+                            $answered = 1; 
+                        }else{
+                            $userAnswers = array();
+                            $answered = 0;
+                        }
+                        Mc_Single_Question::mc_single_question_results($questionID, $question, $userAnswers, $userScore, $body, $answered);
                         break;
                     case 'mc_multiple_question':
-                        Mc_Multiple_Question::mc_multiple_question_results($questionID, $question, $userAnswers, $userScore, $body);
+                        //check if input is empty - timer expired
+                        if(isset($_POST['user_choice_answers'.$questionID])){
+                            $userAnswers = $_POST['user_choice_answers'.$questionID];
+                            $answered = 1; 
+                        }else{
+                            $userAnswers = array();
+                            $answered = 0;
+                        }
+                        Mc_Multiple_Question::mc_multiple_question_results($questionID, $question, $userAnswers, $userScore, $body, $answered);
                         break;
                     case 'sa_question':
-                        sa_Question::sa_question_results($questionID, $question, $userAnswers, $userScore, $body);
+                        //check if input is empty - timer expired
+                        $userAnswers = $_POST['user_choice_answers'.$questionID];
+                        $answered = 1;
+                        if($userAnswers == ''){
+                            $answered = 0;
+                        }
+                        sa_Question::sa_question_results($questionID, $question, $userAnswers, $userScore, $body, $answered);
                         break;
                     default:
                         break;
-
                 }
             }
             ?> <div class="row-title" > <?php echo "<br> Attempt Score : $userScore / $totalScore"; ?> </div>

@@ -236,7 +236,7 @@ class Mc_Multiple_Question{
     }
 
     //check results of mc-multiple question
-    public static function mc_multiple_question_results($questionID, $question, $userAnswers, &$userScore, &$body) {
+    public static function mc_multiple_question_results($questionID, $question, $userAnswers, &$userScore, &$body, $answered) {
         ?><div class="row-mc-multiple-qtype" ><?php
         $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
         $question_answers = get_post_meta( $questionID, '_answers_meta' );
@@ -285,13 +285,20 @@ class Mc_Multiple_Question{
             </div>
         <?php
             }
-        $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);;
+            //check if question was answered
+            if($answered){
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
+            }else{
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, 0);
+                echo "</br>Time Limit Reached: Question unanswered.";
+                $body = $body."</br>Time Limit Reached - Question unanswered </br> ";
+            }
+        
         ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>" ?> </div>
             <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
         </div><?php 
         
                 //sets email formatting
-                $body = "</br>".$body.$question->post_content."</br>"; 
                 for ($i = 0; $i < count($q_answers); $i++) {
                     $body = $body."</br>".$q_answers[$i];
                 }

@@ -206,7 +206,7 @@ class sa_Question{
     }
 
     //TODO Mohit
-    public static function sa_question_results($questionID, $question, $userAnswers, &$userScore, &$body){
+    public static function sa_question_results($questionID, $question, $userAnswers, &$userScore, &$body, $answered){
         ?><div class="row-match-qtype" ><?php
             $question_answer = get_post_meta( $questionID, '_question_right_answers_meta',false);
             
@@ -252,13 +252,20 @@ class sa_Question{
         ?>  
         </div>
         <?php
-            $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, $correct); 
+            //check if question was answered
+            if($answered){
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, $correct);
+            }else{
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, 0);
+                $userAnswers = '';
+                echo "</br>Time Limit Reached: Question unanswered.";
+                $body = $body."</br>Time Limit Reached - Question unanswered </br> ";
+            }
             ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>"; ?> </div>
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
     </div><?php   
     
         //sets email formatting
-        $body = "</br>".$body.$question->post_content."</br>";
         $body = $body."</br>Correct Answer: "; 
         for ($i = 0; $i < count($q_choices); $i++) {
             $body = $body."</br>".$q_choices[$i];
