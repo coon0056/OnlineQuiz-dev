@@ -225,8 +225,6 @@ class Ordering_Question{
         <?php 
         }
         
-        ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
-        ?> <?php
         return ob_get_clean();
     }
 

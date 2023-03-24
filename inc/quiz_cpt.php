@@ -228,19 +228,24 @@ class Quiz_CPT{
         echo '<div class="countdown" data-num="'.$time.'"></div>';
         echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
         echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
-        
-        
-        
+
+        echo '<ul id="questions" style="list-style-type: none">';
+
         for($i = 0; $i < $count; $i++){
             $questionCount = ($i+1);
             $questionID = (int)filter_var($q_shortcodes[$i], FILTER_SANITIZE_NUMBER_INT);
-            echo '<input type="hidden" id="questionID'.$questionCount.'" name="questionID'.$questionCount.'" value="'.$questionID.'">';
-            echo 'Question '.$questionCount.':';
-            echo do_shortcode($q_shortcodes[$i]);
-            echo "</br>";
+            
+            echo '<li id="question">';
+                echo '<input type="hidden" id="questionID'.$questionCount.'" name="questionID'.$questionCount.'" value="'.$questionID.'">';
+                echo 'Question '.$questionCount.':';
+                echo do_shortcode($q_shortcodes[$i]);
+                echo "</br>";
+            echo '</li>';
         }
+        echo '</ul>';
+        echo '<div id="pagination"></div>';
 
-        echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" value="Submit Answers" /></div>
+        echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" id="user_question_submit" value="Submit Answers" /></div>
             </form>';
         return ob_get_clean();
     }

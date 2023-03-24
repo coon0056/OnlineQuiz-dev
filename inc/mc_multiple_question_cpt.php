@@ -231,10 +231,7 @@ class Mc_Multiple_Question{
             </div>    
             <?php
         }
-            ?>
 
-            <?php
-            ?> <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> <?php
             return ob_get_clean();
     }
 
