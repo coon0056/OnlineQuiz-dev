@@ -58,14 +58,14 @@ class sview{
     function quizzes_html($post){
         wp_nonce_field('quizzes', 'quiz_nonce');
         $quizzes = get_post_meta( $post->ID, '_quiz_meta');
-        $quiz_author = get_post_meta( $post->ID, '_quiz_author_meta');
-        $quiz_date = get_post_meta( $post->ID, '_quiz_date_meta');
+        //$quiz_author = get_post_meta( $post->ID, '_quiz_author_meta');
+        //$quiz_date = get_post_meta( $post->ID, '_quiz_date_meta');
         $quizzes_link = get_post_meta( $post->ID, '_quizzes_link_meta');
         
         if(count($quizzes) == 0){
             $quizzes[0] = '';
-            $quiz_author[0] = '';
-            $quiz_date[0] = '';
+            //$quiz_author[0] = '';
+            //$quiz_date[0] = '';
             $quizzes_link[0] = '';
              $count = 1;
         }else{
@@ -86,23 +86,23 @@ class sview{
             <?php
             
             $q_key = isset( $quizzes[0] ) ? $quizzes[0] : [];
-            $q_author = isset( $quiz_author[0] ) ? $quiz_author[0] : [];
-            $q_date = isset( $quiz_date[0] ) ? $quiz_date[0] : [];
+            //$q_author = isset( $quiz_author[0] ) ? $quiz_author[0] : [];
+            //$q_date = isset( $quiz_date[0] ) ? $quiz_date[0] : [];
             $q_value = isset( $quizzes_link[0] ) ? $quizzes_link[0] : [];
 
             
             //checks for empty spots in the array and re-arranges
-            if(is_array($q_key) && is_array($q_value) && is_array($q_author) && is_array($q_date)){
+            if(is_array($q_key) && is_array($q_value)){
                 $q_key = array_values($q_key);
-                $q_author = array_values($q_author);
-                $q_date = array_values($q_date);
+                //$q_author = array_values($q_author);
+                //$q_date = array_values($q_date);
                 $q_value = array_values($q_value);
             }
 
             for($i = 0; $i < $count; $i++){
                 $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
-                $author_print =  isset( $q_author[$i] ) ? $q_author[$i] : '';
-                $date_print =  isset( $q_date[$i] ) ? $q_date[$i] : '';
+                //$author_print =  isset( $q_author[$i] ) ? $q_author[$i] : '';
+                //$date_print =  isset( $q_date[$i] ) ? $q_date[$i] : '';
                 $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>
 
@@ -110,12 +110,7 @@ class sview{
             <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Name: </label></div>
             <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes[<?php echo $i; ?>]"  value="<?php echo esc_attr($key_print); ?>" required></div>
             
-            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Author: </label></div>
-            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quiz_author[<?php echo $i; ?>]"  value="<?php echo esc_attr($author_print); ?>" required></div>
-
-            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Date: </label></div>
-            <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='date' name="quiz_date[<?php echo $i; ?>]"  value="<?php echo esc_attr($date_print); ?>" required></div>
-
+           
             <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> Link: </label></div>
             <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes_link[<?php echo $i; ?>]"  value="<?php echo esc_attr($value_print); ?>" required>
             
@@ -186,15 +181,6 @@ class sview{
             update_post_meta($post_id,'_quizzes_link_meta',$_POST['quizzes_link']);
         }
 
-        if ( array_key_exists( 'quiz_author', $_POST ) ) {
-            sanitize_text_field($_POST['quiz_author']);
-            update_post_meta($post_id,'_quiz_author_meta',$_POST['quiz_author']);
-        }
-
-        if ( array_key_exists( 'quiz_date', $_POST ) ) {
-            sanitize_text_field($_POST['quiz_date']);
-            update_post_meta($post_id,'_quiz_date_meta',$_POST['quiz_date']);
-        }
 
     }
 
@@ -205,14 +191,29 @@ class sview{
             'id' => '',
         ), $atts);
         $question = get_post($atts['id']);
-        $quiz_name = get_post_meta( $atts['id'], '_quiz_meta'); 
-        $quiz_author = get_post_meta( $atts['id'], '_quiz_author_meta'); 
-        $quiz_date = get_post_meta( $atts['id'], '_quiz_date_meta'); 
+        $quiz_id = get_post_meta( $atts['id'], '_quiz_meta');
+        
+        $content_post = get_post($quiz_id);
+        $content = $content_post->post_content;
+        $content = apply_filters('the_content', $content);
+        $content = str_replace(']]>', ']]&gt;', $content);
+
+
+        $quiz_name = $content 
+
+        //$quiz_author = get_post_meta( $atts['id'], '_quiz_author_meta'); 
+        //$quiz_date = get_post_meta( $atts['id'], '_quiz_date_meta'); 
         $quiz_link = get_post_meta( $atts['id'], '_quizzes_link_meta');  
         
-        $test = $quiz_link[0];
+        //$test = $quiz_link[0];
 
         //$test = get_post_meta( $atts['0'], '_quiz_meta'); 
+
+        $quiz_date = get_the_date('Y-m-d', 259, false);     
+
+
+        $author_id = get_post_field ('post_author', 259);
+        $quiz_author = get_the_author_meta('nicename', $author_id);
 
         $q_key = isset( $quiz_name[0] ) ? $quiz_name[0] : [];
         $q_author = isset( $quiz_author[0] ) ? $quiz_author[0] : [];
