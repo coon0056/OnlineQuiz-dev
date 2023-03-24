@@ -191,50 +191,41 @@ class sview{
             'id' => '',
         ), $atts);
         $question = get_post($atts['id']);
-        $quiz_id = get_post_meta( $atts['id'], '_quiz_meta');
         
-        $content_post = get_post($quiz_id);
+        $quiz_id = get_post_meta( $atts['id'], '_quiz_meta');        
+        $quiz_link = get_post_meta( $atts['id'], '_quizzes_link_meta'); 
+        
+        $q_keyid = isset( $quiz_id[0] ) ? $quiz_id[0] : [];
+        $count = count($q_keyid);
+
+        if(is_array($q_keyid)) {
+            $q_keyid = array_values($q_keyid);
+        }
+
+        for($i = 0; $i < $count; $i++){  
+        $content_post = get_post($q_keyid[$i]);
         $content = $content_post->post_content;
         $content = apply_filters('the_content', $content);
-        $content = str_replace(']]>', ']]&gt;', $content);
-
-
-        $quiz_name = $content 
-
-        //$quiz_author = get_post_meta( $atts['id'], '_quiz_author_meta'); 
-        //$quiz_date = get_post_meta( $atts['id'], '_quiz_date_meta'); 
-        $quiz_link = get_post_meta( $atts['id'], '_quizzes_link_meta');  
-        
-        //$test = $quiz_link[0];
-
-        //$test = get_post_meta( $atts['0'], '_quiz_meta'); 
-
-        $quiz_date = get_the_date('Y-m-d', 259, false);     
-
-
-        $author_id = get_post_field ('post_author', 259);
-        $quiz_author = get_the_author_meta('nicename', $author_id);
-
-        $q_key = isset( $quiz_name[0] ) ? $quiz_name[0] : [];
-        $q_author = isset( $quiz_author[0] ) ? $quiz_author[0] : [];
-        $q_date = isset( $quiz_date[0] ) ? $quiz_date[0] : [];
-        $q_values= isset( $quiz_link[0] ) ? $quiz_link[0] : [];
-                
+        $content = str_replace(']]>', ']]&gt;', $content);      
+        $quiz_name[$i] = $content; 
+        $author_id[$i] = get_post_field ('post_author', $q_keyid[$i]);
+        $quiz_author[$i] = get_the_author_meta('nickname', $author_id[$i]);
+        $quiz_date[$i] = get_the_date('Y-m-d', $q_keyid[$i], false);     
+        }        
+       
+        $q_values= isset( $quiz_link[0] ) ? $quiz_link[0] : [];                
         $count = count($q_values);
-
-        ob_start();
-        
+        ob_start();        
          
         //checks for empty spots in the array and re-arranges
-        if(is_array($q_key) && is_array($q_values)) {
-            $q_key = array_values($q_key);
-            $q_author = array_values($q_author);
-            $q_date = array_values($q_date);
+        if(is_array($quiz_name) && is_array($q_values) && is_array($quiz_author) && is_array($quiz_date)) {
+            $quiz_name = array_values($quiz_name);
+            $quiz_author = array_values($quiz_author);
+            $quiz_date = array_values($quiz_date);
             $q_values = array_values($q_values);
         }
         ?>
         
-
 
 <table class="minimalistBlack">
   <thead>
@@ -247,9 +238,9 @@ class sview{
   </thead>    
         <?php         
         for($i = 0; $i < $count; $i++){
-            $key_name =$q_key[$i];
-            $key_author =$q_author[$i];
-            $key_date =$q_date[$i];
+            $key_name = $quiz_name[$i];
+            $key_author = $quiz_author[$i];
+            $key_date = $quiz_date[$i];
             $key_link = $q_values[$i];
             ?>            
             <tbody>

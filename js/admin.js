@@ -153,12 +153,7 @@ jQuery('#add_new_quiz').click(function(e){
         <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` Name: </label></div>
         <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quizzes[`+ num_answers +`]"  value="" required>
 
-        <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` Author: </label></div>
-        <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quiz_author[`+ num_answers +`]"  value="" required>
-
-        <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` Date: </label></div>
-        <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='date' name="quiz_date[`+ num_answers +`]"  value="" required>
-        
+              
         <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` Link: </label></div>
         <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quizzes_link[`+ num_answers +`]"  value="" required>
         
