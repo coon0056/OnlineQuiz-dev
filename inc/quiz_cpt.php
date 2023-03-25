@@ -232,7 +232,7 @@ class Quiz_CPT{
         echo '<input type="hidden" id="authorEmail" name="authorEmail" value="'.$authorEmail.'">';
         echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
         echo 'Name:' ;
-        echo '<input style="width:25%" type="text" id="testTaker" name="testTaker" value="" >';
+        echo '<input style="width:25%" type="text" id="testTaker" name="testTaker" value="" required>';
 
         echo '<ul id="questions" style="list-style-type: none">';
 
