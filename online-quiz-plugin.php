@@ -93,24 +93,50 @@ if(!class_exists('OnlineQuizPlugin')){
    
       function activate(){
          flush_rewrite_rules();
-     }
+      }
   
-     function deactivate(){
+      function deactivate(){
          flush_rewrite_rules();
-     }
+      }
 
-     function create_sensei_role() {
-      add_role('sensei', 'Sensei',
-         array(
-            'read'            => true,
-            'level_0'         => true,
-            'edit_posts'      => false,
-            'delete_posts'    => false,
-            'publish_posts'   => false,
-            'upload_files'    => true
-         )
-      );
-     }
+      /*
+      * create_sensei_role
+      * Adds permissions to roles for editing quizzes and question types.
+      * Runs only on plugin activation
+      * 
+      * If the Sensei role is to be modified to remove the ability to publish pages onto the website, deactivate the plugin, 
+      * Change "$sensei->add_cap('publish_pages');" to "$sensei->remove_cap('publish_pages');" reactivate the plugin
+      */
+      function create_sensei_role() {
+         add_role('sensei', 'Sensei',
+            array(
+               'read'            => true,
+               'level_0'         => true,
+               'edit_posts'      => false,
+               'delete_posts'    => false,
+               'publish_posts'   => false,
+               'upload_files'    => true
+            )
+         );
+
+         $roles = array('sensei', 'editor', 'administrator');
+         foreach( $roles as $user_role) {
+            $role = get_role($user_role);
+            $role->add_cap('read_Quiz');
+            $role->add_cap('read_Quizzes');
+            $role->add_cap('edit_Quiz');
+            $role->add_cap('edit_Quizzes');
+            $role->add_cap('edit_published_Quizzes');
+            $role->add_cap('publish_Quizzes');
+            $role->add_cap('delete_private_Quizzes');
+            $role->add_cap('delete_published_Quizzes');
+         }
+
+         $sensei = get_role('sensei');
+         $sensei->add_cap('edit_pages'); // Allows the Sensei to create their quiz page
+         $sensei->add_cap('publish_pages'); // Allows the Sensei to publish their quiz page
+         $sensei->add_cap('delete_pages'); // Allows the Sensei to delete their quiz page
+      }
    } 
 }
 $onlineQuizPlugin = new OnlineQuizPlugin();

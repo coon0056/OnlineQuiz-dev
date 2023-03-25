@@ -10,7 +10,6 @@ class Quiz_CPT{
     //Creates the post type and it's corresponding settings
     function create_post_type(){
         add_action('init', array($this,'register_post_type'));
-        add_action('admin_init', array($this, 'add_role_capability'));
         add_action('add_meta_boxes', array($this, 'register_meta_boxes'));
         add_filter('manage_quiz_posts_columns', array($this, 'custom_column_header'));
         add_filter('manage_quiz_posts_custom_column', array($this, 'custom_column_content'), 10,2);
@@ -56,28 +55,6 @@ class Quiz_CPT{
         );
 
         register_post_type('quiz', $args);
-    }
-
-    /* 
-    * adds permissions to roles for editing quizzes and question types.
-    * if allowing editing other users posts 
-    * role->add_cap('edit_others_posts');
-    */
-    function add_role_capability() {
-        $roles = array('sensei', 'editor', 'administrator');
-        foreach( $roles as $user_role) {
-            $role = get_role($user_role);
-
-            $role->add_cap('read');
-            $role->add_cap('read_Quiz');
-            $role->add_cap('read_Quizzes');
-            $role->add_cap('edit_Quiz');
-            $role->add_cap('edit_Quizzes');
-            $role->add_cap('edit_published_Quizzes');
-            $role->add_cap('publish_Quizzes');
-            $role->add_cap('delete_private_Quizzes');
-            $role->add_cap('delete_published_Quizzes');
-        }
     }
 
     //creates the metaboxes 
