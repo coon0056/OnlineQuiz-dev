@@ -215,6 +215,9 @@ class Quiz_CPT{
         $questions = get_post_meta( $atts['id'], '_quiz_questions_meta_key');
         $q_shortcodes = isset( $questions[0] ) ? $questions[0] : [];
 
+        $authorID = get_post_field('post_author', $atts['id']);
+        $authorEmail = get_the_author_meta('user_email', $authorID);
+
         //checks for empty spots in the array and re-arranges
         if(is_array($q_shortcodes) ){
             $q_shortcodes = array_values($q_shortcodes);
@@ -225,8 +228,11 @@ class Quiz_CPT{
         
         ob_start();
         echo '<div class="countdown" data-num="'.$time.'"></div>';
-        echo '<form method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
+        echo '<form id="quizForm" method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
+        echo '<input type="hidden" id="authorEmail" name="authorEmail" value="'.$authorEmail.'">';
         echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
+        echo 'Name:' ;
+        echo '<input style="width:25%" type="text" id="testTaker" name="testTaker" value="" required>';
 
         echo '<ul id="questions" style="list-style-type: none">';
 

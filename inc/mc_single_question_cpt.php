@@ -234,7 +234,7 @@ class Mc_Single_Question{
     }
 
     //check results of mc-single question
-    public static function mc_single_question_results($questionID, $question, $userAnswers, &$userScore){
+    public static function mc_single_question_results($questionID, $question, $userAnswers, &$userScore, &$body, $answered){
         ?><div class="row-mc-single-qtype" ><?php
             $question_answer = get_post_meta( $questionID, '_question_right_answer_meta',true);
             $question_incorrect_answers = get_post_meta($questionID, '_question_wrong_answers_meta');
@@ -268,14 +268,31 @@ class Mc_Single_Question{
                         ?> <div class="column"><span class="correct-ans">Correct!</span></div> <?php
                     }else if(($userAnswers == $key_print) || (!$question_answer == $key_print)){
                         ?> <div class="column"><span class="incorrect-ans">Incorrect.</span></div> <?php
-                    }else if((!$userAnswers == $key_print) || ($question_answer == $key_print)){
+                    }else if((($question_answer == $key_print))){
                         ?> <div class="column"><span class="actual-correct-ans">This is the correct answer!</span></div> <?php
                     }
                 ?></div><?php        
                 }  ?>
-            <?php 
-            ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
+            <?php
+            //check if question was answered
+            if($answered){
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, $correct);
+            }else{
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, 0);
+                $userAnswers = '';
+                echo "</br>Time Limit Reached: Question unanswered.";
+                $body = $body."</br>Time Limit Reached - Question unanswered </br> ";
+            }
+            ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>"; ?> </div>
             <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
-        </div><?php    
+        </div><?php
+        
+         //sets email formatting
+         for ($i = 0; $i < count($q_choices); $i++) {
+             $body = $body."</br>".$q_choices[$i];
+         }
+         $body = $body."</br></br> Correct Answer: $question_answer";
+         $body = $body."</br> User Answer: $userAnswers";
+         $body = $body."</br></br> Points Awarded: $pointsAwarded / $pointWeight </br></br>";
     }
 }

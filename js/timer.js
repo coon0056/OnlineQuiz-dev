@@ -1,6 +1,7 @@
 jQuery(document).ready(function(){
 	
 			var timer2 = jQuery('.countdown').data('num');
+			//timer2 = "00"; //use for testing purposes
 			timer2 = timer2 + ":00";
 
 			var interval = setInterval(function() {
@@ -19,7 +20,21 @@ jQuery(document).ready(function(){
 			timer2 = minutes + ':' + seconds;
 
 			if(minutes == 0 && seconds ==0){
-				alert("Quiz Limit Reached!");
+
+				//make sure name field is filled
+				if(jQuery('#testTaker').val() === ""){
+					personName = window.prompt("Enter your name: ");
+					while(personName === null || personName === ""){
+						personName = window.prompt("Enter your name: ");
+					}				
+						jQuery('#testTaker').val(personName);
+				}
+				//temporarily removes the requied fields
+				jQuery('#quizForm :input').removeAttr('required');
+
+				//submits the quiz
+				jQuery('.submit-button').trigger("click");
 			}
 			}, 1000);
 });
+
