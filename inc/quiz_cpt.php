@@ -10,7 +10,6 @@ class Quiz_CPT{
     //Creates the post type and it's corresponding settings
     function create_post_type(){
         add_action('init', array($this,'register_post_type'));
-        // add_action('admin_init', array($this, 'add_role_capability'));
         add_action('add_meta_boxes', array($this, 'register_meta_boxes'));
         add_filter('manage_quiz_posts_columns', array($this, 'custom_column_header'));
         add_filter('manage_quiz_posts_custom_column', array($this, 'custom_column_content'), 10,2);
@@ -20,11 +19,11 @@ class Quiz_CPT{
     }
 
     function quiz_plugin_menu(){
-        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "edit_Quiz", 'edit.php?post_type=matching_question');
-        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "edit_Quiz", 'edit.php?post_type=ordering_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "edit_Quiz", 'edit.php?post_type=mc_single_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "edit_Quiz", 'edit.php?post_type=mc_multiple_question');
-        add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "edit_Quiz", 'edit.php?post_type=sa_question');
+        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "edit_quizzes", 'edit.php?post_type=matching_question');
+        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "edit_quizzes", 'edit.php?post_type=ordering_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "edit_quizzes", 'edit.php?post_type=mc_single_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "edit_quizzes", 'edit.php?post_type=mc_multiple_question');
+        add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "edit_quizzes", 'edit.php?post_type=sa_question');
     }
 
     //registers custom post type
@@ -47,70 +46,19 @@ class Quiz_CPT{
             'not_found_in_trash' => 'No Quizzes found in Trash.'
         );
 
+        $capabilities = create_post_type_capabilities('quiz', 'quizzes');
+
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-welcome-learn-more',
             'labels'    => $quiz_labels,
             'supports'  => array('editor', 'author', 'thumbnail'),
-            'capabilities'   => array(
-                'publish_posts' => 'publish_Quizzes',
-                'edit_posts' => 'edit_Quizzes',
-                'edit_others_posts' => 'edit_others_Quizzes',
-                'edit_private_posts' => 'edit_private_Quizzes',
-                'edit_published_posts' => 'edit_published_Quizzes',
-                'delete_posts' => 'delete_Quizzes',
-                'delete_others_posts' => 'delete_others_Quizzes',
-                'delete_published_posts' => 'delete_published_Quizzes',
-                'delete_private_posts' => 'delete_private_Quizzes',
-                'read_private_posts' => 'read_private_Quizzes',
-                'edit_post' => 'edit_Quiz',
-                'delete_post' => 'delete_Quiz',
-                'read_post' => 'read_Quiz'
-            ),
-            'map_meta_cap' => true
+            'capabilities'  => $capabilities,
+            'map_meta_cap'  => true
         );
 
         register_post_type('quiz', $args);
     }
-
-    /* 
-    * adds permissions to roles for editing quizzes and question types.
-    * if allowing editing other users posts 
-    * role->add_cap('edit_others_posts');
-    */
-    // function add_role_capability() {
-    //     $roles = array('sensei', 'editor');//, 'administrator');
-    //     foreach( $roles as $user_role) {
-    //         $role = get_role($user_role);
-
-    //         $role->add_cap('edit_Quiz');
-    //         $role->add_cap('delete_Quiz');
-    //         $role->add_cap('read_Quiz');
-
-    //         $role->add_cap('edit_Quizzes');
-    //         $role->add_cap('edit_published_Quizzes');
-    //         $role->add_cap('publish_Quizzes');
-
-    //         $role->add_cap('delete_published_Quizzes');
-    //     }
-
-    //     $admin = get_role('administrator');
-
-    //     $admin->add_cap('edit_Quiz');
-    //     $admin->add_cap('delete_Quiz');
-    //     $admin->add_cap('read_Quiz');
-
-    //     $admin->add_cap('edit_Quizzes');
-    //     $admin->add_cap('edit_published_Quizzes');
-    //     $admin->add_cap('edit_others_Quizzes');
-    //     $admin->add_cap('edit_private_Quizzes');
-    //     $admin->add_cap('publish_Quizzes');
-
-    //     $admin->add_cap('delete_published_Quizzes');
-    //     $admin->add_cap('delete_private_Quizzes');
-    //     $admin->add_cap('delete_others_Quizzes');
-    //     $admin->add_cap('read_private_Quizzes');
-    // }
 
     //creates the metaboxes 
     function register_meta_boxes(){

@@ -42,7 +42,8 @@ class Mc_Single_Question{
             'labels'    => $question_labels,
             'show_in_menu' => false,
             'supports'  => array('editor', 'author', 'thumbnail'),
-            'capability_type'   => array('Quiz', 'Quizzes'),
+            'capability_type' => array('quiz', 'quizzes'),
+            'map_meta_cap' => true
         );
 
         register_post_type('mc_single_question', $args);

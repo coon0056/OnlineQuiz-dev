@@ -112,7 +112,7 @@ if(!class_exists('OnlineQuizPlugin')){
             array(
                'read'            => true,
                'level_0'         => true,
-               'edit_posts'      => false,
+               'edit_posts'      => true, // REQUIRED ALWAYS, Sensei cannot create posts of any type without this.
                'delete_posts'    => false,
                'publish_posts'   => false,
                'upload_files'    => true,
@@ -121,31 +121,26 @@ if(!class_exists('OnlineQuizPlugin')){
                'edit_pages'      => true, // Allows the Sensei to create their quiz page
                'publish_pages'   => true, // Allows the Sensei to publish their quiz page
                'delete_pages'    => true, // Allows the Sensei to delete their quiz page
-               'edit_published_pages' => true, // Allows the Sensei to edit their published quiz page
-               'delete_published_pages' => true, // Allows the Sensei to delete their published quiz page
+               'edit_published_pages'     => true, // Allows the Sensei to edit their published quiz page
+               'delete_published_pages'   => true, // Allows the Sensei to delete their published quiz page
             )
          );
 
-         $roles = array('sensei', 'administrator');
-         foreach( $roles as $user_role) {
-            $role = get_role($user_role);
-            $role->add_cap('edit_Quiz');
-            $role->add_cap('delete_Quiz');
-            $role->add_cap('read_Quiz');
-            $role->add_cap('read_Quizzes');
-            $role->add_cap('edit_Quizzes');
-            $role->add_cap('edit_published_Quizzes');
-            $role->add_cap('publish_Quizzes');
-            $role->add_cap('delete_private_Quizzes');
-            $role->add_cap('delete_published_Quizzes');
+         //Specific sensei permissions to allow them to create and delete quizzes and questions
+         $sensei = get_role( 'sensei' );
+         $capabilities = create_sensei_capabilities('quiz', 'quizzes');
+         foreach ($capabilities as $capability) {
+             $sensei->add_cap( $capability );
          }
 
          //Specific admin permissions to allow them to delete sensei created quizzes and questions
-         $admin = get_role('administrator');
-         $admin->add_cap('edit_others_Quizzes');
-         $admin->add_cap('edit_private_Quizzes');
-         $admin->add_cap('read_private_Quizzes');
-         $admin->add_cap('delete_others_Quizzes');
+         $admin = get_role( 'administrator' );
+         $capabilities = create_post_type_capabilities('quiz', 'quizzes');
+         foreach ($capabilities as $capability) {
+             $admin->add_cap( $capability );
+         }
+
+
       }
    } 
 }

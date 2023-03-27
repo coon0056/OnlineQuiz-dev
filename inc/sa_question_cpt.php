@@ -41,7 +41,8 @@ class sa_Question{
             'labels'    => $question_labels,
             'show_in_menu' => false,
             'supports'  => array('editor', 'author', 'thumbnail'),
-            'capability_type'   => array('Quiz', 'Quizzes'),
+            'capability_type' => array('quiz', 'quizzes'),
+            'map_meta_cap'  => true
         );
 
         register_post_type('sa_question', $args);
