@@ -100,7 +100,7 @@ class sview{
             <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes[<?php echo $i; ?>]"  value="<?php echo esc_attr($key_print); ?>" required></div>
             
            
-            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> post or page id: </label></div>
+            <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz <?php echo $i + 1; ?> post or page link: </label></div>
             <div class="fields"><input data-num="<?php echo $i;?>" style='width:50%' type='text' name="quizzes_link[<?php echo $i; ?>]"  value="<?php echo esc_attr($value_print); ?>" required>
             
             <input type="button" value="Delete" name="delete_answer[<?php echo $i; ?>]" class="delete_button">
@@ -232,14 +232,14 @@ class sview{
             $key_date = $quiz_date[$i];
             $key_link = $q_values[$i];
 
-            $post_link = get_permalink($key_link, false);
+            //$post_link = get_permalink($key_link, false);
             ?>            
             <tbody>
             <tr>
             <td><?php echo $key_name; ?></td>
             <td><?php echo $key_author; ?></td>
             <td><?php echo $key_date; ?></td>
-            <td><a href="<?php echo $post_link;?>" class="myButton">Start Quiz</a></td>
+            <td><a href="<?php echo $key_link;?>" class="myButton">Start Quiz</a></td>
             </tr>
             </tbody>                           
             <?php

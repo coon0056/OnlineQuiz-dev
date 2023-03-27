@@ -151,7 +151,7 @@ jQuery('#add_new_quiz').click(function(e){
         <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` id: </label></div>
         <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quizzes[`+ num_answers +`]"  value="" required>
               
-        <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` post or page id: </label></div>
+        <div class="label"><label  for="quizzes<?php echo $i; ?>]">Quiz `+ (num_answers+1) +` post or page link: </label></div>
         <div class="fields"><input data-num="`+ num_answers +`" style='width:50%' type='text' name="quizzes_link[`+ num_answers +`]"  value="" required>     
 
         <input type="button" value="Delete" id="delete_answer[`+ num_answers +`]" class="delete_button"> 
