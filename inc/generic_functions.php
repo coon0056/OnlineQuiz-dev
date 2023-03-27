@@ -7,7 +7,8 @@
         $pointsAwarded = ($correct/(float)$countCorrect) * $pointWeight;
         $pointsAwarded = round($pointsAwarded, 2);
         $userScore += $pointsAwarded;
-        echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>";
+        return $pointsAwarded;
+    
     }
 
     //function used to create cpt capabilities
