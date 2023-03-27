@@ -198,7 +198,7 @@ class sview{
         $content = str_replace(']]>', ']]&gt;', $content);      
         $quiz_name[$i] = $content; 
         $author_id[$i] = get_post_field ('post_author', $q_keyid[$i]);
-        $quiz_author[$i] = get_the_author_meta('nickname', $author_id[$i]);
+        $quiz_author[$i] = get_the_author_meta('first_name', $author_id[$i]);
         $quiz_date[$i] = get_the_date('Y-m-d', $q_keyid[$i], false);     
         }        
        
