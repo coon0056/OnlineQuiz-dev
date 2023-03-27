@@ -199,6 +199,7 @@ class sview{
         $quiz_name[$i] = $content; 
         $author_id[$i] = get_post_field ('post_author', $q_keyid[$i]);
         $quiz_author[$i] = get_the_author_meta('first_name', $author_id[$i]);
+        $quiz_author_last[$i] = get_the_author_meta('last_name', $author_id[$i]);
         $quiz_date[$i] = get_the_date('Y-m-d', $q_keyid[$i], false);     
         }        
        
@@ -207,9 +208,10 @@ class sview{
         ob_start();        
          
         //checks for empty spots in the array and re-arranges
-        if(is_array($quiz_name) && is_array($q_values) && is_array($quiz_author) && is_array($quiz_date)) {
+        if(is_array($quiz_name) && is_array($q_values) && is_array($quiz_author) &&is_array($quiz_author_last) && is_array($quiz_date)) {
             $quiz_name = array_values($quiz_name);
             $quiz_author = array_values($quiz_author);
+            $quiz_author_last = array_values($quiz_author_last);
             $quiz_date = array_values($quiz_date);
             $q_values = array_values($q_values);
         }
@@ -229,6 +231,7 @@ class sview{
         for($i = 0; $i < $count; $i++){
             $key_name = $quiz_name[$i];
             $key_author = $quiz_author[$i];
+            $key_author_last = $quiz_author_last[$i];
             $key_date = $quiz_date[$i];
             $key_link = $q_values[$i];
 
@@ -237,7 +240,7 @@ class sview{
             <tbody>
             <tr>
             <td><?php echo $key_name; ?></td>
-            <td><?php echo $key_author; ?></td>
+            <td><?php echo $key_author;?> <?php echo $key_author_last;?></td>
             <td><?php echo $key_date; ?></td>
             <td><a href="<?php echo $key_link;?>" class="myButton">Start Quiz</a></td>
             </tr>
