@@ -96,6 +96,12 @@ if(!class_exists('OnlineQuizPlugin')){
       }
   
       function deactivate(){
+         remove_role('sensei');
+         $admin = get_role( 'administrator' );
+         $capabilities = create_post_type_capabilities('Quiz', 'Quizzes');
+         foreach ($capabilities as $capability) {
+             $admin->remove_cap( $capability );
+         }
          flush_rewrite_rules();
       }
 
@@ -103,9 +109,6 @@ if(!class_exists('OnlineQuizPlugin')){
       * create_sensei_role
       * Adds permissions to roles for editing quizzes and question post types.
       * Runs only on plugin activation
-      * 
-      * If the Sensei role is to be modified to remove the ability to publish pages onto the website, deactivate the plugin, 
-      * Change "$sensei->add_cap('publish_pages');" to "$sensei->remove_cap('publish_pages');" reactivate the plugin
       */
       function create_sensei_role() {
          add_role('sensei', 'Sensei',
@@ -117,7 +120,7 @@ if(!class_exists('OnlineQuizPlugin')){
                'publish_posts'   => false,
                'upload_files'    => true,
 
-               /* REMOVE THESE IF ONLY ADMIN IS TO PUBLISH QUIZ PAGES */
+               /* CHANGE THESE TO FALSE IF ONLY ADMIN IS TO PUBLISH QUIZ PAGES THEN DEACTIVATE AND REACTIVATE THE PLUGIN*/
                'edit_pages'      => true, // Allows the Sensei to create their quiz page
                'publish_pages'   => true, // Allows the Sensei to publish their quiz page
                'delete_pages'    => true, // Allows the Sensei to delete their quiz page
