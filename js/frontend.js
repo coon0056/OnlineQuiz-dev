@@ -13,53 +13,44 @@ jQuery(document).ready(function(){
     });
 
     jQuery('#user_question_submit').click(function(e){
-        //console.log(jQuery("#questions").find('input:invalid,select:invalid'));
+        var flag = false;
 
-        jQuery("#question").each(function(index, element) {
-            console.log(jQuery(element));
-            e.preventDefault();
-            if(jQuery(element).find('input:invalid,select:invalid').length > 0){
-                e.preventDefault();
-    
-                jQuery('#modalMessage').text("Question "+ (jQuery("#questions").find('input:invalid,select:invalid').closest('li').data('num') + 1) + 
-                    " is unanswered. Please fill out all questions before submitting the quiz.")
-                jQuery('#modal').show();
-    
-                var modal = document.getElementById("modal");
-                modal.style.display = "block";
-                jQuery('#close').click(function(){
-                    modal.style.display = "none";
-                });
-    
-                window.onclick = function(e){
-                    if (e.target == modal) {
-                        modal.style.display = "none";
-                    }
+        jQuery("#questions li").each(function() {
+            if(jQuery(this).find('input:invalid,select:invalid').length > 0){
+                flag = true;
+                jQuery('#modalMessage').text("Question "+ (jQuery(this).data('num') + 1) + 
+                        " is unanswered. Please fill out all questions before submitting the quiz.");
+                
+                return false; //breaks out of jQuery each()
+            } 
+            //If the question has checkboxes check if one is checked
+            else if(jQuery(this).has('input:checkbox').length != 0) {
+                if(jQuery(this).has('input[type=checkbox]:checked').length == 0) {
+                    flag = true;
+                    //console.log("Question "+ (jQuery(this).data('num') + 1) + " is unanswered. Please fill out all questions before submitting the quiz.");
+                    jQuery('#modalMessage').text("Question "+ (jQuery(this).data('num') + 1) + 
+                        " is unanswered. Please fill out all questions before submitting the quiz.");
                 }
-            } else {
-                console.log("fail");
+                return false; //breaks out of jQuery each()
             }
         });
 
-        // if(jQuery("#questions").find('input:invalid,select:invalid').length > 0){
-        //     e.preventDefault();
-
-        //     jQuery('#modalMessage').text("Question "+ (jQuery("#questions").find('input:invalid,select:invalid').closest('li').data('num') + 1) + 
-        //         " is unanswered. Please fill out all questions before submitting the quiz.")
-        //     jQuery('#modal').show();
-
-        //     var modal = document.getElementById("modal");
-        //     modal.style.display = "block";
-        //     jQuery('#close').click(function(){
-        //         modal.style.display = "none";
-        //     });
-
-        //     window.onclick = function(e){
-        //         if (e.target == modal) {
-        //             modal.style.display = "none";
-        //         }
-        //     }
-        // }
+        if(flag == true){
+            e.preventDefault();
+            jQuery('#modal').show();
+    
+            var modal = document.getElementById("modal");
+            modal.style.display = "block";
+            jQuery('#close').click(function(){
+                modal.style.display = "none";
+            });
+    
+            window.onclick = function(e){
+                if (e.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
     });
 
 });

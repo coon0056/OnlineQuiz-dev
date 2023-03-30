@@ -78,7 +78,7 @@
 .actual-correct-ans:before{
     content: '\f340' !important;
     font-family: 'Dashicons' !important;
-    color: #24a150 !important;
+    color: #247ea1 !important;
     padding-right: 6px;
 }
 .actual-correct-ans{
