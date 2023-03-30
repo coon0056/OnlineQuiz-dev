@@ -27,7 +27,6 @@ jQuery(document).ready(function(){
             else if(jQuery(this).has('input:checkbox').length != 0) {
                 if(jQuery(this).has('input[type=checkbox]:checked').length == 0) {
                     flag = true;
-                    //console.log("Question "+ (jQuery(this).data('num') + 1) + " is unanswered. Please fill out all questions before submitting the quiz.");
                     jQuery('#modalMessage').text("Question "+ (jQuery(this).data('num') + 1) + 
                         " is unanswered. Please fill out all questions before submitting the quiz.");
                 }
