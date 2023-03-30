@@ -41,7 +41,9 @@ class Matching_Question{
             'menu_icon' => 'dashicons-editor-ul',
             'labels'    => $question_labels,
             'show_in_menu' => false,
-            'supports'  => array('editor', 'author', 'thumbnail')
+            'supports'  => array('editor', 'author', 'thumbnail'),
+            'capability_type' => array('quiz', 'quizzes'),
+            'map_meta_cap'  => true
         );
 
         register_post_type('matching_question', $args);
