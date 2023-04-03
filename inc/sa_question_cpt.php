@@ -66,9 +66,7 @@ class sa_Question{
         <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>" required>
         </div>
 	    <?php
-    }
-    
-
+    }   
     
     //creates short answer question metabox html
     function sa_question_html($post){
@@ -213,11 +211,9 @@ class sa_Question{
             $question_answer = get_post_meta( $questionID, '_question_right_answers_meta',false);
             
         //assigning the answers in question answer array to q choices
-            $q_choices= isset($question_answer[0]) ? $question_answer[0] : [];
-        
-            //FOR MOHIT TO FIX AFTER
-            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
-            //$pointWeight = 10; 
+            $q_choices= isset($question_answer[0]) ? $question_answer[0] : [];        
+          
+            $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);           
             $correct = 0.0;
         
             ?> <div class="row-title"> <?php echo $question->post_content; ?> </div>
