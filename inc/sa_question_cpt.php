@@ -40,7 +40,9 @@ class sa_Question{
             'menu_icon' => 'dashicons-editor-ul',
             'labels'    => $question_labels,
             'show_in_menu' => false,
-            'supports'  => array('editor', 'author', 'thumbnail')
+            'supports'  => array('editor', 'author', 'thumbnail'),
+            'capability_type' => array('quiz', 'quizzes'),
+            'map_meta_cap'  => true
         );
 
         register_post_type('sa_question', $args);
@@ -54,12 +56,14 @@ class sa_Question{
 
     //creates question weight metabox html
     function question_weight_html($post){
-        wp_nonce_field('question_weight_field', 'SAQuestion_nonce');
-        $value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
+		$value = get_post_meta( $post->ID, '_question_weight_meta_key', true );
+        if($value == ''){
+            $value = 1;
+        }
 		?>
-        <div class='row'>
-		<label for='question_weight_field'></label>
-        <input style='width:25%' type='number' name='question_weight_field' min='1' value="<?php echo $value; ?>" required>
+        <div class="row">
+		<label for="question_weight_field"></label>
+        <input style='width:25%' type='number' name='question_weight_field' min="1" value="<?php echo $value; ?>" required>
         </div>
 	    <?php
     }   
@@ -202,7 +206,7 @@ class sa_Question{
     }
 
     //TODO Mohit
-    public static function sa_question_results($questionID, $question, $userAnswers, &$userScore){
+    public static function sa_question_results($questionID, $question, $userAnswers, &$userScore, &$body, $answered){
         ?><div class="row-match-qtype" ><?php
             $question_answer = get_post_meta( $questionID, '_question_right_answers_meta',false);
             
@@ -220,34 +224,62 @@ class sa_Question{
             <?php for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i]; 
             ?>
-                <div class="column col-sa-actual-ans">       
+                       
                     <?php if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
                             $correct++;
                             ?> 
+                            <div class="column col-sa-actual-ans">
                             <div class="column"><span class="correct-ans">Correct!</span></div><br> 
+                            </div>
                             <?php
                         }
                     ?>
-                </div>
+                
             <?php       
             } 
             if ($correct == 0){
                 ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answers: </span></div> <?php
                 for ($i = 0; $i < count($q_choices); $i++) {
 					$key_print = $q_choices[$i];
-					if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                 
+					if((strcasecmp(trim($userAnswers), trim($key_print)) !== 0) && ($i !== (count($q_choices)-1) )){                 
                         ?> 
                         <div class="column"><span class="incorrect-ans-sa-choices"><?php echo $q_choices[$i]; ?>, </span></div>    
                         <?php                        
-					}         
+					} else if (strcasecmp(trim($userAnswers), trim($key_print)) !== 0) {                               
+                        ?> 
+                        <div class="column"><span class="incorrect-ans-sa-choices"><?php echo $q_choices[$i]; ?></span></div>    
+                        <?php            
+                    }            
+					   
 				}
             }
              
-        ?>  </div>
-        <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, 1, $correct); ?> </div>
+        ?>  
+        </div>
+        <?php
+            //check if question was answered
+            if($answered){
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, $correct);
+            }else{
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, 1, 0);
+                $userAnswers = '';
+                echo "</br>Time Limit Reached: Question unanswered.";
+                $body = $body."</br>Time Limit Reached - Question unanswered </br> ";
+            }
+            ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>"; ?> </div>
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
-    </div><?php    
+    </div><?php   
+    
+        //sets email formatting
+        $body = $body."</br>Correct Answer: "; 
+        for ($i = 0; $i < count($q_choices); $i++) {
+            $body = $body."</br>".$q_choices[$i];
+        }
+        $body = $body."</br></br> User Answer(s): </br> $userAnswers";
+        $body = $body."</br></br> Points Awarded: $pointsAwarded / $pointWeight </br></br>";
     }
+
+
 
 }
 

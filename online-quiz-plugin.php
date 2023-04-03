@@ -99,14 +99,74 @@ if(!class_exists('OnlineQuizPlugin')){
       function activate(){
          flush_rewrite_rules();
       }
-   
+  
       function deactivate(){
+         $sensei = get_role( 'sensei' );
+         $capabilities = create_sensei_capabilities('quiz', 'quizzes');
+         foreach ($capabilities as $capability) {
+             $sensei->remove_cap( $capability );
+         }
+         $sensei->remove_cap( 'edit_pages' );
+         $sensei->remove_cap( 'publish_pages' );
+         $sensei->remove_cap( 'delete_pages' );
+         $sensei->remove_cap( 'edit_published_pages' );
+         $sensei->remove_cap( 'delete_published_pages' );
+
+         remove_role('sensei');
+         $admin = get_role( 'administrator' );
+         $capabilities = create_post_type_capabilities('Quiz', 'Quizzes');
+         foreach ($capabilities as $capability) {
+             $admin->remove_cap( $capability );
+         }
          flush_rewrite_rules();
       }
 
+      /*
+      * create_sensei_role
+      * Adds permissions to roles for editing quizzes and question post types.
+      * Runs only on plugin activation
+      */
+      function create_sensei_role() {
+         add_role('sensei', 'Sensei',
+            array(
+               'read'            => true,
+               'level_0'         => true,
+               'edit_posts'      => true, // REQUIRED ALWAYS, Sensei cannot create posts of any type without this.
+               'delete_posts'    => false,
+               'publish_posts'   => false,
+               'upload_files'    => true,
+
+               /* Change these to '_posts' instead of '_pages' e.g. 'publish_posts' if only admin is to publish pages, then deactivate and reactivate the plugin*/
+               'edit_pages'      => true, // Allows the Sensei to create their quiz page
+               'publish_pages'   => true, // Allows the Sensei to publish their quiz page
+               'delete_pages'    => true, // Allows the Sensei to delete their quiz page
+               'edit_published_pages'     => true, // Allows the Sensei to edit their published quiz page
+               'delete_published_pages'   => true, // Allows the Sensei to delete their published quiz page
+            )
+         );
+
+         //Specific sensei permissions to allow them to create and delete quizzes and questions
+         $sensei = get_role( 'sensei' );
+         $capabilities = create_sensei_capabilities('quiz', 'quizzes');
+         foreach ($capabilities as $capability) {
+             $sensei->add_cap( $capability );
+         }
+
+         //Specific admin permissions to allow them to delete sensei created quizzes and questions
+         $admin = get_role( 'administrator' );
+         $capabilities = create_post_type_capabilities('quiz', 'quizzes');
+         foreach ($capabilities as $capability) {
+             $admin->add_cap( $capability );
+         }
+
+
+      }
    } 
 }
 $onlineQuizPlugin = new OnlineQuizPlugin();
+
+//create Sensei role
+register_activation_hook( __FILE__, array($onlineQuizPlugin, 'create_sensei_role') );
 
 //activate
 register_activation_hook( __FILE__, array($onlineQuizPlugin, 'activate') );

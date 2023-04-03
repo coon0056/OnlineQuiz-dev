@@ -41,7 +41,9 @@ class Mc_Multiple_Question{
             'menu_icon' => 'dashicons-editor-ul',
             'labels'    => $question_labels,
             'show_in_menu' => false,
-            'supports'  => array('editor', 'author', 'thumbnail')
+            'supports'  => array('editor', 'author', 'thumbnail'),
+            'capability_type' => array('quiz', 'quizzes'),
+            'map_meta_cap'  => true
         );
 
         register_post_type('mc_multiple_question', $args);
@@ -236,11 +238,12 @@ class Mc_Multiple_Question{
     }
 
     //check results of mc-multiple question
-    public static function mc_multiple_question_results($questionID, $question, $userAnswers, &$userScore) {
+    public static function mc_multiple_question_results($questionID, $question, $userAnswers, &$userScore, &$body, $answered) {
         ?><div class="row-mc-multiple-qtype" ><?php
         $question_right_answers = get_post_meta( $questionID, '_question_right_answers_meta', true );
         $question_answers = get_post_meta( $questionID, '_answers_meta' );
         $q_answers = isset($question_answers[0]) ? $question_answers[0] : [];
+        $q_r_answers = isset( $question_right_answers[0]) ?  $question_right_answers[0] : [];
 
         $pointWeight = get_post_meta( $questionID, '_question_weight_meta_key',true);
         $countCorrect = count($q_answers);
@@ -283,9 +286,39 @@ class Mc_Multiple_Question{
                     ?>
             </div>
         <?php
-        }
-            ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+            }
+            //check if question was answered
+            if($answered){
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
+            }else{
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, 0);
+                echo "</br>Time Limit Reached: Question unanswered.";
+                $body = $body."</br>Time Limit Reached - Question unanswered </br> ";
+            }
+        
+        ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>" ?> </div>
             <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
-        </div><?php  
+        </div><?php 
+        
+                //sets email formatting
+                for ($i = 0; $i < count($q_answers); $i++) {
+                    $body = $body."</br>".$q_answers[$i];
+                }
+        
+                $body = $body."</br></br> Correct Answer(s) : ";
+                for ($i = 0; $i < count($q_answers); $i++) {
+                    if(array_key_exists($i, $question_right_answers)){
+                        $body = $body."</br>".$q_answers[$i];
+                    }
+                }
+        
+                $body = $body."</br></br> User Answer:(s) : ";
+                for ($i = 0; $i < count($q_answers); $i++) {
+                    if(array_key_exists($i, $userAnswers)){
+                        $body = $body."</br>".$q_answers[$i];
+                    }
+                }
+        
+                $body = $body."</br></br> Points Awarded: $pointsAwarded / $pointWeight </br></br>";
     }
 }

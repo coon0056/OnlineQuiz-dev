@@ -41,7 +41,9 @@ class Ordering_Question{
             'menu_icon' => 'dashicons-editor-ul',
             'labels'    => $question_labels,
             'show_in_menu' => false,
-            'supports'  => array('editor', 'author', 'thumbnail')
+            'supports'  => array('editor', 'author', 'thumbnail'),
+            'capability_type' => array('quiz', 'quizzes'),
+            'map_meta_cap'  => true
         );
 
         register_post_type('ordering_question', $args);
@@ -229,7 +231,7 @@ class Ordering_Question{
     }
 
     //check results of ordering question
-    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore){
+    public static function ordering_question_results($questionID, $question, $userAnswers, &$userScore, &$body, $answered){
         ?><div class="row-order-qtype" ><?php
             $question_answers = get_post_meta( $questionID, '_question_answers_meta');
             $q_answers= isset( $question_answers[0] ) ? $question_answers[0] : [];
@@ -267,9 +269,31 @@ class Ordering_Question{
                 </div>
             <?php 
             }
-        ?> <div class="row-title" > <?php calculatePoints($userScore, $pointWeight, $countCorrect, $correct); ?> </div>
+            //check if question was answered
+            if($answered){
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, $correct);
+            }else{
+                $pointsAwarded = calculatePoints($userScore, $pointWeight, $countCorrect, 0);
+                echo "</br>Time Limit Reached: Question unanswered.";
+                $body = $body."</br>Time Limit Reached - Question unanswered </br> ";
+            }
+        ?> <div class="row-title" > <?php echo "<br> Points Awarded:  $pointsAwarded  / $pointWeight <br>" ?> </div>
         <hr class="wp-block-separator has-text-color has-css-opacity has-background is-style-dots"> 
-    </div><?php  
+    </div><?php 
+    
+        //sets email formatting
+        $body = $body."</br>"."Correct Order: "; 
+        for ($i = 0; $i < count($q_answers); $i++) {
+            $body = $body."</br>".$q_answers[$i];
+        }
+        
+        $body = $body."</br></br>"."User Answer: ";
+        for ($i = 0; $i < count($userAnswers); $i++) {
+            $body = $body."</br>".$userAnswers[$i];
+        }
+        
+        $body = $body."</br></br> Points Awarded: $pointsAwarded / $pointWeight </br></br>";
+    
     }
 
 }
