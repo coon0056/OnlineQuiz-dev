@@ -82,17 +82,17 @@ if(!class_exists('OnlineQuizPlugin')){
       }
 
       function admin_scripts(){
-         wp_enqueue_script('online_quiz_admin_script', ONLINE_QUIZ_PLUGIN_URL.'js/admin.js', array('jquery'));
+         wp_enqueue_script('online_quiz_admin_script', ONLINE_QUIZ_PLUGIN_URL.'js/admin.js', array('jquery'), "1.0");
       }
 
       function frontend_scripts(){
-         wp_enqueue_script('online_quiz_frontend_script', ONLINE_QUIZ_PLUGIN_URL.'js/frontend.js', array('jquery'));
-         wp_enqueue_script('online_quiz_timer_script', ONLINE_QUIZ_PLUGIN_URL.'js/timer.js', array('jquery'));
+         wp_enqueue_script('online_quiz_frontend_script', ONLINE_QUIZ_PLUGIN_URL.'js/frontend.js', array('jquery'), "1.0");
+         wp_enqueue_script('online_quiz_timer_script', ONLINE_QUIZ_PLUGIN_URL.'js/timer.js', array('jquery'), "1.0");
          wp_enqueue_script('simplePagination-js','//cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js', array('jquery'),'1.6', false);
       }
 
       function frontend_style(){
-         wp_enqueue_style('style', ONLINE_QUIZ_PLUGIN_URL . '/assets/stylesheet.css');
+         wp_enqueue_style('style', ONLINE_QUIZ_PLUGIN_URL . '/assets/stylesheet.css', array(), "1.0");
          wp_enqueue_style('dashicons');
       }
    

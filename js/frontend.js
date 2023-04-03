@@ -29,8 +29,8 @@ jQuery(document).ready(function(){
                     flag = true;
                     jQuery('#modalMessage').text("Question "+ (jQuery(this).data('num') + 1) + 
                         " is unanswered. Please fill out all questions before submitting the quiz.");
+                        return false; //breaks out of jQuery each()
                 }
-                return false; //breaks out of jQuery each()
             }
         });
 
