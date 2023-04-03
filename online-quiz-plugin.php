@@ -20,10 +20,13 @@ if(!class_exists('OnlineQuizPlugin')){
       function __construct(){
          $this->define_constants();
          $this->load_required_files();
-         
+          
          if(!isset($quiz_object)){
             $quiz_object = new Quiz_CPT();
          }
+         if(!isset($sview_object)){
+            $sview_object = new sview();
+         }         
          if(!isset($matching_question_object)){
             $matching_question_object = new Matching_Question();
          }
@@ -39,6 +42,7 @@ if(!class_exists('OnlineQuizPlugin')){
          if(!isset($sa_question_object)){
             $sa_question_object = new sa_Question();
          }
+        
          $this->enqueue_assets();
       }
 
@@ -68,6 +72,7 @@ if(!class_exists('OnlineQuizPlugin')){
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/mc_multiple_question_cpt.php'; 
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/sa_question_cpt.php'; 
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/quiz_cpt.php';
+         require_once ONLINE_QUIZ_BASE_DIR.'/inc/sview.php';
       }
      
       function enqueue_assets(){
