@@ -40,7 +40,9 @@ class sa_Question{
             'menu_icon' => 'dashicons-editor-ul',
             'labels'    => $question_labels,
             'show_in_menu' => false,
-            'supports'  => array('editor', 'author', 'thumbnail')
+            'supports'  => array('editor', 'author', 'thumbnail'),
+            'capability_type' => array('quiz', 'quizzes'),
+            'map_meta_cap'  => true
         );
 
         register_post_type('sa_question', $args);
@@ -226,26 +228,33 @@ class sa_Question{
             <?php for ($i = 0; $i < count($q_choices); $i++) {
                 $key_print = $q_choices[$i]; 
             ?>
-                <div class="column col-sa-actual-ans">       
+                       
                     <?php if(strcasecmp(trim($userAnswers), trim($key_print)) == 0){ 
                             $correct++;
                             ?> 
+                            <div class="column col-sa-actual-ans">
                             <div class="column"><span class="correct-ans">Correct!</span></div><br> 
+                            </div>
                             <?php
                         }
                     ?>
-                </div>
+                
             <?php       
             } 
             if ($correct == 0){
                 ?> <div class="column"><span class="incorrect-ans">Incorrect. Correct Answers: </span></div> <?php
                 for ($i = 0; $i < count($q_choices); $i++) {
 					$key_print = $q_choices[$i];
-					if(strcasecmp(trim($userAnswers), trim($key_print)) !== 0){                 
+					if((strcasecmp(trim($userAnswers), trim($key_print)) !== 0) && ($i !== (count($q_choices)-1) )){                 
                         ?> 
                         <div class="column"><span class="incorrect-ans-sa-choices"><?php echo $q_choices[$i]; ?>, </span></div>    
                         <?php                        
-					}         
+					} else if (strcasecmp(trim($userAnswers), trim($key_print)) !== 0) {                               
+                        ?> 
+                        <div class="column"><span class="incorrect-ans-sa-choices"><?php echo $q_choices[$i]; ?></span></div>    
+                        <?php            
+                    }            
+					   
 				}
             }
              

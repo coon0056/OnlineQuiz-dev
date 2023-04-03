@@ -72,6 +72,7 @@
     list-style-type: none !important;
 }
 .incorrect-ans-sa-choices{
+    font-family: 'Dashicons' !important;
     list-style-type: none !important;
     Padding-left: 6px;
 }

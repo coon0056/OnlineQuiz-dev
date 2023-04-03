@@ -15,15 +15,15 @@ class Quiz_CPT{
         add_filter('manage_quiz_posts_custom_column', array($this, 'custom_column_content'), 10,2);
         add_action('save_post', array($this, 'save_quiz_post'));
         add_shortcode('quiz', array($this, 'quiz_shortcode'));
-        add_action('admin_menu', array($this,'quiz_plugin_menu'));
+        add_action('admin_menu', array($this,'quiz_plugin_menu'), 999);
     }
 
     function quiz_plugin_menu(){
-        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "manage_options", 'edit.php?post_type=matching_question');
-        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "manage_options", 'edit.php?post_type=ordering_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "manage_options", 'edit.php?post_type=mc_single_question');
-        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "manage_options", 'edit.php?post_type=mc_multiple_question');
-        add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "manage_options", 'edit.php?post_type=sa_question');
+        add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "edit_quizzes", 'edit.php?post_type=matching_question');
+        add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "edit_quizzes", 'edit.php?post_type=ordering_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-single question', 'MC-Single Question', "edit_quizzes", 'edit.php?post_type=mc_single_question');
+        add_submenu_page('edit.php?post_type=quiz', 'mc-multiple question', 'MC-Multiple Question', "edit_quizzes", 'edit.php?post_type=mc_multiple_question');
+        add_submenu_page('edit.php?post_type=quiz', 'short-answer question', 'Short-Answer Question', "edit_quizzes", 'edit.php?post_type=sa_question');
     }
 
     //registers custom post type
@@ -46,11 +46,15 @@ class Quiz_CPT{
             'not_found_in_trash' => 'No Quizzes found in Trash.'
         );
 
+        $capabilities = create_post_type_capabilities('quiz', 'quizzes');
+
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-welcome-learn-more',
             'labels'    => $quiz_labels,
-            'supports'  => array('editor', 'author', 'thumbnail')
+            'supports'  => array('editor', 'author', 'thumbnail'),
+            'capabilities'  => $capabilities,
+            'map_meta_cap'  => true
         );
 
         register_post_type('quiz', $args);
