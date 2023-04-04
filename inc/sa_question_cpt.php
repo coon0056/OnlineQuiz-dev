@@ -18,6 +18,7 @@ class sa_Question{
     //registers custom post type
     function register_post_type(){
 
+        //sets custom post type labels
         $question_labels = array(
             'name'               => 'Short Answers',
             'singular_name'      => 'Short Answer',
@@ -35,6 +36,7 @@ class sa_Question{
             'not_found_in_trash' => 'No Short Answers found in Trash.'
         );
 
+        //sets custom post type settings
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-editor-ul',
@@ -94,13 +96,13 @@ class sa_Question{
             <ul id="correct_answers">                
             <?php
 
-           
             $q_right = isset( $question_right_answers[0] ) ? $question_right_answers[0] : [];
 
             if (is_array($q_right)) {
                 $q_right = array_values($q_right);
             }
 
+            //iterate through post meta values and prints html
             for($i = 0; $i < $count1; $i++){
                
                 $key_right =  isset( $q_right[$i] ) ? $q_right[$i] : '';

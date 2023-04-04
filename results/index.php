@@ -21,8 +21,11 @@
             $totalScore += (float) $points;
         }
         
+        
         $body = "Quiz Results: </br> "; //begins email body formatting
-        for($i=0;$i<$questionCount;$i++){ //begin loop to iterate through questions
+
+        //begin loop to iterate through questions
+        for($i=0;$i<$questionCount;$i++){ 
             $questionID= $_POST['questionID'.($i+1)];
             $question = get_post($questionID);
             $questionType = $question->post_type;
