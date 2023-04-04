@@ -232,31 +232,43 @@ class Quiz_CPT{
         $time = get_post_meta( $quiz->ID, '_quiz_time_limit_meta_key', true );
         
         ob_start();
-        echo '<div class="countdown" data-num="'.$time.'"></div>';
-        echo '<form id="quizForm" method="post" action="'.ONLINE_QUIZ_PLUGIN_URL.'results/">';
-        echo '<input type="hidden" id="authorEmail" name="authorEmail" value="'.$authorEmail.'">';
-        echo '<input type="hidden" id="questionTotal" name="questionTotal" value="'.$count.'">';
-        echo 'Name:' ;
-        echo '<input style="width:25%" type="text" id="testTaker" name="testTaker" value="" required>';
+        ?>
+        <div class="countdown" data-num="<?php echo $time; ?>"></div>
+        <form id="quizForm" method="post" action="<?php echo ONLINE_QUIZ_PLUGIN_URL ?>results/">
+            <input type="hidden" id="authorEmail" name="authorEmail" value="<?php echo $authorEmail ?>">
+            <input type="hidden" id="questionTotal" name="questionTotal" value="<?php echo $count ?>">
+            Name:
+            <input style="width:25%" type="text" id="testTaker" name="testTaker" value="" required>
 
-        echo '<ul id="questions" style="list-style-type: none">';
+            <ul id="questions" style="list-style-type: none">
+        
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span id="close" class="close">&times;</span>
+                    <p id="modalMessage"></p>
+                </div>
+            </div>
 
-        for($i = 0; $i < $count; $i++){
-            $questionCount = ($i+1);
-            $questionID = (int)filter_var($q_shortcodes[$i], FILTER_SANITIZE_NUMBER_INT);
-            
-            echo '<li id="question">';
-                echo '<input type="hidden" id="questionID'.$questionCount.'" name="questionID'.$questionCount.'" value="'.$questionID.'">';
-                echo 'Question '.$questionCount.':';
-                echo do_shortcode($q_shortcodes[$i]);
-                echo "</br>";
-            echo '</li>';
-        }
-        echo '</ul>';
-        echo '<div id="pagination"></div>';
+            <?php
 
-        echo '<div class="row" ><input class="submit-button" type="submit" name="user_question_submit" id="user_question_submit" value="Submit Answers" /></div>
-            </form>';
+            for($i = 0; $i < $count; $i++){
+                $questionCount = ($i+1);
+                $questionID = (int)filter_var($q_shortcodes[$i], FILTER_SANITIZE_NUMBER_INT);
+                
+                echo '<li id="question" data-num="'.$i.'">';
+                    echo '<input type="hidden" id="questionID'.$questionCount.'" name="questionID'.$questionCount.'" value="'.$questionID.'">';
+                    echo 'Question '.$questionCount.':';
+                    echo do_shortcode($q_shortcodes[$i]);
+                    echo "</br>";
+                echo '</li>';
+            }
+            ?>
+            </ul>
+            <div id="pagination"></div>
+
+            <div class="row" ><input class="submit-button" type="submit" name="user_question_submit" id="user_question_submit" value="Submit Answers" /></div>
+        </form>
+        <?php
         return ob_get_clean();
     }
 
