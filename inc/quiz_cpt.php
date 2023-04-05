@@ -203,10 +203,10 @@ class Quiz_CPT{
             update_post_meta($post_id,'_quiz_time_limit_meta_key',$_POST['quiz_time_limit_field']);
         }
 
-        if ( array_key_exists( 'quiz_password_field', $_POST ) ) {
-            sanitize_text_field($_POST['quiz_password_field']);
-            update_post_meta($post_id,'_quiz_password_meta_key',$_POST['quiz_password_field']);
-        }
+        // if ( array_key_exists( 'quiz_password_field', $_POST ) ) {
+        //     sanitize_text_field($_POST['quiz_password_field']);
+        //     update_post_meta($post_id,'_quiz_password_meta_key',$_POST['quiz_password_field']);
+        // }
 
         if ( array_key_exists( 'questions', $_POST ) ) {
             sanitize_text_field($_POST['questions']);
