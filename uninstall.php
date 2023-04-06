@@ -9,6 +9,7 @@ $wpdb->query("DELETE FROM wp_posts WHERE post_type = 'ordering_question'");
 $wpdb->query("DELETE FROM wp_posts WHERE post_type = 'mc_multiple_question'");
 $wpdb->query("DELETE FROM wp_posts WHERE post_type = 'mc_single_question'");
 $wpdb->query("DELETE FROM wp_posts WHERE post_type = 'sa_question'");
+$wpdb->query("DELETE FROM wp_posts WHERE post_type = 'sview'");
 
 //remove all post meta associated with custom post types above
 $wpdb->query("DELETE wp_postmeta FROM wp_postmeta
