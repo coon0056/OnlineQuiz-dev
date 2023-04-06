@@ -18,6 +18,7 @@ class Quiz_CPT{
         add_action('admin_menu', array($this,'quiz_plugin_menu'), 999);
     }
 
+    //function to setup quiz plugin menu and sub menu
     function quiz_plugin_menu(){
         add_submenu_page('edit.php?post_type=quiz', 'matching question', 'Matching Question', "manage_options", 'edit.php?post_type=matching_question');
         add_submenu_page('edit.php?post_type=quiz', 'ordering question', 'Ordering Question', "manage_options", 'edit.php?post_type=ordering_question');
@@ -30,6 +31,7 @@ class Quiz_CPT{
     //registers custom post type
     function register_post_type(){
 
+        //sets custom post type labels
         $quiz_labels = array(
             'name'               => 'Quizzes',
             'singular_name'      => 'Quiz',
@@ -47,8 +49,10 @@ class Quiz_CPT{
             'not_found_in_trash' => 'No Quizzes found in Trash.'
         );
 
+
         $capabilities = create_post_type_capabilities('quiz', 'quizzes');
 
+        //sets custom post type settings
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-welcome-learn-more',
@@ -64,7 +68,7 @@ class Quiz_CPT{
     //creates the metaboxes
     function register_meta_boxes(){
         add_meta_box('quiz_time_limit','Quiz Time Limit',array($this, 'quiz_time_limit_html'),'quiz');
-        add_meta_box('question_password', 'Quiz Password', array($this, 'quiz_password_html'), 'quiz');
+        //add_meta_box('question_password', 'Quiz Password', array($this, 'quiz_password_html'), 'quiz');
         add_meta_box('questions_meta', 'Questions', array($this, 'questions_html'), 'quiz');
     }
 
@@ -127,6 +131,7 @@ class Quiz_CPT{
                 $q_key = array_values($q_key);
             }
 
+            //iterate through post meta values and prints html
             for($i = 0; $i < $count; $i++){
                 $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
             ?>
@@ -198,10 +203,10 @@ class Quiz_CPT{
             update_post_meta($post_id,'_quiz_time_limit_meta_key',$_POST['quiz_time_limit_field']);
         }
 
-        if ( array_key_exists( 'quiz_password_field', $_POST ) ) {
-            sanitize_text_field($_POST['quiz_password_field']);
-            update_post_meta($post_id,'_quiz_password_meta_key',$_POST['quiz_password_field']);
-        }
+        // if ( array_key_exists( 'quiz_password_field', $_POST ) ) {
+        //     sanitize_text_field($_POST['quiz_password_field']);
+        //     update_post_meta($post_id,'_quiz_password_meta_key',$_POST['quiz_password_field']);
+        // }
 
         if ( array_key_exists( 'questions', $_POST ) ) {
             sanitize_text_field($_POST['questions']);

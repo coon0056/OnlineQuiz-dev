@@ -19,6 +19,7 @@ class Matching_Question{
     //registers custom post type
     function register_post_type(){
 
+        //sets custom post type labels
         $question_labels = array(
             'name'               => 'Matching Questions',
             'singular_name'      => 'Matching Question',
@@ -36,6 +37,7 @@ class Matching_Question{
             'not_found_in_trash' => 'No Matching Questions found in Trash.'
         );
 
+        //sets custom post type settings
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-editor-ul',
@@ -109,6 +111,7 @@ class Matching_Question{
                 $q_value = array_values($q_value);
             }
 
+            //iterate through post meta values and prints html
             for($i = 0; $i < $count; $i++){
                 $key_print =  isset( $q_key[$i] ) ? $q_key[$i] : '';
                 $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';

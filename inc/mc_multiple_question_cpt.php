@@ -19,6 +19,7 @@ class Mc_Multiple_Question{
     //registers custom post type
     function register_post_type(){
 
+        //sets custom post type labels
         $question_labels = array(
             'name'               => 'Multiple Choice - Multiple Answer Questions',
             'singular_name'      => 'Multiple Choice - Multiple Answer Question',
@@ -36,6 +37,7 @@ class Mc_Multiple_Question{
             'not_found_in_trash' => 'No Multiple Choice - Multiple Answer Questions found in Trash.'
         );
 
+        //sets custom post type settings
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-editor-ul',
@@ -102,6 +104,7 @@ class Mc_Multiple_Question{
                 $q_answers = array_values($q_answers);
             }
             
+            //iterate through post meta values and prints html
             for($i = 0; $i < $count2; $i++){
 
                 $answer_key =  isset( $q_answers[$i] ) ? $q_answers[$i] : '';

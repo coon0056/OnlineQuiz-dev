@@ -19,6 +19,7 @@ class Ordering_Question{
     //registers custom post type
     function register_post_type(){
 
+        //sets custom post type labels
         $question_labels = array(
             'name'               => 'Ordering Questions',
             'singular_name'      => 'Ordering Question',
@@ -36,6 +37,7 @@ class Ordering_Question{
             'not_found_in_trash' => 'No Ordering Questions found in Trash.'
         );
 
+        //sets custom post type settings
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-editor-ul',
@@ -105,6 +107,7 @@ class Ordering_Question{
                 $q_value = array_values($q_value);
             }
 
+            //iterate through post meta values and prints html
             for($i = 0; $i < $count; $i++){
                 $value_print = isset( $q_value[$i] ) ? $q_value[$i] : '';
             ?>

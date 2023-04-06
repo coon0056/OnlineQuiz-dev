@@ -4,10 +4,12 @@
  * Description: Online Quiz for Kentokukan
  * Plugin URI: 
  * Version: 1.0.0
- * Author: Team RoundHouse
+ * Author: Team Roundhouse
  * Author URI: 
  * License: GPLv2 or later
  */
+
+ //prevent users from accessing via URL
 if(!defined('ABSPATH')){
    die;
 }
@@ -23,10 +25,7 @@ if(!class_exists('OnlineQuizPlugin')){
           
          if(!isset($quiz_object)){
             $quiz_object = new Quiz_CPT();
-         }
-         if(!isset($sview_object)){
-            $sview_object = new sview();
-         }         
+         }    
          if(!isset($matching_question_object)){
             $matching_question_object = new Matching_Question();
          }
@@ -42,11 +41,13 @@ if(!class_exists('OnlineQuizPlugin')){
          if(!isset($sa_question_object)){
             $sa_question_object = new sa_Question();
          }
+         if(!isset($sview_object)){
+            $sview_object = new sview();
+         }     
         
          $this->enqueue_assets();
       }
 
- 
      //constants for the plugin
       function define_constants(){
          if(!defined('ONLINE_QUIZ_BASE_FILE')){
@@ -75,31 +76,37 @@ if(!class_exists('OnlineQuizPlugin')){
          require_once ONLINE_QUIZ_BASE_DIR.'/inc/sview.php';
       }
      
+      //add javaScript files and css files
       function enqueue_assets(){
          add_action('admin_enqueue_scripts', array($this, 'admin_scripts'));
          add_action('wp_enqueue_scripts', array($this, 'frontend_scripts'));
          add_action('wp_enqueue_scripts', array($this, 'frontend_style'));
       }
 
+      //admin.js file
       function admin_scripts(){
          wp_enqueue_script('online_quiz_admin_script', ONLINE_QUIZ_PLUGIN_URL.'js/admin.js', array('jquery'), "1.0");
       }
 
+      //frontend.js, timer.js
       function frontend_scripts(){
          wp_enqueue_script('online_quiz_frontend_script', ONLINE_QUIZ_PLUGIN_URL.'js/frontend.js', array('jquery'), "1.0");
          wp_enqueue_script('online_quiz_timer_script', ONLINE_QUIZ_PLUGIN_URL.'js/timer.js', array('jquery'), "1.0");
          wp_enqueue_script('simplePagination-js','//cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js', array('jquery'),'1.6', false);
       }
 
+      //css files
       function frontend_style(){
          wp_enqueue_style('style', ONLINE_QUIZ_PLUGIN_URL . '/assets/stylesheet.css', array(), "1.0");
          wp_enqueue_style('dashicons');
       }
    
+      //function for plugin activation
       function activate(){
          flush_rewrite_rules();
       }
   
+      //function for plugin deactivation
       function deactivate(){
          $sensei = get_role( 'sensei' );
          $capabilities = create_sensei_capabilities('quiz', 'quizzes');

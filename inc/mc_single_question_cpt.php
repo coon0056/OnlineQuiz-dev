@@ -19,6 +19,7 @@ class Mc_Single_Question{
     //registers custom post type
     function register_post_type(){
 
+        //sets custom post type labels
         $question_labels = array(
             'name'               => 'Multiple Choice - Single Answer Questions',
             'singular_name'      => 'Multiple Choice - Single Answer Question',
@@ -36,6 +37,7 @@ class Mc_Single_Question{
             'not_found_in_trash' => 'No Multiple Choice - Single Answer Questions found in Trash.'
         );
 
+        //sets custom post type settings
         $args = array(
             'public'    => true,
             'menu_icon' => 'dashicons-editor-ul',
@@ -108,6 +110,7 @@ class Mc_Single_Question{
                     $q_wrong = array_values($q_wrong);
                 }
                 
+                //iterate through post meta values and prints html
                 for ($i = 0; $i < $count; $i++) {
                     $key_wrong = isset($q_wrong[$i]) ? $q_wrong[$i] : '';
                     ?>
