@@ -54,7 +54,7 @@ class Matching_Question{
     //creates the metaboxes 
     function register_meta_boxes(){
         add_meta_box('question_weight_meta','Matching Question Weight',array($this, 'question_weight_html'),'matching_question');
-        add_meta_box('answer_meta', 'Matching Matching Question', array($this, 'matching_question_html'), 'matching_question');
+        add_meta_box('answer_meta', 'Matching Question', array($this, 'matching_question_html'), 'matching_question');
     }
 
 
